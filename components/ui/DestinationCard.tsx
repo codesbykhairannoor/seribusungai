@@ -36,26 +36,24 @@ export default function DestinationCard({
   return (
     <Link href={`/wisata/${destination.slug}`} className="block h-full group">
       <motion.div
-        whileHover={{ y: -8 }}
-        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-        className="relative flex flex-col bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-500 border border-river-blue/5 h-full"
+        whileHover={{ y: -10 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-premium-deep transition-all duration-700 border border-slate-100 h-full p-4 group-hover:bg-slate-50/50"
         style={{ willChange: "transform" }}
       >
         {/* Image */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-river-blue/5">
+        <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-slate-100">
           <motion.div
-            whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="w-full h-full relative"
-            style={{ willChange: "transform" }}
           >
             <Image
               src={destination.heroImage.src}
               alt={t(destination.heroImage.alt)}
               fill
               unoptimized
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-1000"
             />
           </motion.div>
           {/* Gradient overlay on image */}
@@ -79,8 +77,11 @@ export default function DestinationCard({
         </div>
 
         {/* Content */}
-        <div className="p-6 flex flex-col flex-1">
-          <h3 className="font-heading font-bold text-xl text-river-blue mb-2 group-hover:text-warm-gold transition-colors duration-300 leading-tight">
+        <div className="p-8 flex flex-col flex-1">
+          <div className="text-[10px] font-[900] uppercase tracking-[0.2em] text-warm-gold mb-3">
+             {t(categoryLabels[destination.category] ?? { id: destination.category, en: destination.category })}
+          </div>
+          <h3 className="font-[900] text-2xl text-river-blue mb-3 group-hover:text-warm-gold transition-colors duration-300 tracking-tight leading-none">
             {t(destination.name)}
           </h3>
           <p className="text-river-blue/55 text-sm line-clamp-2 mb-5 font-body leading-relaxed flex-1">

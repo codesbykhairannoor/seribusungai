@@ -81,66 +81,59 @@ export default function Sejarah() {
   ];
 
   return (
-    <main className="min-h-screen flex flex-col bg-white overflow-x-hidden relative">
-      <EditorialNoise />
+    <main className="min-h-screen bg-white">
       <NavigationBar />
       <PageTransitionWrapper>
+        {/* ── PREMIUM HERO: THE MONUMENT ── */}
+        <header className="relative pt-32 pb-40 lg:pt-48 lg:pb-56 overflow-hidden bg-white">
+          {/* 1. Ambient Glows */}
+          <div className="absolute top-0 right-1/4 w-[700px] h-full bg-warm-gold/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+          
+          {/* 2. Visual Textures */}
+          <div className="absolute inset-0 bg-pattern-grid opacity-[0.03] -z-10" />
 
-        {/* ── HERO: ClickUp Clean Split ── */}
-        <section className="relative h-screen min-h-[720px] flex overflow-hidden bg-[#0a0f1a]">
-          <div className="relative z-20 w-full lg:w-[45%] flex flex-col justify-center px-8 md:px-20">
-            <FadeInView>
-              <span className="text-warm-gold font-black uppercase tracking-[0.5em] text-[10px] mb-8 block">
-                Historical Archive
-              </span>
-              <h1 className="text-white font-heading font-black text-4xl md:text-5xl tracking-tighter leading-[0.95] mb-8">
-                Menembus <br />
-                <span className="text-warm-gold italic">Waktu.</span>
-              </h1>
-              <p className="text-white/40 font-body text-sm leading-relaxed max-w-sm mb-10">
-                {t({ 
-                  id: "Saksi bisu evolusi peradaban sungai dari pusat kesultanan maritim hingga menjadi pusat inovasi digital.", 
-                  en: "A silent witness to the evolution of river civilization from a maritime sultanate to a center of digital innovation." 
-                })}
-              </p>
-              <div className="flex items-center gap-12">
-                 <div>
-                    <div className="text-white font-heading font-black text-2xl mb-1">1526</div>
-                    <div className="text-white/20 text-[8px] uppercase font-black tracking-widest">Founded</div>
-                 </div>
-                 <div className="w-px h-10 bg-white/10" />
-                 <div>
-                    <div className="text-white font-heading font-black text-2xl mb-1">500+</div>
-                    <div className="text-white/20 text-[8px] uppercase font-black tracking-widest">Years of Glory</div>
-                 </div>
-              </div>
-            </FadeInView>
+          {/* 3. Floating Objects */}
+          <div className="absolute top-48 left-[10%] w-16 h-16 bg-white/60 backdrop-blur-xl rounded-2xl shadow-premium-soft flex items-center justify-center text-2xl animate-float hidden xl:flex border border-white/80 z-20">
+            📜
+          </div>
+          <div className="absolute bottom-48 right-[12%] w-14 h-14 bg-white/40 backdrop-blur-md rounded-xl shadow-premium-soft flex items-center justify-center text-xl animate-bounce-slow hidden xl:flex border border-white/40 z-20">
+            ⏳
           </div>
 
-          <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[55%]">
-             <div className="relative h-full w-full overflow-hidden">
-                {mounted && (
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentImgIndex}
-                      initial={{ opacity: 0, scale: 1.1 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 1.5, ease: "easeInOut" }}
-                      className="absolute inset-0"
-                    >
-                      <Image 
-                         src={HISTORY_IMAGES[currentImgIndex]} 
-                         alt="Heritage Background" 
-                         fill 
-                         unoptimized={true}
-                         className="object-cover grayscale-[0.5] contrast-[1.1] brightness-[0.4]"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a] via-transparent to-transparent z-10" />
-             </div>
+          <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+            <FadeInView>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 font-bold text-[10px] tracking-[0.2em] uppercase shadow-sm mb-12">
+                <span className="flex h-1.5 w-1.5 rounded-full bg-warm-gold"></span>
+                {t({ id: "JEJAK PERADABAN", en: "CIVILIZATION TRACES" })}
+              </div>
+
+              <h1 className="text-5xl md:text-8xl font-[900] tracking-monumental leading-monumental text-river-blue mb-10 max-w-5xl mx-auto">
+                {t({ id: "Menembus Lorong", en: "Journey Through" })} <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-river-blue via-warm-gold to-river-blue bg-[length:200%_auto] animate-gradient-flow text-glow">
+                  Waktu.
+                </span>
+              </h1>
+
+              <p className="text-lg md:text-xl text-slate-500 font-medium leading-relaxed opacity-80 max-w-2xl mx-auto mb-16">
+                {t({
+                  id: "Arsip sejarah Banjarmasin dari era Kesultanan hingga masa kini, dikurasi dengan standar digital preservasi internasional.",
+                  en: "Banjarmasin historical archives from the Sultanate era to the present day, curated with international digital preservation standards.",
+                })}
+              </p>
+            </FadeInView>
+          </div>
+        </header>
+
+        {/* ── BENTO HUB ── */}
+        <section id="hub" className="py-40 bg-slate-50 relative overflow-hidden">
+          <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-warm-gold/5 rounded-full blur-[100px] -z-10" />
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <FadeInView className="mb-20">
+              <h2 className="text-4xl md:text-6xl font-[900] text-river-blue tracking-monumental leading-monumental mb-8">
+                Pusat Kendali Sejarah.
+              </h2>
+            </FadeInView>
+            <HistoryBento />
           </div>
         </section>
 

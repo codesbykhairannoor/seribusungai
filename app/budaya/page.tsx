@@ -88,85 +88,128 @@ export default function Budaya() {
     <main className="min-h-screen flex flex-col">
       <NavigationBar />
       <PageTransitionWrapper>
-        {/* ── HERO: High Density "Crowd" Layout ── */}
-        <section className="relative flex flex-col items-center pt-20 pb-16 overflow-hidden bg-white">
-          <div className="relative z-20 text-center max-w-2xl px-6 mb-12">
-            <FadeInView>
-              <span className="inline-flex items-center gap-2 text-violet-600 font-bold uppercase tracking-[0.4em] text-[8px] mb-4 py-1 px-3 rounded-full bg-violet-50 border border-violet-100/50">
-                <Heart size={8} className="fill-current" />
-                {t({ id: "BORNEO CULTURAL ARCHIVE", en: "BORNEO CULTURAL ARCHIVE" })}
-              </span>
-              <h1 className="font-heading font-black text-river-blue text-4xl md:text-6xl tracking-tightest leading-[0.95] mb-6">
+        {/* ── PREMIUM HERO: THE MONUMENT ── */}
+        <header className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-white">
+          {/* 1. Ambient Glows */}
+          <div className="absolute top-0 left-1/4 w-[800px] h-full bg-warm-gold/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+          
+          {/* 2. Visual Textures */}
+          <div className="absolute inset-0 bg-pattern-grid opacity-[0.03] -z-10" />
+
+          {/* 3. Floating Objects */}
+          <div className="absolute top-32 left-[5%] w-16 h-16 bg-white/60 backdrop-blur-xl rounded-2xl shadow-premium-soft flex items-center justify-center text-2xl animate-float hidden xl:flex border border-white/80 z-20">
+            🎭
+          </div>
+          <div className="absolute top-48 right-[8%] w-12 h-12 bg-white/40 backdrop-blur-md rounded-xl shadow-premium-soft flex items-center justify-center text-xl animate-bounce-slow hidden xl:flex border border-white/40 z-20">
+            🎨
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 relative z-10 text-center py-20 lg:py-32">
+            <FadeInView className="relative z-20">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 font-bold text-[10px] tracking-[0.2em] uppercase shadow-sm mb-12">
+                <span className="flex h-1.5 w-1.5 rounded-full bg-warm-gold animate-pulse"></span>
+                {t({ id: "WARISAN BUDAYA", en: "CULTURAL HERITAGE" })}
+              </div>
+
+              <h1 className="text-4xl md:text-8xl font-[900] tracking-tight leading-[0.9] text-river-blue mb-8 max-w-4xl mx-auto uppercase">
                 Kami Adalah <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-river-blue via-warm-gold to-river-blue bg-[length:200%_auto] animate-gradient-flow">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-river-blue via-warm-gold to-river-blue bg-[length:200%_auto] animate-gradient-flow italic">
                    Banjarmasin.
                 </span>
               </h1>
-              <p className="text-river-blue/40 font-body text-xs md:text-sm leading-relaxed max-w-lg mx-auto mb-8">
+              
+              <p className="text-lg text-river-blue/60 font-medium leading-relaxed max-w-xl mx-auto">
                 {t({ 
                   id: "Konvergensi antara keluhuran budaya sungai, ketajaman seni, dan jiwa yang ramah. Inilah wajah peradaban kami.", 
                   en: "The convergence of river cultural nobility, artistic sharpness, and friendly souls. This is the face of our civilization." 
                 })}
               </p>
-              <div className="flex items-center justify-center">
-                 <button className="px-10 py-4 bg-river-blue text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-river-blue-900 transition-all shadow-2xl shadow-river-blue/20 transform hover:scale-105">
-                    {t({ id: "Jelajahi Warisan", en: "Explore Heritage" })}
-                 </button>
-              </div>
             </FadeInView>
-          </div>
 
-          {/* HIGH DENSITY 13+ PORTRAIT GRID WITH WAVE STAGGERING */}
-          <div className="relative w-full max-w-7xl mx-auto px-4 overflow-hidden">
-             {/* Edge Masking Effect */}
-             <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-r from-white via-transparent to-white lg:from-white/80 lg:to-white/80" />
-             
-             {mounted && (
-               <div className="flex items-center justify-center gap-3 md:gap-5 min-h-[350px] md:min-h-[500px]">
-                 
-                 {/* COLUMN 1: Outer Left (Faded) */}
-                 <div className="flex flex-col gap-4 -translate-y-12">
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Sasirangan_Banjarmasin.JPG/800px-Sasirangan_Banjarmasin.JPG" label="Workshop" delay={0.4} size="sm" bgColor="bg-emerald-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Pasar_Terapung_Lok_Baintan_1.jpg/800px-Pasar_Terapung_Lok_Baintan_1.jpg" label="Merchant" delay={0.5} size="sm" bgColor="bg-blue-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Sabilal_Muhtadin_Interior.jpg/800px-Sabilal_Muhtadin_Interior.jpg" label="Archive" delay={0.6} size="sm" bgColor="bg-rose-50" />
-                 </div>
-
-                 {/* COLUMN 2: Inner Left */}
-                 <div className="flex flex-col gap-4 translate-y-8">
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Pemain_panting_banjar.jpg/800px-Pemain_panting_banjar.jpg" label="Musician" delay={0.2} size="md" bgColor="bg-amber-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Madihin_Performer.jpg/800px-Madihin_Performer.jpg" label="Orator" delay={0.3} size="md" bgColor="bg-emerald-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Banjar_Tradition.jpg/800px-Banjar_Tradition.jpg" label="Customs" delay={0.4} size="md" bgColor="bg-violet-50" />
-                 </div>
-
-                 {/* COLUMN 3: Center (The Large One) */}
-                 <div className="flex flex-col gap-4 -translate-y-4 z-10">
+            {/* ── DYNAMIC ORBITAL PORTRAITS: The Living Cloud ── */}
+            {mounted && (
+              <div className="absolute inset-0 -z-10 pointer-events-none select-none overflow-visible">
+                {/* ── LEFT CLUSTER (Staggered & Varied) ── */}
+                <div className="absolute top-[15%] left-[5%] md:left-[10%] space-y-12">
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Pasar_terapung_Lok_Baintan_1.jpg&w=800" 
+                    label="Kearifan Lok Baintan" delay={0.2} size="md" 
+                    className="translate-x-8 animate-float" 
+                    style={{ animationDuration: "7s" }}
+                  />
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Pemain_panting_banjar.jpg&w=800" 
+                    label="Seni Panting" delay={0.4} size="sm" 
+                    className="-translate-x-4 animate-float"
+                    style={{ animationDuration: "5s", animationDelay: "1s" }}
+                  />
                    <PortraitCard 
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Nanang_Galuh_Banjarmasin_2013.jpg/800px-Nanang_Galuh_Banjarmasin_2013.jpg" 
-                      label="Nanang & Galuh" 
-                      delay={0}
-                      size="lg"
-                      bgColor="bg-white"
-                      className="shadow-2xl ring-8 ring-white"
-                   />
-                 </div>
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Sasirangan_Banjarmasin.jpg&w=800" 
+                    label="Kain Sasirangan" delay={0.6} size="md" 
+                    className="translate-x-12 animate-float"
+                    style={{ animationDuration: "8s", animationDelay: "2s" }}
+                  />
+                </div>
 
-                 {/* COLUMN 4: Inner Right */}
-                 <div className="flex flex-col gap-4 translate-y-8">
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Baksa_Kembang_Banjar.jpg/800px-Baksa_Kembang_Banjar.jpg" label="Dancer" delay={0.1} size="md" bgColor="bg-rose-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Galuh_Banjar_2011.jpg/800px-Galuh_Banjar_2011.jpg" label="Ambassador" delay={0.2} size="md" bgColor="bg-blue-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Sinoman_Hadrah.jpg/800px-Sinoman_Hadrah.jpg" label="Tradition" delay={0.3} size="md" bgColor="bg-amber-50" />
-                 </div>
+                {/* ── RIGHT CLUSTER (Staggered & Varied) ── */}
+                <div className="absolute top-[10%] right-[5%] md:right-[10%] space-y-16 text-right">
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Baksa_Kembang_Banjar.jpg&w=800" 
+                    label="Tari Baksa Kembang" delay={0.3} size="md" 
+                    className="-translate-x-12 animate-float"
+                    style={{ animationDuration: "6s", animationDelay: "0.5s" }}
+                  />
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Galuh_Banjar_2011.jpg&w=800" 
+                    label="Putri Banjar" delay={0.5} size="sm" 
+                    className="translate-x-6 animate-float"
+                    style={{ animationDuration: "9s", animationDelay: "1.5s" }}
+                  />
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Sinoman_Hadrah.jpg&w=800" 
+                    label="Sinoman Hadrah" delay={0.7} size="md" 
+                    className="-translate-x-8 animate-float"
+                    style={{ animationDuration: "7.5s", animationDelay: "2.5s" }}
+                  />
+                </div>
 
-                 {/* COLUMN 5: Outer Right (Faded) */}
-                 <div className="flex flex-col gap-4 -translate-y-12">
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Tari_Topeng_Banjar.jpg/800px-Tari_Topeng_Banjar.jpg" label="Mask Art" delay={0.5} size="sm" bgColor="bg-violet-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Pedagang_Pasar_Terapung.jpg/800px-Pedagang_Pasar_Terapung.jpg" label="Floating Market" delay={0.6} size="sm" bgColor="bg-emerald-50" />
-                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Tari_Japin_Sigam_2.jpg/800px-Tari_Japin_Sigam_2.jpg" label="Perform" delay={0.7} size="sm" bgColor="bg-rose-50" />
-                 </div>
-               </div>
-             )}
+                {/* ── BOTTOM FOUNDATION (The Arched Foundation) ── */}
+                <div className="absolute -bottom-20 md:-bottom-48 left-1/2 -translate-x-1/2 w-full max-w-5xl px-4 flex items-end justify-center gap-4 md:gap-10">
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Tari_Topeng_Banjar.jpg&w=800" 
+                    label="Tari Topeng" delay={0.8} size="sm" 
+                    className="animate-float mb-12"
+                    style={{ animationDuration: "6.5s" }}
+                  />
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Sabilal_Muhtadin_Interior.jpg&w=800" 
+                    label="Sabilal Muhtadin" delay={0.9} size="md" 
+                    className="animate-float mb-6"
+                    style={{ animationDuration: "8.5s", animationDelay: "1s" }}
+                  />
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Nanang_Galuh_Banjarmasin_2013.jpg&w=800" 
+                    label="Wajah Budaya" delay={0} size="lg" 
+                    className="shadow-premium-deep ring-8 ring-white animate-float z-10"
+                    style={{ animationDuration: "10s" }}
+                  />
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Pedagang_Pasar_Terapung.jpg&w=800" 
+                    label="Pasar Terapung" delay={1.0} size="md" 
+                    className="animate-float mb-6"
+                    style={{ animationDuration: "9.5s", animationDelay: "1.5s" }}
+                  />
+                  <PortraitCard 
+                    src="https://commons.wikimedia.org/w/thumb.php?f=Tari_Japin_Sigam_2.jpg&w=800" 
+                    label="Japin Sigam" delay={1.1} size="sm" 
+                    className="animate-float mb-12"
+                    style={{ animationDuration: "7.5s", animationDelay: "0.5s" }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
-        </section>
+        </header>
 
         {/* ── SECTION: SASIRANGAN (Motif Background) ── */}
         <section className="py-24 md:py-48 bg-stone-50 relative overflow-hidden">

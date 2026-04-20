@@ -28,10 +28,10 @@ export default function NavigationBar() {
   const isHomePage = pathname === "/";
   // When not scrolled: homepage = dark text, other pages = white text (dark hero)
   const navTextColor = isScrolled
-    ? "text-white/90"
-    : isHomePage
     ? "text-river-blue"
-    : "text-white/90";
+    : isHomePage
+    ? "text-white"
+    : "text-river-blue";
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -45,31 +45,31 @@ export default function NavigationBar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl transition-all duration-500",
         isScrolled 
-          ? "bg-river-blue/90 backdrop-blur-md py-3 shadow-lg" 
+          ? "bg-white/80 backdrop-blur-xl py-3 shadow-premium-soft rounded-b-[2rem] border-b border-x border-white/50" 
           : "bg-transparent py-5"
       )}
     >
-      <nav className="container mx-auto px-4 flex items-center">
+      <nav className="mx-auto px-8 flex items-center h-14">
         {/* Logo container */}
-        <div className="flex-1 basis-0 flex justify-start min-w-[200px]">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-warm-gold rounded-full flex items-center justify-center text-white font-heading text-xl font-bold group-hover:scale-110 transition-transform">
+        <div className="flex-1 basis-0 flex justify-start">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-warm-gold rounded-2xl flex items-center justify-center text-white font-[900] text-xl group-hover:scale-110 transition-transform shadow-premium-glow">
               B
             </div>
             <div className="flex flex-col">
               <span className={cn(
-                "font-heading font-bold text-xl leading-tight transition-colors",
-                isScrolled ? "text-white" : isHomePage ? "text-river-blue" : "text-white"
+                "font-[900] text-lg leading-none tracking-tight transition-colors",
+                isScrolled ? "text-river-blue" : isHomePage ? "text-white" : "text-river-blue"
               )}>
                 Banjarmasin
               </span>
               <span className={cn(
-                "text-[10px] uppercase tracking-[0.2em] transition-colors",
-                isScrolled ? "text-warm-gold-light" : isHomePage ? "text-river-blue/70" : "text-warm-gold/80"
+                "text-[8px] font-black uppercase tracking-[0.3em] transition-colors mt-1 opacity-60",
+                isScrolled ? "text-river-blue" : isHomePage ? "text-white" : "text-river-blue"
               )}>
-                Kota Seribu Sungai
+                Archive
               </span>
             </div>
           </Link>
@@ -87,14 +87,14 @@ export default function NavigationBar() {
               <Link
                 href={item.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-warm-gold flex items-center gap-1",
+                  "text-[13px] font-bold tracking-tight transition-all hover:text-warm-gold flex items-center gap-1",
                   pathname === item.href
                     ? "text-warm-gold"
-                    : navTextColor
+                    : isScrolled ? "text-river-blue" : isHomePage ? "text-white" : "text-river-blue"
                 )}
               >
                 {t(item.label)}
-                {item.children && <ChevronDown size={14} />}
+                {item.children && <ChevronDown size={12} />}
               </Link>
 
               {/* Dropdown */}
@@ -102,18 +102,30 @@ export default function NavigationBar() {
                 <AnimatePresence>
                   {activeDropdown === item.label.en && (
                     <motion.ul
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-lg shadow-xl py-2 overflow-hidden border border-river-blue/10"
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[400px] bg-white/95 backdrop-blur-xl rounded-[1.5rem] shadow-premium-deep p-4 grid grid-cols-1 gap-1 border border-white/50 z-[100]"
                     >
                       {item.children.map((child) => (
                         <li key={child.href}>
                           <Link
                             href={child.href}
-                            className="block px-4 py-2 text-sm text-river-blue hover:bg-river-blue/5 hover:text-warm-gold transition-colors"
+                            className="flex items-start gap-4 p-3 rounded-2xl hover:bg-river-blue/5 transition-all group/item"
                           >
-                            {t(child.label)}
+                            <div className="w-10 h-10 rounded-xl bg-warm-gold/10 flex items-center justify-center text-warm-gold group-hover/item:bg-warm-gold group-hover/item:text-white transition-all shrink-0">
+                              {child.icon ? <child.icon size={20} /> : <div className="w-5 h-5 bg-warm-gold/20 rounded-full" />}
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-sm font-black text-river-blue group-hover/item:text-warm-gold transition-colors">
+                                {t(child.label)}
+                              </span>
+                              {child.description && (
+                                <span className="text-[11px] text-river-blue/50 font-medium leading-snug mt-0.5">
+                                  {t(child.description)}
+                                </span>
+                              )}
+                            </div>
                           </Link>
                         </li>
                       ))}
@@ -130,27 +142,27 @@ export default function NavigationBar() {
           <button
             onClick={toggleLanguage}
             className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all",
+              "flex items-center gap-2 px-4 py-2 rounded-xl border text-[11px] font-bold tracking-tight transition-all",
               isScrolled
-                ? "border-white/20 text-white hover:bg-white/10"
+                ? "border-river-blue/10 text-river-blue hover:bg-river-blue/5"
                 : isHomePage
-                ? "border-river-blue/20 text-river-blue hover:bg-river-blue/5"
-                : "border-white/25 text-white/90 hover:bg-white/10"
+                ? "border-river-blue/10 text-river-blue hover:bg-river-blue/5"
+                : "border-white/20 text-white hover:bg-white/10"
             )}
             aria-label="Toggle Language"
           >
             <Globe size={14} />
-            {language.toUpperCase()}
+            {language}
           </button>
 
           <button
             className={cn(
               "xl:hidden p-2 rounded-md transition-colors",
               isScrolled
-                ? "text-white hover:bg-white/10"
-                : isHomePage
                 ? "text-river-blue hover:bg-river-blue/5"
-                : "text-white/90 hover:bg-white/10"
+                : isHomePage
+                ? "text-white hover:bg-white/10"
+                : "text-river-blue hover:bg-river-blue/5"
             )}
             onClick={() => setIsMobileMenuOpen(true)}
           >
