@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ── Colors ── */
+  --color-river-blue-50:  #E8EEF5;
+  --color-river-blue-100: #C5D4E6;
+  --color-river-blue:     #1B3A5C;
+  --color-river-blue-900: #0D1E30;
+
+  --color-warm-gold-light: #E8D08A;
+  --color-warm-gold:       #C9A84C;
+  --color-warm-gold-dark:  #9A7A2E;
+
+  --color-earth-terracotta-light: #C4713A;
+  --color-earth-terracotta:       #8B4513;
+  --color-earth-terracotta-dark:  #5C2D0A;
+
+  --color-clean-white: #F8F5F0;
+
+  /* ── Typography ── */
+  --font-heading: var(--font-playfair);
+  --font-body:    var(--font-jakarta);
+
+  /* ── Font Sizes ── */
+  --font-size-display-xl: clamp(3rem, 8vw, 5rem);
+  --font-size-display-lg: clamp(2.5rem, 6vw, 4rem);
+  --font-size-display-md: clamp(2rem, 4vw, 3rem);
+
+  /* ── Letter Spacing ── */
+  --letter-spacing-tightest: -0.02em;
+  --letter-spacing-tighter:  -0.01em;
+
+  /* ── Animations ── */
+  --animate-fade-in:  fadeIn  0.6s ease-out forwards;
+  --animate-slide-up: slideUp 0.6s ease-out forwards;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-clean-white);
+    --foreground: var(--color-river-blue-900);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply font-body antialiased;
+    /* Subtle selection color */
+    selection-color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-warm-gold) 30%, transparent);
+    color: var(--color-river-blue-900);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
+  }
+
+  /* Smooth focus rings */
+  :focus-visible {
+    outline: 2px solid var(--color-warm-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Utility: hide scrollbar but keep scroll ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
