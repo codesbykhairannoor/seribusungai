@@ -50,12 +50,12 @@ export const BentoCard = ({ title, description, image, className, badge, icon, d
           {icon && <div className="text-warm-gold opacity-40 group-hover:opacity-100 transition-opacity transform group-hover:rotate-12">{icon}</div>}
         </div>
 
-        <h3 className="text-lg font-heading font-black text-river-blue mb-3 leading-tight">
+        <h3 className="text-base md:text-lg font-heading font-black text-river-blue mb-3 leading-tight tracking-tighter">
           {t(title)}
         </h3>
         
         {description && (
-          <p className="text-river-blue/50 font-body text-[13px] leading-relaxed mt-auto">
+          <p className="text-river-blue/50 font-body text-[12px] leading-relaxed mt-auto">
             {t(description)}
           </p>
         )}

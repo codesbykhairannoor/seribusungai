@@ -114,8 +114,8 @@ export default function Home() {
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <span
-                        className="font-heading font-black text-warm-gold block drop-shadow-glow"
-                        style={{ fontSize: "clamp(2.8rem, 9vw, 8rem)", lineHeight: 1 }}
+                        className="font-heading font-black text-warm-gold block drop-shadow-glow tracking-tighter"
+                        style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)", lineHeight: 1 }}
                       >
                         {words[wordIdx]}
                       </span>
@@ -125,8 +125,8 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.5 }}
-                    className="font-heading font-black text-white leading-none"
-                    style={{ fontSize: "clamp(2.8rem, 9vw, 8rem)" }}
+                    className="font-heading font-black text-white leading-none tracking-tighter"
+                    style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)" }}
                   >
                     {t({ id: "Pesona Banjarmasin", en: "Banjarmasin" })}
                   </motion.h1>
@@ -136,7 +136,7 @@ export default function Home() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.7 }}
                   transition={{ duration: 1, delay: 1 }}
-                  className="text-white font-body text-sm md:text-lg text-center max-w-xl leading-relaxed mb-12 px-6"
+                  className="text-white font-body text-sm md:text-base text-center max-w-xl leading-relaxed mb-12 px-6"
                 >
                   {t({
                     id: "Rasakan harmoni kehidupan di atas air dan kekayaan budaya Banjar yang tak lekang oleh waktu.",
@@ -210,11 +210,11 @@ export default function Home() {
         {/* ── BENTO GRID — About + Stats ── */}
         <section id="tentang" className="py-20 md:py-28 bg-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <FadeInView className="mb-12">
-              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">
+            <FadeInView className="mb-12 text-center md:text-left">
+              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-[10px] mb-3 block">
                 {t({ id: "Tentang Banjarmasin", en: "About Banjarmasin" })}
               </span>
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue leading-[1.1] max-w-2xl">
+              <h2 className="text-3xl md:text-4xl font-heading font-black text-river-blue leading-[1.1] max-w-2xl tracking-tighter">
                 {t({ id: "Di Mana Sungai Adalah Nafas Kehidupan", en: "Where the River is the Breath of Life" })}
               </h2>
             </FadeInView>
@@ -238,8 +238,8 @@ export default function Home() {
                       <stat.icon size={20} />
                     </div>
                     <div>
-                      <div className="text-3xl font-heading font-bold text-river-blue">
-                        {stat.value}<span className="text-sm opacity-40 ml-1">{stat.suffix}</span>
+                      <div className="text-2xl font-heading font-black text-river-blue tracking-tighter">
+                        {stat.value}<span className="text-xs opacity-40 ml-1">{stat.suffix}</span>
                       </div>
                       <div className="text-[10px] uppercase font-bold text-warm-gold mt-1">
                         {t(stat.label)}
@@ -267,7 +267,7 @@ export default function Home() {
         <section className="py-20 md:py-28 bg-clean-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
             <FadeInView className="flex items-end justify-between mb-12 flex-wrap gap-4">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue">
+              <h2 className="text-3xl md:text-4xl font-heading font-black text-river-blue tracking-tighter">
                 {t({ id: "Temukan Tempat Favorit Anda", en: "Find Your Favorite Spot" })}
               </h2>
             </FadeInView>

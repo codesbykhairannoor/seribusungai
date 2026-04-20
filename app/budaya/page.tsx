@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import NavigationBar from "@/components/layout/NavigationBar";
 import Footer from "@/components/layout/Footer";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
@@ -9,13 +10,56 @@ import FadeInView from "@/components/animations/FadeInView";
 import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
 import Accordion from "@/components/ui/Accordion";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, useScroll, useTransform } from "framer-motion";
-import FloatingParticles from "@/components/ui/FloatingParticles";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { RiverWaves, TopoLines, EditorialNoise, MotifBackground } from "@/components/ui/SectionBackgrounds";
+import { History, Palette, Music, Landmark, Users, Heart, Camera, Map } from "lucide-react";
+
+// ── HEPER: PORTRAIT CARD ──
+const PortraitCard = ({ src, label, delay = 0, bgColor = "bg-rose-50", size = "md", className = "" }: any) => {
+  const sizeClasses = {
+    sm: "aspect-[4/5] w-20 md:w-28",
+    md: "aspect-[4/5] w-28 md:w-40",
+    lg: "aspect-[4/5] w-44 md:w-60",
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={cn("relative group cursor-pointer shrink-0 shrink-0 select-none", className)}
+    >
+      <div className={cn("relative rounded-[1rem] md:rounded-[2rem] overflow-hidden shadow-sm group-hover:shadow-2xl transition-all duration-700", bgColor, sizeClasses[size as keyof typeof sizeClasses])}>
+        <Image
+          src={src}
+          alt={label}
+          fill
+          unoptimized={true}
+          className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      </div>
+      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-white/95 backdrop-blur-md rounded-lg border border-white/10 shadow-lg opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all z-20 whitespace-nowrap">
+         <span className="text-[7px] font-black text-river-blue uppercase tracking-widest">{label}</span>
+      </div>
+    </motion.div>
+  );
+};
+
+function cn(...inputs: any[]) {
+  return inputs.filter(Boolean).join(" ");
+}
 
 export default function Budaya() {
   const { t } = useLanguage();
   const { scrollY } = useScroll();
   const imgScale = useTransform(scrollY, [0, 400], [1.08, 1]);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const culturalArts = [
     { id: "mamanda", title: { id: "Teater Mamanda", en: "Mamanda Theater" }, content: { id: "Seni teater tradisional suku Banjar yang bersifat improvisasi dengan tema kerajaan atau kehidupan sehari-hari yang disisipi kritik sosial dan humor.", en: "Traditional improvisational theater of the Banjar people with royal or daily life themes, interspersed with social criticism and humor." } },
@@ -44,158 +88,215 @@ export default function Budaya() {
     <main className="min-h-screen flex flex-col">
       <NavigationBar />
       <PageTransitionWrapper>
-
-        {/* ── HERO: Panoramic Split ── */}
-        <section className="relative h-screen min-h-[700px] flex flex-col lg:flex-row overflow-hidden bg-river-blue-900 border-b border-white/5">
-          {/* Vertical Split Sections */}
-          <div className="absolute inset-0 flex flex-col lg:flex-row z-0">
-            {[
-              { src: "https://images.unsplash.com/photo-1545620958-39e25042bc83?auto=format&fit=crop&q=80&w=1600", label: { id: "Seni & Tari", en: "Art & Dance" } },
-              { src: "https://images.unsplash.com/photo-1621360841013-c7683c659ec6?auto=format&fit=crop&q=80&w=1600", label: { id: "Tradisi & Sejarah", en: "Tradition & History" } },
-              { src: "https://images.unsplash.com/photo-1440778303588-435521a205bc?auto=format&fit=crop&q=80&w=1600", label: { id: "Kehidupan Sungai", en: "River Life" } }
-            ].map((section, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: i * 0.2 }}
-                className="relative flex-1 h-full min-h-[33vh] lg:min-h-0 overflow-hidden group border-b lg:border-b-0 lg:border-r border-white/10 last:border-0"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.8 }}
-                  className="w-full h-full relative"
-                >
-                  <img
-                    src={section.src}
-                    alt=""
-                    className="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000 brightness-[0.55] group-hover:brightness-[0.75]"
-                  />
-                </motion.div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-river-blue-900/95 via-river-blue-900/40 to-transparent opacity-90 group-hover:opacity-70 transition-opacity pointer-events-none" />
-                
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center pointer-events-none group-hover:scale-110 transition-transform duration-500 w-full px-4">
-                  <span className="text-white/50 text-[10px] font-bold uppercase tracking-[0.4em] block mb-2">{t(section.label)}</span>
-                  <div className="w-12 h-0.5 bg-warm-gold/60 mx-auto" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-b from-river-blue-900/60 via-transparent to-river-blue-900/90" />
-
-          {/* Centered Overlay Text */}
-          <div className="relative z-20 w-full flex flex-col items-center justify-center pointer-events-none select-none px-6 pt-44">
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-center"
-            >
-              <span className="inline-block text-warm-gold font-body font-bold uppercase tracking-[0.5em] text-[10px] md:text-xs mb-8 py-2 px-6 rounded-full border border-warm-gold/20 bg-warm-gold/5 backdrop-blur-md">
-                {t({ id: "Warisan Budaya Nusantara", en: "Indonesian Cultural Heritage" })}
-              </span>
-              
-              <h1 className="font-heading font-black text-white text-5xl md:text-7xl lg:text-8xl leading-none drop-shadow-2xl">
-                {t({ id: "Jiwa &", en: "Soul &" })} <br />
-                <span className="text-warm-gold">{t({ id: "Tradisi", en: "Tradition" })}</span>
-              </h1>
-              
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "200px" }}
-                transition={{ duration: 1, delay: 1.2 }}
-                className="h-1 bg-gradient-to-r from-transparent via-warm-gold to-transparent mx-auto mt-12"
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ── SASIRANGAN ── */}
-        <section className="py-20 md:py-28 bg-white overflow-hidden border-b border-river-blue/5">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-              <FadeInView direction="right" className="lg:col-span-5">
-                <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-5 block">{t({ id: "Kain Sasirangan", en: "Sasirangan Cloth" })}</span>
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue mb-8 leading-tight">{t({ id: "Tenunan Doa dalam Setiap Motif", en: "Weaving Prayers in Every Motif" })}</h2>
-                <p className="text-lg text-river-blue/65 font-body leading-relaxed mb-10">{t({ id: "Sasirangan bukan sekadar kain tradisional. Dahulu, kain ini digunakan sebagai media penyembuhan (batatamba) di mana setiap motifnya memiliki makna filosofis dan doa tertentu.", en: "Sasirangan is not just a traditional cloth. Historically, it was used as a healing medium (batatamba) where every motif has a specific philosophical meaning and prayer." })}</p>
-                <a href="/wisata/kampung-sasirangan" className="inline-flex items-center gap-2 text-warm-gold font-bold hover:underline">{t({ id: "Kunjungi Kampung Sasirangan →", en: "Visit Sasirangan Village →" })}</a>
-              </FadeInView>
-              <div className="lg:col-span-7">
-                <FadeInView direction="left" className="relative mb-4">
-                  <div className="relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] duration-700">
-                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Peserta_Karnaval_FBPT_2018_017.JPG" alt="Sasirangan" className="w-full h-full object-cover"/>
-                    <div className="absolute inset-0 bg-gradient-to-t from-river-blue/40 to-transparent"/>
-                  </div>
-                </FadeInView>
-                <StaggerContainer className="grid grid-cols-3 gap-3" staggerDelay={0.07}>
-                  {motifs.map((motif, i) => (
-                    <StaggerItem key={i}>
-                      <div className={`${motif.color} rounded-2xl p-4 text-center hover:scale-105 transition-transform cursor-default shadow-sm hover:shadow-md`}>
-                        <div className="font-bold text-xs md:text-sm mb-1">{motif.name}</div>
-                        <div className="text-[10px] opacity-70 uppercase tracking-widest">{t(motif.desc)}</div>
-                      </div>
-                    </StaggerItem>
-                  ))}
-                </StaggerContainer>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── ARTS ── */}
-        <section className="py-20 md:py-28 bg-clean-white overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              <FadeInView direction="right">
-                <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-5 block">{t({ id: "Seni & Pertunjukan", en: "Arts & Performances" })}</span>
-                <h2 className="text-4xl font-heading font-bold text-river-blue mb-8 leading-tight">{t({ id: "Ekspresi Jiwa Banjar", en: "Expression of the Banjar Soul" })}</h2>
-                <div className="relative h-80">
-                  <div className="absolute top-0 left-0 w-3/4 aspect-video rounded-2xl overflow-hidden shadow-xl group">
-                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tari_Japin_Sigam_1.jpg" alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"/>
-                  </div>
-                  <div className="absolute bottom-0 right-0 w-2/3 aspect-video rounded-2xl overflow-hidden shadow-xl border-4 border-white group">
-                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sanggar_Seni_Galuh_Banjar_2.jpg" alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"/>
-                  </div>
-                </div>
-              </FadeInView>
-              <FadeInView direction="left" className="lg:pt-16">
-                <Accordion items={culturalArts}/>
-              </FadeInView>
-            </div>
-          </div>
-        </section>
-
-        {/* ── ARCHITECTURE — full-bleed ── */}
-        <section className="relative overflow-hidden">
-          <div className="relative h-[60vh] md:h-[70vh]">
-            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rumah_Adat_Bubungan_Tinggi_Banjarmasin.jpg" alt="Rumah Bubungan Tinggi" className="w-full h-full object-cover"/>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-clean-white"/>
-            <div className="absolute inset-0 bg-gradient-to-r from-river-blue/30 to-transparent"/>
-            <div className="absolute top-8 left-8 md:top-16 lg:left-24">
-              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Arsitektur", en: "Architecture" })}</span>
-              <h2 className="text-white font-heading font-bold text-3xl md:text-5xl max-w-lg leading-tight drop-shadow-lg">{t({ id: "Rumah Banjar Bubungan Tinggi", en: "Bubungan Tinggi Banjar House" })}</h2>
-            </div>
-          </div>
-          <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 -mt-24 pb-20">
+        {/* ── HERO: High Density "Crowd" Layout ── */}
+        <section className="relative flex flex-col items-center pt-20 pb-16 overflow-hidden bg-white">
+          <div className="relative z-20 text-center max-w-2xl px-6 mb-12">
             <FadeInView>
-              <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-8 border border-river-blue/5">
-                <div className="md:col-span-2">
-                  <p className="text-lg text-river-blue/65 font-body leading-relaxed mb-8">{t({ id: "Arsitektur tradisional Banjar dicirikan oleh struktur panggung yang adaptif terhadap lingkungan rawa dan sungai. Rumah Bubungan Tinggi merupakan kasta tertinggi yang dahulu hanya didiami oleh kaum bangsawan.", en: "Traditional Banjar architecture is characterized by stilted structures adaptive to swamp and river environments. The Bubungan Tinggi house is the highest caste, formerly only occupied by royalty." })}</p>
-                </div>
-                <div className="space-y-4">
-                  {[{ id: "Atap tumpang melambangkan hubungan vertikal dengan Tuhan.", en: "Layered roofs symbolize vertical contact with God." }, { id: "Ukiran ornamen dari flora lokal Kalimantan.", en: "Ornamental carvings from local Kalimantan flora." }, { id: "Struktur panggung adaptasi terhadap banjir.", en: "Stilted structure adapts to floods." }].map((fact, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-warm-gold/10 flex items-center justify-center text-warm-gold text-xs font-bold shrink-0 mt-0.5">{i+1}</div>
-                      <p className="text-sm text-river-blue/65 font-body">{t(fact)}</p>
-                    </div>
-                  ))}
-                </div>
+              <span className="inline-flex items-center gap-2 text-violet-600 font-bold uppercase tracking-[0.4em] text-[8px] mb-4 py-1 px-3 rounded-full bg-violet-50 border border-violet-100/50">
+                <Heart size={8} className="fill-current" />
+                {t({ id: "BORNEO CULTURAL ARCHIVE", en: "BORNEO CULTURAL ARCHIVE" })}
+              </span>
+              <h1 className="font-heading font-black text-river-blue text-4xl md:text-6xl tracking-tightest leading-[0.95] mb-6">
+                Kami Adalah <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-river-blue via-warm-gold to-river-blue bg-[length:200%_auto] animate-gradient-flow">
+                   Banjarmasin.
+                </span>
+              </h1>
+              <p className="text-river-blue/40 font-body text-xs md:text-sm leading-relaxed max-w-lg mx-auto mb-8">
+                {t({ 
+                  id: "Konvergensi antara keluhuran budaya sungai, ketajaman seni, dan jiwa yang ramah. Inilah wajah peradaban kami.", 
+                  en: "The convergence of river cultural nobility, artistic sharpness, and friendly souls. This is the face of our civilization." 
+                })}
+              </p>
+              <div className="flex items-center justify-center">
+                 <button className="px-10 py-4 bg-river-blue text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-river-blue-900 transition-all shadow-2xl shadow-river-blue/20 transform hover:scale-105">
+                    {t({ id: "Jelajahi Warisan", en: "Explore Heritage" })}
+                 </button>
               </div>
             </FadeInView>
+          </div>
+
+          {/* HIGH DENSITY 13+ PORTRAIT GRID WITH WAVE STAGGERING */}
+          <div className="relative w-full max-w-7xl mx-auto px-4 overflow-hidden">
+             {/* Edge Masking Effect */}
+             <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-r from-white via-transparent to-white lg:from-white/80 lg:to-white/80" />
+             
+             {mounted && (
+               <div className="flex items-center justify-center gap-3 md:gap-5 min-h-[350px] md:min-h-[500px]">
+                 
+                 {/* COLUMN 1: Outer Left (Faded) */}
+                 <div className="flex flex-col gap-4 -translate-y-12">
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Sasirangan_Banjarmasin.JPG/800px-Sasirangan_Banjarmasin.JPG" label="Workshop" delay={0.4} size="sm" bgColor="bg-emerald-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Pasar_Terapung_Lok_Baintan_1.jpg/800px-Pasar_Terapung_Lok_Baintan_1.jpg" label="Merchant" delay={0.5} size="sm" bgColor="bg-blue-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Sabilal_Muhtadin_Interior.jpg/800px-Sabilal_Muhtadin_Interior.jpg" label="Archive" delay={0.6} size="sm" bgColor="bg-rose-50" />
+                 </div>
+
+                 {/* COLUMN 2: Inner Left */}
+                 <div className="flex flex-col gap-4 translate-y-8">
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Pemain_panting_banjar.jpg/800px-Pemain_panting_banjar.jpg" label="Musician" delay={0.2} size="md" bgColor="bg-amber-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Madihin_Performer.jpg/800px-Madihin_Performer.jpg" label="Orator" delay={0.3} size="md" bgColor="bg-emerald-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Banjar_Tradition.jpg/800px-Banjar_Tradition.jpg" label="Customs" delay={0.4} size="md" bgColor="bg-violet-50" />
+                 </div>
+
+                 {/* COLUMN 3: Center (The Large One) */}
+                 <div className="flex flex-col gap-4 -translate-y-4 z-10">
+                   <PortraitCard 
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Nanang_Galuh_Banjarmasin_2013.jpg/800px-Nanang_Galuh_Banjarmasin_2013.jpg" 
+                      label="Nanang & Galuh" 
+                      delay={0}
+                      size="lg"
+                      bgColor="bg-white"
+                      className="shadow-2xl ring-8 ring-white"
+                   />
+                 </div>
+
+                 {/* COLUMN 4: Inner Right */}
+                 <div className="flex flex-col gap-4 translate-y-8">
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Baksa_Kembang_Banjar.jpg/800px-Baksa_Kembang_Banjar.jpg" label="Dancer" delay={0.1} size="md" bgColor="bg-rose-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Galuh_Banjar_2011.jpg/800px-Galuh_Banjar_2011.jpg" label="Ambassador" delay={0.2} size="md" bgColor="bg-blue-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Sinoman_Hadrah.jpg/800px-Sinoman_Hadrah.jpg" label="Tradition" delay={0.3} size="md" bgColor="bg-amber-50" />
+                 </div>
+
+                 {/* COLUMN 5: Outer Right (Faded) */}
+                 <div className="flex flex-col gap-4 -translate-y-12">
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Tari_Topeng_Banjar.jpg/800px-Tari_Topeng_Banjar.jpg" label="Mask Art" delay={0.5} size="sm" bgColor="bg-violet-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Pedagang_Pasar_Terapung.jpg/800px-Pedagang_Pasar_Terapung.jpg" label="Floating Market" delay={0.6} size="sm" bgColor="bg-emerald-50" />
+                   <PortraitCard src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Tari_Japin_Sigam_2.jpg/800px-Tari_Japin_Sigam_2.jpg" label="Perform" delay={0.7} size="sm" bgColor="bg-rose-50" />
+                 </div>
+               </div>
+             )}
+          </div>
+        </section>
+
+        {/* ── SECTION: SASIRANGAN (Motif Background) ── */}
+        <section className="py-24 md:py-48 bg-stone-50 relative overflow-hidden">
+          <MotifBackground variant="sasirangan" opacity={0.03} />
+          <div className="max-w-6xl mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+              <FadeInView direction="right" className="lg:col-span-5">
+                <span className="text-warm-gold font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">The Living Canvas</span>
+                <h2 className="text-3xl md:text-5xl font-heading font-black text-river-blue mb-8 leading-none tracking-tighter">Goresan <span className="text-warm-gold italic">Doa.</span></h2>
+                <p className="text-river-blue/50 font-body text-sm leading-relaxed mb-10">
+                   {t({ 
+                     id: "Sasirangan bukan sekadar kain. Setiap lipatan dan teknik ikat celupnya adalah doa visual yang diwariskan turun-temurun untuk kesehatan dan kemuliaan.", 
+                     en: "Sasirangan is not just a cloth. Every fold and tie-dye technique is a visual prayer passed down for health and glory." 
+                   })}
+                </p>
+                <div className="flex items-center gap-4">
+                   <div className="w-12 h-12 rounded-2xl bg-warm-gold/10 flex items-center justify-center text-warm-gold">
+                      <Palette size={20} />
+                   </div>
+                   <span className="text-[11px] font-black uppercase tracking-widest text-river-blue">100% Hand-Dyed Traditional Technique</span>
+                </div>
+              </FadeInView>
+              <div className="lg:col-span-7">
+                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {motifs.map((motif, i) => (
+                      <motion.div
+                        key={i}
+                        whileHover={{ y: -5 }}
+                        className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-river-blue/5 flex flex-col items-center text-center group"
+                      >
+                         <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110", motif.color)}>
+                            <div className="font-black text-lg">{motif.name[0]}</div>
+                         </div>
+                         <h3 className="text-[13px] font-black uppercase tracking-widest text-river-blue mb-2">{motif.name}</h3>
+                         <span className="text-[10px] font-black text-river-blue/30 uppercase tracking-[0.2em]">{t(motif.desc)}</span>
+                      </motion.div>
+                    ))}
+                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SECTION: ARTS (River Waves) ── */}
+        <section className="py-24 md:py-48 bg-white relative overflow-hidden">
+          <RiverWaves />
+          <div className="max-w-6xl mx-auto px-6 relative z-10 text-center mb-24">
+            <FadeInView>
+              <span className="text-river-blue/40 font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Performing Arts</span>
+              <h2 className="text-3xl md:text-5xl font-heading font-black text-river-blue tracking-tighter">Ekspresi <span className="text-warm-gold">Jiwa.</span></h2>
+            </FadeInView>
+          </div>
+
+          <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
+             <div className="lg:col-span-5">
+                <div className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden group">
+                   <Image 
+                      src="https://commons.wikimedia.org/w/thumb.php?f=Tari_Japin_Sigam_1.jpg&w=1200" 
+                      alt="Art" 
+                      fill 
+                      unoptimized={true}
+                      className="object-cover group-hover:scale-110 transition-transform duration-1000"
+                   />
+                   <div className="absolute inset-0 bg-gradient-to-t from-river-blue/80 via-transparent to-transparent opacity-60" />
+                   <div className="absolute bottom-12 left-12">
+                      <div className="w-14 h-14 rounded-2xl bg-warm-gold text-white flex items-center justify-center shadow-2xl mb-4">
+                         <Music size={24} />
+                      </div>
+                      <span className="text-white text-[10px] font-black uppercase tracking-[0.4em]">Ancient Melodies</span>
+                   </div>
+                </div>
+             </div>
+             <div className="lg:col-span-7">
+                <div className="space-y-6">
+                   {culturalArts.map((art, idx) => (
+                     <motion.div 
+                        key={idx}
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="p-8 rounded-[2.5rem] bg-river-blue/5 border border-river-blue/5 hover:bg-river-blue/10 transition-all group"
+                     >
+                        <h3 className="text-xl font-heading font-black text-river-blue mb-4 group-hover:text-warm-gold transition-colors">{t(art.title)}</h3>
+                        <p className="text-river-blue/50 text-sm leading-relaxed">{t(art.content)}</p>
+                     </motion.div>
+                   ))}
+                </div>
+             </div>
+          </div>
+        </section>
+
+        {/* ── SECTION: ARCHITECTURE (Dark & Topo) ── */}
+        <section className="py-24 md:py-48 bg-[#0a0f1a] text-white relative overflow-hidden">
+          <TopoLines />
+          <div className="max-w-6xl mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+               <div className="relative aspect-[16/10] rounded-[3.5rem] overflow-hidden shadow-2xl">
+                  <Image 
+                     src="https://commons.wikimedia.org/w/thumb.php?f=Rumah_Adat_Bubungan_Tinggi_Banjarmasin.jpg&w=1200" 
+                     alt="Architecture" 
+                     fill 
+                     unoptimized={true}
+                     className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-river-blue/20 mix-blend-overlay" />
+               </div>
+               <div>
+                  <FadeInView direction="left">
+                    <span className="text-warm-gold font-black uppercase tracking-[0.4em] text-[10px] mb-8 block">Sacred Structure</span>
+                    <h2 className="text-3xl md:text-5xl font-heading font-black text-white mb-8 leading-none tracking-tighter">Rumah <br /><span className="text-warm-gold italic">Bubungan Tinggi.</span></h2>
+                    <p className="text-white/40 font-body text-sm leading-relaxed mb-10">
+                       {t({ 
+                         id: "Puncak estetika arsitektur panggung yang didesain adaptif terhadap pasang surut sungai. Setiap ukiran ornamennya menyimpan filosofi ketuhanan dan harmoni alam.", 
+                         en: "The pinnacle of stilted architecture designed to adapt to river tides. Each ornamental carving stores philosophies of divinity and natural harmony." 
+                       })}
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                       <div className="p-6 rounded-[2rem] bg-white/5 border border-white/5">
+                          <div className="text-warm-gold font-black text-xs uppercase tracking-widest mb-2">Structure</div>
+                          <div className="text-[13px] font-black">Stilted Deck</div>
+                       </div>
+                       <div className="p-6 rounded-[2rem] bg-white/5 border border-white/5">
+                          <div className="text-warm-gold font-black text-xs uppercase tracking-widest mb-2">Status</div>
+                          <div className="text-[13px] font-black">Royal Heritage</div>
+                       </div>
+                    </div>
+                  </FadeInView>
+               </div>
+            </div>
           </div>
         </section>
 

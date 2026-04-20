@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Outfit, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AnimationProvider } from "@/contexts/AnimationContext";
 import GlobalAnimations from "@/components/ui/GlobalAnimations";
 
-const outfit = Outfit({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-outfit",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-jakarta",
   display: "swap",
 });
 
@@ -33,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${outfit.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="id" className={`${jakarta.variable}`} suppressHydrationWarning>
       <body className="min-h-screen selection:bg-warm-gold selection:text-white font-body antialiased">
         <LanguageProvider>
           <AnimationProvider>

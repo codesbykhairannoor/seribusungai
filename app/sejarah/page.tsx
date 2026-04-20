@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import NavigationBar from "@/components/layout/NavigationBar";
 import Footer from "@/components/layout/Footer";
@@ -35,6 +35,19 @@ const HISTORY_IMAGES = [
 export default function Sejarah() {
   const { t } = useLanguage();
   const [isHeroLoaded, setIsHeroLoaded] = useState(false);
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  // ── Client-side Mounting ──
+  useEffect(() => {
+    setMounted(true);
+    
+    const timer = setInterval(() => {
+      setCurrentImgIndex((prev) => (prev + 1) % HISTORY_IMAGES.length);
+    }, 6000);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   const timelineEvents = [
     { 
@@ -80,11 +93,11 @@ export default function Sejarah() {
               <span className="text-warm-gold font-black uppercase tracking-[0.5em] text-[10px] mb-8 block">
                 Historical Archive
               </span>
-              <h1 className="text-white font-heading font-black text-5xl md:text-6xl leading-tight mb-8">
+              <h1 className="text-white font-heading font-black text-4xl md:text-5xl tracking-tighter leading-[0.95] mb-8">
                 Menembus <br />
                 <span className="text-warm-gold italic">Waktu.</span>
               </h1>
-              <p className="text-white/40 font-body text-base leading-relaxed max-w-sm mb-10">
+              <p className="text-white/40 font-body text-sm leading-relaxed max-w-sm mb-10">
                 {t({ 
                   id: "Saksi bisu evolusi peradaban sungai dari pusat kesultanan maritim hingga menjadi pusat inovasi digital.", 
                   en: "A silent witness to the evolution of river civilization from a maritime sultanate to a center of digital innovation." 
@@ -92,28 +105,41 @@ export default function Sejarah() {
               </p>
               <div className="flex items-center gap-12">
                  <div>
-                    <div className="text-white font-heading font-black text-3xl mb-1">1526</div>
-                    <div className="text-white/20 text-[9px] uppercase font-black tracking-widest">Founded</div>
+                    <div className="text-white font-heading font-black text-2xl mb-1">1526</div>
+                    <div className="text-white/20 text-[8px] uppercase font-black tracking-widest">Founded</div>
                  </div>
                  <div className="w-px h-10 bg-white/10" />
                  <div>
-                    <div className="text-white font-heading font-black text-3xl mb-1">500+</div>
-                    <div className="text-white/20 text-[9px] uppercase font-black tracking-widest">Years of Glory</div>
+                    <div className="text-white font-heading font-black text-2xl mb-1">500+</div>
+                    <div className="text-white/20 text-[8px] uppercase font-black tracking-widest">Years of Glory</div>
                  </div>
               </div>
             </FadeInView>
           </div>
 
           <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[55%]">
-             <div className="relative h-full w-full">
-                <Image 
-                   src="https://commons.wikimedia.org/w/thumb.php?f=Masjid_Jami_Banjarmasin.jpg&w=1600" 
-                   alt="Heritage" 
-                   fill 
-                   unoptimized={true}
-                   className="object-cover grayscale-[0.5] contrast-[1.1] brightness-[0.4]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a] via-transparent to-transparent" />
+             <div className="relative h-full w-full overflow-hidden">
+                {mounted && (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentImgIndex}
+                      initial={{ opacity: 0, scale: 1.1 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 1.5, ease: "easeInOut" }}
+                      className="absolute inset-0"
+                    >
+                      <Image 
+                         src={HISTORY_IMAGES[currentImgIndex]} 
+                         alt="Heritage Background" 
+                         fill 
+                         unoptimized={true}
+                         className="object-cover grayscale-[0.5] contrast-[1.1] brightness-[0.4]"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1a] via-transparent to-transparent z-10" />
              </div>
           </div>
         </section>
@@ -124,8 +150,8 @@ export default function Sejarah() {
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             <div className="text-center mb-20">
               <FadeInView>
-                <span className="text-river-blue/40 font-black uppercase tracking-[0.3em] text-[9px] mb-3 block">The Beginning</span>
-                <h2 className="text-3xl md:text-5xl font-heading font-black text-river-blue mb-4">Puncak Kejayaan <span className="text-warm-gold">1526</span></h2>
+                <span className="text-river-blue/40 font-black uppercase tracking-[0.3em] text-[8px] mb-3 block">The Beginning</span>
+                <h2 className="text-3xl md:text-4xl font-heading font-black text-river-blue mb-4 tracking-tighter">Puncak Kejayaan <span className="text-warm-gold">1526</span></h2>
               </FadeInView>
             </div>
 
@@ -188,8 +214,8 @@ export default function Sejarah() {
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             <div className="text-center mb-24">
                <FadeInView>
-                  <span className="text-warm-gold font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">The Archives</span>
-                  <h2 className="text-4xl md:text-6xl font-heading font-black text-white">Galeri <span className="text-warm-gold">Benda Pusaka</span></h2>
+                  <span className="text-warm-gold font-black uppercase tracking-[0.4em] text-[9px] mb-4 block">The Archives</span>
+                  <h2 className="text-3xl md:text-5xl font-heading font-black text-white tracking-tighter">Galeri <span className="text-warm-gold">Benda Pusaka</span></h2>
                </FadeInView>
             </div>
 

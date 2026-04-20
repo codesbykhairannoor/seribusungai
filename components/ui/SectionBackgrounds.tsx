@@ -102,3 +102,24 @@ export const EditorialNoise = () => (
     </svg>
   </div>
 );
+
+/**
+ * 🧩 MotifBackground
+ * versatile background pattern component for cultural sections.
+ */
+export const MotifBackground = ({ variant = "sasirangan", opacity = 0.05 }: { variant?: string, opacity?: number }) => (
+  <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ opacity }}>
+    {variant === "sasirangan" && (
+      <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="sasirangan-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+             <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.5" />
+             <circle cx="50" cy="50" r="5" fill="currentColor" fillOpacity="0.3" />
+             <path d="M0 50 H10 M90 50 H100 M50 0 V10 M50 90 V100" stroke="currentColor" strokeWidth="1" strokeOpacity="0.2" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#sasirangan-pattern)" />
+      </svg>
+    )}
+  </div>
+);

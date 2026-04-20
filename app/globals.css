@@ -19,17 +19,18 @@
   --color-clean-white: #F8F5F0;
 
   /* ── Typography ── */
-  --font-heading: var(--font-outfit);
-  --font-body:    var(--font-inter);
+  --font-heading: var(--font-jakarta);
+  --font-body:    var(--font-jakarta);
 
-  /* ── Font Sizes (Scaled Down) ── */
-  --font-size-display-xl: clamp(2.5rem, 7vw, 4rem);
-  --font-size-display-lg: clamp(2.2rem, 5.5vw, 3.5rem);
-  --font-size-display-md: clamp(1.8rem, 4vw, 2.5rem);
+  /* ── Font Sizes (Mini & Sharp Scale) ── */
+  --font-size-display-xl: clamp(2rem, 6vw, 3.5rem);
+  --font-size-display-lg: clamp(1.8rem, 5vw, 3rem);
+  --font-size-display-md: clamp(1.5rem, 4vw, 2.2rem);
 
   /* ── Letter Spacing ── */
-  --letter-spacing-tightest: -0.02em;
-  --letter-spacing-tighter:  -0.01em;
+  --letter-spacing-tightest: -0.04em;
+  --letter-spacing-tighter:  -0.02em;
+  --letter-spacing-tight:    -0.01em;
 
   /* ── Animations ── */
   --animate-fade-in:  fadeIn  0.6s ease-out forwards;

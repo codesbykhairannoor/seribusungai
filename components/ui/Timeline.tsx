@@ -38,7 +38,7 @@ export default function Timeline({ events }: HistoryHubProps) {
               activeIndex === idx ? "opacity-100" : "opacity-30 hover:opacity-100"
             }`}
           >
-            <span className={`text-2xl md:text-4xl font-heading font-black ${
+            <span className={`text-xl md:text-2xl font-heading font-black tracking-tighter ${
               activeIndex === idx ? "text-river-blue" : "text-river-blue/40"
             }`}>
               {event.year}
@@ -91,22 +91,22 @@ export default function Timeline({ events }: HistoryHubProps) {
               <span className="text-warm-gold font-black uppercase tracking-[0.5em] text-[9px] mb-6 block">
                 {activeEvent.year} Era
               </span>
-              <h2 className="text-4xl md:text-5xl font-heading font-black text-river-blue mb-8 leading-[1.1]">
+              <h2 className="text-3xl md:text-4xl font-heading font-black text-river-blue mb-8 leading-[1.1] tracking-tighter">
                 {t(activeEvent.title)}
               </h2>
-              <p className="text-river-blue/60 font-body text-base md:text-lg leading-relaxed mb-10">
+              <p className="text-river-blue/60 font-body text-sm leading-relaxed mb-10">
                 {t(activeEvent.description)}
               </p>
 
               <div className="grid grid-cols-2 gap-8 text-river-blue">
-                <div className="p-8 rounded-[2.5rem] bg-river-blue/5 border border-river-blue/5">
-                   <div className="font-heading font-black text-xs uppercase tracking-widest text-warm-gold mb-3">Key Figure</div>
-                   <div className="font-heading font-black text-lg">Sultan / Hero</div>
-                </div>
-                <div className="p-8 rounded-[2.5rem] bg-river-blue/5 border border-river-blue/5">
-                   <div className="font-heading font-black text-xs uppercase tracking-widest text-warm-gold mb-3">Location</div>
-                   <div className="font-heading font-black text-lg">Delta River</div>
-                </div>
+                 <div className="p-8 rounded-[2.5rem] bg-river-blue/5 border border-river-blue/5">
+                    <div className="font-heading font-black text-[10px] uppercase tracking-widest text-warm-gold mb-3">Key Figure</div>
+                    <div className="font-heading font-black text-base">Sultan / Hero</div>
+                 </div>
+                 <div className="p-8 rounded-[2.5rem] bg-river-blue/5 border border-river-blue/5">
+                    <div className="font-heading font-black text-[10px] uppercase tracking-widest text-warm-gold mb-3">Location</div>
+                    <div className="font-heading font-black text-base">Delta River</div>
+                 </div>
               </div>
             </div>
           </motion.div>
