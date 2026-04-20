@@ -5,7 +5,7 @@ import Link from "next/link";
 import NavigationBar from "@/components/layout/NavigationBar";
 import Footer from "@/components/layout/Footer";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
-import VideoHero from "@/components/ui/VideoHero";
+import ImageHero from "@/components/ui/ImageHero";
 import DestinationCard from "@/components/ui/DestinationCard";
 import FadeInView from "@/components/animations/FadeInView";
 import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
@@ -29,10 +29,10 @@ export default function Home() {
       <NavigationBar />
       <PageTransitionWrapper>
 
-        {/* ── VIDEO HERO — Knockout Text Effect ── */}
-        <VideoHero
-          videoSrc="/videos/River_scene_with_202604201050.mp4"
-          posterSrc="https://commons.wikimedia.org/wiki/Special:FilePath/Sungai_Martapura_di_Pagi_Hari_(1).jpg"
+        {/* ── IMAGE HERO — Menara Pandang Siring ── */}
+        <ImageHero
+          imageSrc="https://commons.wikimedia.org/wiki/Special:FilePath/Menara_Pandang_Banjarmasin_001.jpg"
+          imageAlt="Menara Pandang Siring Banjarmasin"
         />
 
         {/* ── BENTO GRID — About + Stats ── */}

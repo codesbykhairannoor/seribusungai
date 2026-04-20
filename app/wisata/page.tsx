@@ -62,6 +62,7 @@ export default function Wisata() {
 
         <HeroSection
           variant="parallax"
+          pageKey="wisata"
           backgroundSrc="https://commons.wikimedia.org/wiki/Special:FilePath/Pasar_Terapung_di_Kota_Banjarmasin.jpg"
           backgroundAlt={{ id: "Wisata Banjarmasin", en: "Banjarmasin Tourism" }}
           eyebrow={{ id: "Destinasi Wisata", en: "Tourism Destinations" }}

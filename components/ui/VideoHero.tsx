@@ -71,7 +71,7 @@ export default function VideoHero({ videoSrc, posterSrc }: VideoHeroProps) {
             backgroundClip: "text",
             WebkitTextFillColor: "transparent",
             color: "transparent",
-            backgroundImage: "linear-gradient(180deg, #ffffff 0%, #E8D08A 50%, #ffffff 100%)",
+            backgroundImage: "linear-gradient(180deg, #ffffff 0%, #F5C518 50%, #ffffff 100%)",
             fontFamily: "var(--font-playfair), Georgia, serif",
             fontWeight: 900,
             lineHeight: 1,

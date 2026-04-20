@@ -76,6 +76,7 @@ export default function DestinationDetail({ params }: { params: Promise<{ slug: 
       <PageTransitionWrapper>
         <HeroSection
           variant="parallax"
+          pageKey="wisata"
           backgroundSrc={destination.heroImage.src}
           backgroundAlt={destination.heroImage.alt}
           headline={destination.name}

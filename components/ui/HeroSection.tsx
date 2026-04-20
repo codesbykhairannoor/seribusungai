@@ -8,10 +8,30 @@ import { BilingualText } from "@/content/types";
 import { ChevronDown } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import FloatingParticles from "./FloatingParticles";
+import WaterRippleHero from "./WaterRippleHero";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+// Per-page ambient config — counts reduced for performance
+const AMBIENT_CONFIG: Record<string, {
+  particles: boolean;
+  ripple: boolean;
+  particleColors?: string[];
+  particleCount?: number;
+}> = {
+  default:        { particles: true,  ripple: true,  particleColors: ["rgba(245,197,24,0.5)", "rgba(255,255,255,0.3)"], particleCount: 12 },
+  sejarah:        { particles: true,  ripple: false, particleColors: ["rgba(245,197,24,0.3)", "rgba(255,255,255,0.15)"], particleCount: 10 },
+  budaya:         { particles: true,  ripple: false, particleColors: ["rgba(245,197,24,0.55)", "rgba(196,113,58,0.35)"], particleCount: 12 },
+  kuliner:        { particles: true,  ripple: false, particleColors: ["rgba(255,165,0,0.4)", "rgba(245,197,24,0.4)"], particleCount: 10 },
+  wisata:         { particles: true,  ripple: true,  particleColors: ["rgba(245,197,24,0.5)", "rgba(255,255,255,0.3)"], particleCount: 12 },
+  galeri:         { particles: true,  ripple: false, particleColors: ["rgba(255,255,255,0.4)", "rgba(245,197,24,0.3)"], particleCount: 10 },
+  "visi-digital": { particles: true,  ripple: false, particleColors: ["rgba(100,200,255,0.3)", "rgba(245,197,24,0.3)"], particleCount: 12 },
+  panduan:        { particles: true,  ripple: false, particleColors: ["rgba(245,197,24,0.4)", "rgba(255,255,255,0.25)"], particleCount: 10 },
+  kontak:         { particles: true,  ripple: true,  particleColors: ["rgba(245,197,24,0.4)", "rgba(255,255,255,0.3)"], particleCount: 10 },
+};
 
 interface HeroSectionProps {
   variant?: "video" | "parallax" | "split" | "cinematic";
@@ -28,6 +48,8 @@ interface HeroSectionProps {
   parallaxFactor?: number;
   children?: React.ReactNode;
   eyebrow?: BilingualText;
+  /** Pass page key to get page-specific ambient animations */
+  pageKey?: string;
 }
 
 export default function HeroSection({
@@ -41,11 +63,14 @@ export default function HeroSection({
   parallaxFactor = 0.35,
   children,
   eyebrow,
+  pageKey = "default",
 }: HeroSectionProps) {
   const { t } = useLanguage();
   const { reducedMotion } = useAnimationConfig();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 600], [0, 600 * parallaxFactor]);
+
+  const ambient = AMBIENT_CONFIG[pageKey] ?? AMBIENT_CONFIG.default;
 
   const textVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -77,19 +102,31 @@ export default function HeroSection({
           </motion.div>
         )}
 
-        {/* Multi-layer overlay for depth */}
+        {/* Multi-layer overlay */}
         <div className="absolute inset-0 bg-river-blue" style={{ opacity: overlayOpacity }} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
       </div>
 
-      {/* Decorative grain texture */}
+      {/* Grain texture */}
       <div
         className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
       />
+
+      {/* ── AMBIENT: Water ripple ── */}
+      {!reducedMotion && ambient.ripple && <WaterRippleHero />}
+
+      {/* ── AMBIENT: Floating particles ── */}
+      {!reducedMotion && ambient.particles && (
+        <FloatingParticles
+          count={ambient.particleCount ?? 20}
+          colors={ambient.particleColors}
+          className="z-[2]"
+        />
+      )}
 
       {/* Content Layer */}
       <div className="container relative z-10 mx-auto px-4 text-center text-white">
@@ -169,3 +206,5 @@ export default function HeroSection({
     </section>
   );
 }
+
+

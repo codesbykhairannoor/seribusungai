@@ -7,9 +7,10 @@
   --color-river-blue:     #1B3A5C;
   --color-river-blue-900: #0D1E30;
 
-  --color-warm-gold-light: #E8D08A;
-  --color-warm-gold:       #C9A84C;
-  --color-warm-gold-dark:  #9A7A2E;
+  /* KUNING TERANG — diganti dari #C9A84C ke #F5C518 */
+  --color-warm-gold-light: #FFE066;
+  --color-warm-gold:       #F5C518;
+  --color-warm-gold-dark:  #D4A800;
 
   --color-earth-terracotta-light: #C4713A;
   --color-earth-terracotta:       #8B4513;
@@ -49,14 +50,12 @@
     background-color: var(--background);
     color: var(--foreground);
     @apply font-body antialiased;
-    /* Subtle selection color */
-    selection-color: white;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--color-warm-gold) 30%, transparent);
+    background-color: color-mix(in srgb, var(--color-warm-gold) 40%, transparent);
     color: var(--color-river-blue-900);
   }
 
@@ -64,11 +63,15 @@
     @apply font-heading tracking-tight;
   }
 
-  /* Smooth focus rings */
   :focus-visible {
     outline: 2px solid var(--color-warm-gold);
     outline-offset: 3px;
     border-radius: 4px;
+  }
+
+  /* Performance: GPU-accelerate animated elements */
+  canvas {
+    will-change: auto;
   }
 }
 
@@ -82,7 +85,11 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Utility: hide scrollbar but keep scroll ── */
+@keyframes wave-move {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

@@ -75,6 +75,7 @@ export default function Panduan() {
       <PageTransitionWrapper>
         <HeroSection
           variant="parallax"
+          pageKey="panduan"
           backgroundSrc="https://commons.wikimedia.org/wiki/Special:FilePath/Sungai_Martapura_di_Pagi_Hari_(3).jpg"
           backgroundAlt={{ id: "Panduan Wisata", en: "Travel Guide" }}
           eyebrow={{ id: "Panduan Perjalanan", en: "Travel Guide" }}

@@ -88,6 +88,7 @@ export default function Kontak() {
       <PageTransitionWrapper>
         <HeroSection
           variant="parallax"
+          pageKey="kontak"
           backgroundSrc="https://commons.wikimedia.org/wiki/Special:FilePath/Taman_Siring_Banjarmasin.jpg"
           backgroundAlt={{ id: "Kontak Dinas Pariwisata", en: "Contact Tourism Office" }}
           eyebrow={{ id: "Hubungi Kami", en: "Get in Touch" }}

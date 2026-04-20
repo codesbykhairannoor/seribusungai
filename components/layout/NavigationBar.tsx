@@ -24,6 +24,15 @@ export default function NavigationBar() {
 
   const isScrolled = scrollY > 80;
 
+  // Homepage uses ImageHero (light bg) — all other pages have dark hero
+  const isHomePage = pathname === "/";
+  // When not scrolled: homepage = dark text, other pages = white text (dark hero)
+  const navTextColor = isScrolled
+    ? "text-white/90"
+    : isHomePage
+    ? "text-river-blue"
+    : "text-white/90";
+
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -51,13 +60,13 @@ export default function NavigationBar() {
           <div className="flex flex-col">
             <span className={cn(
               "font-heading font-bold text-xl leading-tight transition-colors",
-              isScrolled ? "text-white" : "text-river-blue"
+              isScrolled ? "text-white" : isHomePage ? "text-river-blue" : "text-white"
             )}>
               Banjarmasin
             </span>
             <span className={cn(
               "text-[10px] uppercase tracking-[0.2em] transition-colors",
-              isScrolled ? "text-warm-gold-light" : "text-river-blue/70"
+              isScrolled ? "text-warm-gold-light" : isHomePage ? "text-river-blue/70" : "text-warm-gold/80"
             )}>
               Kota Seribu Sungai
             </span>
@@ -77,9 +86,9 @@ export default function NavigationBar() {
                 href={item.href}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-warm-gold flex items-center gap-1",
-                  pathname === item.href 
-                    ? "text-warm-gold" 
-                    : isScrolled ? "text-white/90" : "text-river-blue"
+                  pathname === item.href
+                    ? "text-warm-gold"
+                    : navTextColor
                 )}
               >
                 {t(item.label)}
@@ -122,7 +131,9 @@ export default function NavigationBar() {
               "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all",
               isScrolled
                 ? "border-white/20 text-white hover:bg-white/10"
-                : "border-river-blue/20 text-river-blue hover:bg-river-blue/5"
+                : isHomePage
+                ? "border-river-blue/20 text-river-blue hover:bg-river-blue/5"
+                : "border-white/25 text-white/90 hover:bg-white/10"
             )}
             aria-label="Toggle Language"
           >
@@ -133,7 +144,11 @@ export default function NavigationBar() {
           <button
             className={cn(
               "xl:hidden p-2 rounded-md transition-colors",
-              isScrolled ? "text-white hover:bg-white/10" : "text-river-blue hover:bg-river-blue/5"
+              isScrolled
+                ? "text-white hover:bg-white/10"
+                : isHomePage
+                ? "text-river-blue hover:bg-river-blue/5"
+                : "text-white/90 hover:bg-white/10"
             )}
             onClick={() => setIsMobileMenuOpen(true)}
           >

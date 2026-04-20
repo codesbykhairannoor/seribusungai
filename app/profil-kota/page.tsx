@@ -8,9 +8,10 @@ import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInView from "@/components/animations/FadeInView";
 import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import KnockoutHero from "@/components/ui/KnockoutHero";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
-import { MapPin, Navigation, Droplets, Cloud, Ship } from "lucide-react";
+import { MapPin, Navigation, Cloud } from "lucide-react";
 
 export default function ProfilKota() {
   const { t } = useLanguage();
@@ -18,7 +19,7 @@ export default function ProfilKota() {
   const cityData = [
     { label: { id: "Nama Resmi", en: "Official Name" }, value: "Kota Banjarmasin", icon: MapPin, bg: "bg-river-blue text-white", size: "col-span-2 md:col-span-1" },
     { label: { id: "Luas Wilayah", en: "Total Area" }, value: "98.46 km²", icon: Navigation, bg: "bg-warm-gold/10", size: "col-span-1" },
-    { label: { id: "Koordinat", en: "Coordinates" }, value: "3°19'S 114°35'E", icon: Ship, bg: "bg-river-blue-50", size: "col-span-1" },
+    { label: { id: "Koordinat", en: "Coordinates" }, value: "3°19'S 114°35'E", icon: Navigation, bg: "bg-river-blue-50", size: "col-span-1" },
     { label: { id: "Julukan", en: "Nickname" }, value: "Kota Seribu Sungai", icon: Cloud, bg: "bg-warm-gold text-white", size: "col-span-2 md:col-span-1" },
   ];
 
@@ -36,62 +37,8 @@ export default function ProfilKota() {
       <NavigationBar />
       <PageTransitionWrapper>
 
-        {/* ── SPLIT HERO ── */}
-        <section className="relative min-h-[80vh] flex flex-col lg:flex-row">
-          <div className="w-full lg:w-1/2 relative min-h-[50vh] lg:min-h-screen overflow-hidden">
-            <motion.img
-              src="https://commons.wikimedia.org/wiki/Special:FilePath/Kota_Banjarmasin.jpg"
-              alt="Banjarmasin Aerial"
-              className="absolute inset-0 w-full h-full object-cover"
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-river-blue/40" />
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.7 }}
-              className="absolute bottom-8 left-8 bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-warm-gold/10 rounded-xl flex items-center justify-center text-warm-gold">
-                  <Droplets size={24} />
-                </div>
-                <div>
-                  <div className="text-3xl font-heading font-bold text-river-blue">102</div>
-                  <div className="text-[10px] uppercase tracking-widest text-warm-gold font-bold">
-                    {t({ id: "Aliran Sungai", en: "River Streams" })}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="w-full lg:w-1/2 bg-river-blue flex items-center p-10 lg:p-20 xl:p-28 overflow-hidden">
-            <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
-              <div className="flex flex-wrap gap-x-1 mb-6">
-                {"BANJARMASIN".split("").map((char, i) => (
-                  <motion.span
-                    key={i}
-                    variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } }}
-                    transition={{ duration: 0.5 }}
-                    className="text-white font-heading text-5xl md:text-7xl font-bold inline-block"
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-              </div>
-              <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="text-warm-gold font-body text-lg uppercase tracking-[0.3em] font-medium mb-8">
-                {t({ id: "Kota Seribu Sungai", en: "The City of a Thousand Rivers" })}
-              </motion.p>
-              <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="text-white/60 font-body leading-relaxed max-w-md mb-10">
-                {t({ id: "Ibu kota Provinsi Kalimantan Selatan yang berdiri sejak 1526, dikenal sebagai kota dengan jaringan sungai terkaya di Indonesia.", en: "The capital of South Kalimantan Province, established in 1526, known as the city with the richest river network in Indonesia." })}
-              </motion.p>
-              <motion.div variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1 } }} style={{ originX: 0 }} className="w-20 h-1.5 bg-warm-gold rounded-full" />
-            </motion.div>
-          </div>
-        </section>
+        {/* ── HERO: 3 Panel + Knockout Text ── */}
+        <KnockoutHero />
 
         {/* ── BENTO IDENTITY GRID ── */}
         <section className="py-20 md:py-28 bg-clean-white overflow-hidden">
