@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BilingualText } from "@/content/types";
+import { ArrowRight, History, Map, Users, Zap, Landmark } from "lucide-react";
 
 interface TimelineEvent {
   year: string;
@@ -12,106 +13,104 @@ interface TimelineEvent {
   description: BilingualText;
   imageSrc?: string;
   imageAlt?: BilingualText;
+  icon?: any;
 }
 
-interface TimelineProps {
+interface HistoryHubProps {
   events: TimelineEvent[];
 }
 
-function TimelineItem({
-  event,
-  index,
-}: {
-  event: TimelineEvent;
-  index: number;
-}) {
+export default function Timeline({ events }: HistoryHubProps) {
   const { t } = useLanguage();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const isEven = index % 2 === 0;
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const activeEvent = events[activeIndex];
 
   return (
-    <div ref={ref} className="relative flex flex-col md:flex-row items-center gap-0">
-      {/* Left side */}
-      <div className="flex-1 w-full md:pr-12 md:text-right order-2 md:order-1 pb-8 md:pb-0">
-        {isEven ? (
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="space-y-3 md:ml-auto md:max-w-sm"
+    <div className="w-full">
+      {/* ── Year Navigation (Tab Bar) ── */}
+      <div className="flex overflow-x-auto pb-4 mb-20 scrollbar-hide gap-12 md:gap-20 border-b border-river-blue/5">
+        {events.map((event, idx) => (
+          <button
+            key={idx}
+            onClick={() => setActiveIndex(idx)}
+            className={`flex flex-col items-start gap-2 min-w-max pb-6 transition-all relative ${
+              activeIndex === idx ? "opacity-100" : "opacity-30 hover:opacity-100"
+            }`}
           >
-            <span className="text-warm-gold font-heading text-5xl font-bold block">{event.year}</span>
-            <h3 className="text-xl md:text-2xl font-heading font-bold text-river-blue leading-tight">
-              {t(event.title)}
-            </h3>
-            <p className="text-river-blue/60 font-body leading-relaxed text-sm md:text-base">
-              {t(event.description)}
-            </p>
-          </motion.div>
-        ) : (
-          <div className="hidden md:block" />
-        )}
-      </div>
-
-      {/* Center node */}
-      <div className="relative z-10 shrink-0 order-1 md:order-2">
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={inView ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="w-14 h-14 rounded-full border-4 border-white bg-warm-gold shadow-xl shadow-warm-gold/30 flex items-center justify-center"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.4, 1] }}
-            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-            className="w-3 h-3 bg-white rounded-full"
-          />
-        </motion.div>
-      </div>
-
-      {/* Right side */}
-      <div className="flex-1 w-full md:pl-12 order-3 pb-8 md:pb-0">
-        {!isEven ? (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="space-y-3 md:max-w-sm"
-          >
-            <span className="text-warm-gold font-heading text-5xl font-bold block">{event.year}</span>
-            <h3 className="text-xl md:text-2xl font-heading font-bold text-river-blue leading-tight">
-              {t(event.title)}
-            </h3>
-            <p className="text-river-blue/60 font-body leading-relaxed text-sm md:text-base">
-              {t(event.description)}
-            </p>
-          </motion.div>
-        ) : (
-          <div className="hidden md:block" />
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default function Timeline({ events }: TimelineProps) {
-  return (
-    <div className="relative py-8">
-      {/* Animated central line */}
-      <motion.div
-        initial={{ scaleY: 0 }}
-        whileInView={{ scaleY: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}
-        style={{ originY: 0 }}
-        className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-warm-gold/10 via-warm-gold/40 to-warm-gold/10 -translate-x-1/2 hidden md:block"
-      />
-
-      <div className="space-y-12 md:space-y-20">
-        {events.map((event, i) => (
-          <TimelineItem key={i} event={event} index={i} />
+            <span className={`text-2xl md:text-4xl font-heading font-black ${
+              activeIndex === idx ? "text-river-blue" : "text-river-blue/40"
+            }`}>
+              {event.year}
+            </span>
+            {activeIndex === idx && (
+              <motion.div 
+                layoutId="activeTab"
+                className="absolute bottom-0 left-0 right-0 h-1 bg-warm-gold rounded-full" 
+              />
+            )}
+          </button>
         ))}
+      </div>
+
+      {/* ── Content Area ── */}
+      <div className="relative min-h-[500px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeIndex}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start"
+          >
+            {/* Left: Illustration/Image */}
+            <div className="lg:col-span-5">
+              <div className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-2xl group">
+                <Image
+                  src={activeEvent.imageSrc || "https://commons.wikimedia.org/w/thumb.php?f=Masjid_Jami_Banjarmasin.jpg&w=800"}
+                  alt={t(activeEvent.title)}
+                  fill
+                  unoptimized={true}
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-river-blue/80 via-transparent to-transparent opacity-60" />
+                <div className="absolute bottom-10 left-10">
+                   <div className="w-16 h-16 rounded-[2rem] bg-warm-gold text-white flex items-center justify-center shadow-2xl mb-4">
+                      {activeEvent.icon ? <activeEvent.icon size={24} /> : <History size={24} />}
+                   </div>
+                   <span className="text-white/60 font-black uppercase tracking-[0.3em] text-[10px]">
+                      Historical Snapshot
+                   </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Narrative Content */}
+            <div className="lg:col-span-7 py-8">
+              <span className="text-warm-gold font-black uppercase tracking-[0.5em] text-[9px] mb-6 block">
+                {activeEvent.year} Era
+              </span>
+              <h2 className="text-4xl md:text-5xl font-heading font-black text-river-blue mb-8 leading-[1.1]">
+                {t(activeEvent.title)}
+              </h2>
+              <p className="text-river-blue/60 font-body text-base md:text-lg leading-relaxed mb-10">
+                {t(activeEvent.description)}
+              </p>
+
+              <div className="grid grid-cols-2 gap-8 text-river-blue">
+                <div className="p-8 rounded-[2.5rem] bg-river-blue/5 border border-river-blue/5">
+                   <div className="font-heading font-black text-xs uppercase tracking-widest text-warm-gold mb-3">Key Figure</div>
+                   <div className="font-heading font-black text-lg">Sultan / Hero</div>
+                </div>
+                <div className="p-8 rounded-[2.5rem] bg-river-blue/5 border border-river-blue/5">
+                   <div className="font-heading font-black text-xs uppercase tracking-widest text-warm-gold mb-3">Location</div>
+                   <div className="font-heading font-black text-lg">Delta River</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
