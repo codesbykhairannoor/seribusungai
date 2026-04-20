@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
 import NavigationBar from "@/components/layout/NavigationBar";
 import Footer from "@/components/layout/Footer";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
@@ -8,13 +9,21 @@ import SectionWrapper from "@/components/ui/SectionWrapper";
 import Timeline from "@/components/ui/Timeline";
 import FadeInView from "@/components/animations/FadeInView";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import FloatingParticles from "@/components/ui/FloatingParticles";
+
+const HISTORY_IMAGES = [
+  "https://commons.wikimedia.org/w/thumb.php?f=Masjid_Jami_Banjarmasin.jpg&w=600",
+  "https://commons.wikimedia.org/w/thumb.php?f=Sungai_Martapura_di_Pagi_Hari_(1).jpg&w=600",
+  "https://commons.wikimedia.org/w/thumb.php?f=Pasar_terapung_Banjarmasin.jpg&w=600",
+  "https://commons.wikimedia.org/w/thumb.php?f=Rumah_Adat_Bubungan_Tinggi_Banjarmasin.jpg&w=600",
+  "https://commons.wikimedia.org/w/thumb.php?f=Jukung_Berenteng.jpg&w=600",
+  "https://commons.wikimedia.org/w/thumb.php?f=Senja_di_Sungai_Martapura_1.jpg&w=600",
+];
 
 export default function Sejarah() {
   const { t } = useLanguage();
-  const { scrollY } = useScroll();
-  const imgY = useTransform(scrollY, [0, 500], [0, 80]);
+  const [isHeroLoaded, setIsHeroLoaded] = useState(false);
 
   const timelineEvents = [
     { year: "1526", title: { id: "Berdirinya Kota Banjarmasin", en: "Founding of Banjarmasin City" }, description: { id: "Pangeran Samudera memeluk Islam dan bergelar Sultan Suriansyah, menandai berdirinya Kesultanan Banjar dengan Banjarmasin sebagai pusatnya.", en: "Prince Samudera converted to Islam and took the title Sultan Suriansyah, marking the founding of the Banjar Sultanate with Banjarmasin as its center." } },
@@ -32,90 +41,136 @@ export default function Sejarah() {
       <NavigationBar />
       <PageTransitionWrapper>
 
-        {/* ── HERO: Split 40/60 — teks kiri, foto kanan zoom-in ── */}
-        <section className="relative h-screen min-h-[640px] flex overflow-hidden bg-river-blue-900">
-          {/* LEFT — dark panel with text */}
-          <div className="relative z-10 w-full lg:w-[42%] flex flex-col justify-end pb-16 px-8 md:px-14 bg-river-blue-900">
-            <FloatingParticles count={10} colors={["rgba(245,197,24,0.3)","rgba(255,255,255,0.15)"]} className="z-0" />
-            <div className="relative z-10">
+        {/* ── HERO: 2-Grid Inline ── */}
+        <section className="relative h-screen min-h-[700px] flex overflow-hidden bg-[#0a0f1a]">
+          
+          {/* LEFT CONTENT */}
+          <div className="relative z-20 w-full lg:w-[42%] flex flex-col justify-center px-8 md:px-16 lg:px-20 bg-gradient-to-r from-[#0a0f1a] via-[#0a0f1a] to-transparent">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative z-10"
+            >
               <motion.span
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-warm-gold font-bold uppercase tracking-[0.3em] text-xs mb-6 block"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-warm-gold font-heading font-bold uppercase tracking-[0.4em] text-xs mb-8 block"
               >
                 {t({ id: "Linimasa Sejarah", en: "Historical Timeline" })}
               </motion.span>
 
-              {/* Giant year decoration */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.1 }}
-                className="text-[7rem] md:text-[10rem] font-heading font-black text-white/5 leading-none select-none -mb-6"
-              >
-                1526
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="font-heading font-black text-white text-4xl md:text-6xl leading-tight mb-6 relative z-10"
-              >
-                {t({ id: "Menapaki Jejak Perjalanan Waktu", en: "Tracing the Footsteps of Time" })}
-              </motion.h1>
+              <div className="relative mb-8">
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1, delay: 0.8 }}
+                  className="absolute -left-20 top-1/2 w-40 h-px bg-warm-gold/20 origin-left"
+                />
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.3 }}
+                  className="font-heading font-black text-white text-5xl md:text-7xl leading-[1.05] drop-shadow-2xl"
+                >
+                  Menapaki <br />
+                  <span className="text-warm-gold">Jejak Waktu</span>
+                </motion.h1>
+              </div>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                className="text-white/55 font-body text-base leading-relaxed max-w-sm mb-8"
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="text-white/50 font-body text-base md:text-lg leading-relaxed max-w-md mb-12"
               >
-                {t({ id: "Dari pusat kesultanan maritim hingga menjadi metropolis digital yang dinamis.", en: "From the center of a maritime sultanate to a dynamic digital metropolis." })}
+                {t({ 
+                  id: "Dari pusat kesultanan maritim hingga menjadi metropolis digital yang dinamis, Banjarmasin adalah saksi bisu kejayaan nusantara.", 
+                  en: "From the center of a maritime sultanate to a dynamic digital metropolis, Banjarmasin stands as a witness to the archipelago's glory." 
+                })}
               </motion.p>
 
-              {/* Timeline dots preview */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.9 }}
-                className="flex items-center gap-2"
+                transition={{ delay: 1.2 }}
+                className="flex items-center gap-10"
               >
-                {["1526","1859","1945","2020"].map((y, i) => (
-                  <div key={y} className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-warm-gold" />
-                    <span className="text-warm-gold/60 text-[10px] font-bold">{y}</span>
-                    {i < 3 && <div className="w-6 h-px bg-warm-gold/20" />}
-                  </div>
-                ))}
+                <div className="text-left">
+                  <div className="text-white font-heading font-bold text-3xl mb-1 text-shadow-glow">1526</div>
+                  <div className="text-warm-gold/60 text-[10px] font-bold uppercase tracking-widest">{t({ id: "Berdiri", en: "Established" })}</div>
+                </div>
+                <div className="w-px h-10 bg-white/10" />
+                <div className="text-left">
+                  <div className="text-white font-heading font-bold text-3xl mb-1">500+</div>
+                  <div className="text-warm-gold/60 text-[10px] font-bold uppercase tracking-widest">{t({ id: "Tahun", en: "Years" })}</div>
+                </div>
               </motion.div>
-            </div>
+            </motion.div>
           </div>
 
-          {/* RIGHT — photo zoom-in */}
-          <div className="hidden lg:block absolute right-0 top-0 w-[62%] h-full overflow-hidden">
-            <motion.img
-              src="https://commons.wikimedia.org/wiki/Special:FilePath/Masjid_Jami_Banjarmasin.jpg"
-              alt="Sejarah Banjarmasin"
-              className="w-full h-full object-cover"
-              style={{ y: imgY }}
-              initial={{ scale: 1.12 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.8, ease: "easeOut" }}
+          {/* RIGHT IMAGE MARQUEE */}
+          <div className="hidden lg:flex relative w-[58%] h-full overflow-hidden">
+            <motion.div
+              className="flex flex-col gap-4 py-4 w-full"
+              animate={{
+                y: [0, -100 * HISTORY_IMAGES.length + "%"],
+              }}
+              transition={{
+                duration: 60,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{ willChange: "transform", translateZ: 0 }}
+            >
+              {[...HISTORY_IMAGES, ...HISTORY_IMAGES].map((src, i) => (
+                <div
+                  key={i}
+                  className="relative w-full aspect-[16/10] min-h-[40vh] rounded-3xl overflow-hidden grayscale-[0.2] hover:grayscale-0 transition-all duration-700 brightness-[0.7] hover:brightness-100"
+                >
+                  <Image
+                    src={src}
+                    alt="Historical Visual"
+                    fill
+                    priority={i < 4}
+                    className="object-cover"
+                    sizes="100vw"
+                    onLoad={() => i === 0 && setIsHeroLoaded(true)}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a]/80 via-transparent to-transparent" />
+                </div>
+              ))}
+            </motion.div>
+            <div className="absolute inset-0 z-10 pointer-events-none shadow-[inset_100px_0_100px_-50px_#0a0f1a]" />
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#0a0f1a] via-transparent to-[#0a0f1a]" />
+          </div>
+
+          {/* MOBILE OVERLAY */}
+          <div className="lg:hidden absolute inset-0 z-0">
+            <Image
+              src={HISTORY_IMAGES[0]}
+              alt=""
+              fill
+              priority
+              className="object-cover opacity-20"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-river-blue-900 via-river-blue-900/20 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-river-blue-900/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-[#0a0f1a]/80 to-transparent" />
           </div>
 
           {/* Scroll indicator */}
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
-            className="absolute bottom-8 left-8 md:left-14 z-20 flex items-center gap-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2 }}
+            className="absolute bottom-10 left-8 md:left-20 z-30 flex items-center gap-4"
           >
-            <motion.div animate={{ y: [0,6,0] }} transition={{ repeat: Infinity, duration: 1.8 }}
-              className="w-px h-10 bg-warm-gold/40" />
-            <span className="text-white/30 text-[9px] uppercase tracking-[0.4em]">Scroll</span>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="w-px h-12 bg-gradient-to-b from-warm-gold to-transparent"
+            />
+            <span className="text-white/20 text-[9px] uppercase tracking-[0.5em] font-bold">Timeline</span>
           </motion.div>
         </section>
 
@@ -168,7 +223,7 @@ export default function Sejarah() {
         <section className="py-20 md:py-28 bg-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
             <FadeInView className="mb-14">
-              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Pahlawan & Pemimpin", en: "Heroes & Leaders" })}</span>
+              <span className="text-emerald-400 font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Pahlawan & Pemimpin", en: "Heroes & Leaders" })}</span>
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue">{t({ id: "Tokoh Bersejarah", en: "Historical Figures" })}</h2>
             </FadeInView>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -37,90 +37,85 @@ export default function Kuliner() {
       <NavigationBar />
       <PageTransitionWrapper>
 
-        {/* ── HERO: Teks besar kiri atas + foto strip bawah ── */}
-        <section className="relative h-screen min-h-[640px] overflow-hidden bg-river-blue-900 flex flex-col">
-          {/* Background foto blur */}
+        {/* ── HERO: Centered Text + Horizontal Looping Marquee ── */}
+        <section className="relative h-screen min-h-[700px] overflow-hidden bg-river-blue-900 flex flex-col items-center pt-44 pb-12">
+          {/* Background Gradient Fade */}
           <div className="absolute inset-0 z-0">
-            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pedagang_Makanan_di_Sungai_Martapura.jpg" alt="" className="w-full h-full object-cover opacity-20"/>
-            <div className="absolute inset-0 bg-gradient-to-b from-river-blue-900/80 via-river-blue-900/60 to-river-blue-900"/>
+            <div className="absolute inset-0 bg-gradient-to-b from-river-blue-900/50 via-river-blue-900/90 to-river-blue-900 z-10" />
+            <motion.img
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Pedagang_Makanan_di_Sungai_Martapura.jpg/1200px-Pedagang_Makanan_di_Sungai_Martapura.jpg" 
+              alt="" 
+              className="w-full h-full object-cover opacity-20"
+            />
           </div>
 
-          {/* Top: big text left-aligned */}
-          <div className="relative z-10 flex-1 flex flex-col justify-center px-8 md:px-16 pt-24">
+          <div className="relative z-20 text-center px-6 mb-auto flex flex-col items-center justify-center flex-1 max-w-4xl">
             <motion.span
-              initial={{ opacity:0, x:-20 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.6, delay:0.2 }}
-              className="text-warm-gold font-bold uppercase tracking-[0.3em] text-xs mb-4 block"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-warm-gold font-bold uppercase tracking-[0.4em] text-[10px] md:text-xs mb-8 block"
             >
-              {t({ id: "Kuliner Khas", en: "Local Cuisine" })}
+              {t({ id: "Kuliner Khas Banjar", en: "Authentic Banjar Cuisine" })}
             </motion.span>
 
-            <div className="overflow-hidden">
-              <motion.h1
-                initial={{ y:"100%" }} animate={{ y:0 }} transition={{ duration:0.9, delay:0.3, ease:[0.16,1,0.3,1] }}
-                className="font-heading font-black text-white leading-[0.9]"
-                style={{ fontSize: "clamp(3.5rem, 12vw, 9rem)" }}
-              >
-                {t({ id: "CITA", en: "TASTE" })}
-              </motion.h1>
-            </div>
-            <div className="overflow-hidden">
-              <motion.h1
-                initial={{ y:"100%" }} animate={{ y:0 }} transition={{ duration:0.9, delay:0.45, ease:[0.16,1,0.3,1] }}
-                className="font-heading font-black text-warm-gold leading-[0.9]"
-                style={{ fontSize: "clamp(3.5rem, 12vw, 9rem)" }}
-              >
-                {t({ id: "RASA", en: "OF THE" })}
-              </motion.h1>
-            </div>
-            <div className="overflow-hidden">
-              <motion.h1
-                initial={{ y:"100%" }} animate={{ y:0 }} transition={{ duration:0.9, delay:0.6, ease:[0.16,1,0.3,1] }}
-                className="font-heading font-black text-white/30 leading-[0.9]"
-                style={{ fontSize: "clamp(3.5rem, 12vw, 9rem)" }}
-              >
-                {t({ id: "SUNGAI", en: "RIVER" })}
-              </motion.h1>
-            </div>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="font-heading font-black text-white leading-[1.05] mb-8"
+              style={{ fontSize: "clamp(2.5rem, 8vw, 6.5rem)" }}
+            >
+              <span className="block mb-2">{t({ id: "Cita Rasa", en: "A Taste of" })}</span>
+              <span className="text-warm-gold">{t({ id: "Seribu Sungai", en: "Thousand Rivers" })}</span>
+            </motion.h1>
 
             <motion.p
-              initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.7, delay:0.9 }}
-              className="text-white/50 font-body text-base leading-relaxed max-w-md mt-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="text-white font-body text-sm md:text-lg max-w-2xl mx-auto leading-relaxed"
             >
               {t({ id: "Menjelajahi keaslian bumbu dan tradisi kuliner yang melegenda di mulut.", en: "Exploring the authenticity of spices and culinary traditions that are legendary on the palate." })}
             </motion.p>
           </div>
 
-          {/* Bottom: horizontal photo strip */}
-          <motion.div
-            initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.8, delay:0.8 }}
-            className="relative z-10 flex gap-3 px-8 md:px-16 pb-10 overflow-hidden"
-          >
-            {[
-              { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Nasi_Kuning_Banjar_001.jpg", label: "Nasi Kuning" },
-              { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Buras_Banjar_1.jpg", label: "Buras Banjar" },
-              { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Mi_Habang.jpg", label: "Mi Habang" },
-              { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Iwak_Karing_Kalakai_Masak_Kuning_Sambal_Ramania.jpg", label: "Iwak Karing" },
-              { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Bola_Bola_Kentang_Ikan_Asin.jpg", label: "Bola Kentang" },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
-                transition={{ duration:0.5, delay: 1 + i*0.08 }}
-                whileHover={{ y:-6, scale:1.05 }}
-                className="relative shrink-0 w-28 md:w-36 h-20 md:h-24 rounded-2xl overflow-hidden shadow-xl group"
-              >
-                <img src={item.src} alt={item.label} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/>
-                <span className="absolute bottom-2 left-2 text-white text-[9px] font-bold uppercase tracking-wider">{item.label}</span>
-              </motion.div>
-            ))}
+          {/* Horizontal Infinite Marquee - Slightly more compact */}
+          <div className="relative z-10 w-full overflow-hidden py-6 select-none mt-auto">
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-river-blue-900 to-transparent z-20" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-river-blue-900 to-transparent z-20" />
+            
             <motion.div
-              initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:1.5 }}
-              className="shrink-0 w-28 md:w-36 h-20 md:h-24 rounded-2xl border-2 border-warm-gold/30 flex items-center justify-center text-warm-gold/60 text-xs font-bold uppercase tracking-widest"
+              className="flex gap-5 w-fit"
+              animate={{ x: [0, -2000] }}
+              transition={{
+                duration: 50,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{ willChange: "transform", translateZ: 0 }}
             >
-              +8 lagi
+              {[...iconicDishes, ...iconicDishes, ...iconicDishes].map((item, i) => (
+                <div
+                  key={i}
+                  className="relative w-64 md:w-72 aspect-[4/3] rounded-2xl overflow-hidden group border border-white/5 bg-gray-900 shrink-0 shadow-2xl"
+                >
+                  <img
+                    src={item.imageSrc}
+                    alt={t(item.name)}
+                    className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-70 group-hover:opacity-95 transition-opacity" />
+                  <div className="absolute bottom-5 left-5">
+                    <span className="text-white font-heading font-bold text-sm tracking-tight">{t(item.name)}</span>
+                  </div>
+                </div>
+              ))}
             </motion.div>
-          </motion.div>
+          </div>
         </section>
 
         {/* ── EDITORIAL FEATURED + OFFSET GRID ── */}

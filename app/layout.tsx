@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${playfair.variable} ${jakarta.variable}`}>
+    <html lang="id" className={`${playfair.variable} ${jakarta.variable}`} suppressHydrationWarning>
       <body className="min-h-screen selection:bg-warm-gold selection:text-white font-body antialiased">
         <LanguageProvider>
           <AnimationProvider>

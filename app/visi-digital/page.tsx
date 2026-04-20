@@ -11,6 +11,7 @@ import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { Cpu, Globe, TrendingUp, Zap, Shield, Rocket, Wifi, Database } from "lucide-react";
+import DigitalKlotok from "@/components/ui/DigitalKlotok";
 
 export default function VisiDigital() {
   const { t } = useLanguage();
@@ -37,8 +38,8 @@ export default function VisiDigital() {
       <PageTransitionWrapper>
 
         {/* ── HERO: Futuristic — teks kiri, stats kanan, grid background ── */}
-        <section className="relative h-screen min-h-[640px] overflow-hidden bg-river-blue-900 flex items-center">
-          {/* Animated grid background — CSS only, no JS */}
+        <section className="relative h-screen min-h-[700px] flex overflow-hidden bg-river-blue-900 border-b border-white/5">
+          {/* Animated grid background */}
           <div className="absolute inset-0 z-0 opacity-10"
             style={{
               backgroundImage: "linear-gradient(rgba(245,197,24,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(245,197,24,0.3) 1px, transparent 1px)",
@@ -46,37 +47,29 @@ export default function VisiDigital() {
               animation: "gridPulse 4s ease-in-out infinite",
             }}
           />
-          <style>{`
-            @keyframes gridPulse {
-              0%,100% { opacity: 0.08; }
-              50%      { opacity: 0.15; }
-            }
-          `}</style>
-
+          
           {/* Glow orbs */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-warm-gold/5 rounded-full blur-3xl pointer-events-none"/>
           <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"/>
 
-          {/* Photo overlay */}
-          <div className="absolute inset-0 z-[1]">
-            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gedung_Bank_Indonesia_di_Banjarmasin.jpg" alt="" className="w-full h-full object-cover opacity-10"/>
-          </div>
-
-          <div className="relative z-10 max-w-6xl mx-auto px-8 md:px-14 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left: text */}
-            <div>
+          {/* LEFT CONTENT AREA: 45% Width */}
+          <div className="relative z-20 w-full lg:w-[45%] flex flex-col justify-center px-8 md:px-16 lg:px-24 bg-gradient-to-r from-river-blue-900 via-river-blue-900 to-transparent">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
               <motion.span
-                initial={{ opacity:0, x:-20 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.6, delay:0.2 }}
+                initial={{ opacity:0, scale: 0.9 }} animate={{ opacity:1, scale:1 }}
                 className="inline-flex items-center gap-2 text-warm-gold font-bold uppercase tracking-[0.3em] text-xs mb-8 px-4 py-2 rounded-full border border-warm-gold/30 bg-warm-gold/10"
               >
-                <motion.div animate={{ scale:[1,1.4,1], opacity:[1,0.5,1] }} transition={{ duration:2, repeat:Infinity }}
-                  className="w-1.5 h-1.5 rounded-full bg-warm-gold"/>
+                <div className="w-1.5 h-1.5 rounded-full bg-warm-gold animate-pulse"/>
                 Smart City 2030
               </motion.span>
 
               <motion.h1
-                initial={{ opacity:0, y:30 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.8, delay:0.4 }}
-                className="font-heading font-black text-white text-4xl md:text-6xl leading-tight mb-6"
+                initial={{ opacity:0, y:30 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.8, delay:0.3 }}
+                className="font-heading font-black text-white text-4xl md:text-6xl lg:text-7xl leading-[1.1] mb-6"
               >
                 {t({ id: "Masa Depan", en: "Future" })}<br/>
                 <span className="text-warm-gold">{t({ id: "di Tepian", en: "on the" })}</span><br/>
@@ -84,38 +77,41 @@ export default function VisiDigital() {
               </motion.h1>
 
               <motion.p
-                initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.7, delay:0.65 }}
-                className="text-white/50 font-body text-base leading-relaxed max-w-md mb-10"
+                initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.7, delay:0.5 }}
+                className="text-white/40 font-body text-base md:text-lg leading-relaxed max-w-md mb-10"
               >
                 {t({ id: "Mentransformasi Banjarmasin menjadi Smart City yang berkelanjutan, inklusif, dan berdaya saing global.", en: "Transforming Banjarmasin into a sustainable, inclusive, and globally competitive Smart City." })}
               </motion.p>
 
               <motion.div
-                initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.9 }}
-                className="flex items-center gap-3"
+                initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.7 }}
+                className="flex items-center gap-12"
               >
-                <div className="h-px w-8 bg-warm-gold/40"/>
-                <span className="text-white/30 text-xs font-body">
-                  {t({ id: "Visi Banjarmasin (D)River Smart City", en: "Banjarmasin (D)River Smart City Vision" })}
-                </span>
+                <div className="text-left">
+                  <div className="text-white font-heading font-bold text-3xl mb-1"><AnimatedCounter value={85} suffix="%"/></div>
+                  <div className="text-warm-gold/40 text-[10px] font-bold uppercase tracking-widest">{t({ id: "Konektivitas", en: "Connectivity" })}</div>
+                </div>
+                <div className="w-px h-10 bg-white/10" />
+                <div className="text-left">
+                  <div className="text-white font-heading font-bold text-3xl mb-1"><AnimatedCounter value={5000} suffix="+"/></div>
+                  <div className="text-warm-gold/40 text-[10px] font-bold uppercase tracking-widest">{t({ id: "UMKM Digital", en: "Digital MSMEs" })}</div>
+                </div>
               </motion.div>
+            </motion.div>
+          </div>
+
+          {/* RIGHT VISUAL AREA: 55% Width */}
+          <div className="hidden lg:flex relative w-[55%] h-full items-center justify-center overflow-hidden">
+             {/* Photo background subtle overlay */}
+            <div className="absolute inset-0 z-0 opacity-10">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gedung_Bank_Indonesia_di_Banjarmasin.jpg" alt="" className="w-full h-full object-cover"/>
+            </div>
+            
+            <div className="relative z-10 w-full max-w-xl scale-110">
+              <DigitalKlotok />
             </div>
 
-            {/* Right: live stats */}
-            <div className="grid grid-cols-2 gap-4">
-              {digitalStats.map((stat, i) => (
-                <motion.div key={i}
-                  initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }}
-                  transition={{ duration:0.5, delay: 0.5 + i*0.1 }}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
-                >
-                  <div className="text-3xl font-heading font-bold text-warm-gold mb-1">
-                    <AnimatedCounter value={stat.value} suffix={stat.suffix}/>
-                  </div>
-                  <div className="text-[10px] uppercase tracking-widest text-white/40 font-bold">{t(stat.label)}</div>
-                </motion.div>
-              ))}
-            </div>
+            <div className="absolute inset-0 z-10 pointer-events-none shadow-[inset_100px_0_100px_-50px_#0a0f1a]" />
           </div>
 
           {/* Scroll indicator */}

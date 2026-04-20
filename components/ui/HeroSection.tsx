@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAnimationConfig } from "@/contexts/AnimationContext";
 import { BilingualText } from "@/content/types";
@@ -68,78 +69,96 @@ export default function HeroSection({
   const { t } = useLanguage();
   const { reducedMotion } = useAnimationConfig();
   const { scrollY } = useScroll();
+  const [isLoaded, setIsLoaded] = useState(false);
+  
   const y = useTransform(scrollY, [0, 600], [0, 600 * parallaxFactor]);
 
   const ambient = AMBIENT_CONFIG[pageKey] ?? AMBIENT_CONFIG.default;
 
   const textVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, delay: i * 0.15, ease: "easeOut" as const },
+      transition: { duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] },
     }),
   };
 
   return (
-    <section className="relative h-screen min-h-[640px] w-full overflow-hidden flex items-center justify-center">
+    <section className="relative h-screen min-h-[640px] w-full overflow-hidden flex items-center justify-center bg-[#0a0a0a]">
       {/* Background Layer */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 select-none pointer-events-none">
         {variant === "video" ? (
-          <video autoPlay muted loop playsInline className="h-full w-full object-cover">
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline 
+            className="h-full w-full object-cover opacity-80"
+            onLoadedData={() => setIsLoaded(true)}
+          >
             <source src={backgroundSrc} type="video/mp4" />
           </video>
         ) : (
           <motion.div
-            style={{ y: reducedMotion ? 0 : y }}
-            className="h-[130%] w-full -top-[15%] absolute"
+            style={{ y: reducedMotion ? 0 : y, willChange: "transform" }}
+            className="h-[120%] w-full -top-[10%] absolute"
           >
-            <img
+            <Image
               src={backgroundSrc}
               alt={backgroundAlt ? t(backgroundAlt) : ""}
-              className="h-full w-full object-cover"
+              fill
+              priority
+              unoptimized
+              className="h-full w-full object-cover transition-opacity duration-1000"
+              style={{ opacity: isLoaded ? 1 : 0 }}
+              onLoadingComplete={() => setIsLoaded(true)}
             />
           </motion.div>
         )}
 
-        {/* Multi-layer overlay */}
-        <div className="absolute inset-0 bg-river-blue" style={{ opacity: overlayOpacity }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
+        {/* Optimized Multi-layer overlay - CSS optimized */}
+        <div 
+          className="absolute inset-0 z-10" 
+          style={{ 
+            background: `
+              linear-gradient(to bottom, rgba(10,30,48,${overlayOpacity}) 0%, transparent 40%, rgba(0,0,0,0.7) 100%),
+              linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 50%)
+            ` 
+          }} 
+        />
       </div>
 
-      {/* Grain texture */}
-      <div
-        className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
+      {/* Grain texture - Performance optimized */}
+      <div className="absolute inset-0 z-[1] opacity-[0.02] pointer-events-none mix-blend-overlay" />
 
-      {/* ── AMBIENT: Water ripple ── */}
-      {!reducedMotion && ambient.ripple && <WaterRippleHero />}
-
-      {/* ── AMBIENT: Floating particles ── */}
-      {!reducedMotion && ambient.particles && (
-        <FloatingParticles
-          count={ambient.particleCount ?? 20}
-          colors={ambient.particleColors}
-          className="z-[2]"
-        />
+      {/* ── AMBIENT animations ── */}
+      {isLoaded && !reducedMotion && (
+        <>
+          {ambient.ripple && <WaterRippleHero />}
+          {ambient.particles && (
+            <FloatingParticles
+              count={ambient.particleCount ?? 12}
+              colors={ambient.particleColors}
+              className="z-[2]"
+            />
+          )}
+        </>
       )}
 
       {/* Content Layer */}
       <div className="container relative z-10 mx-auto px-4 text-center text-white">
         <motion.div
           initial="hidden"
-          animate="visible"
+          animate={isLoaded ? "visible" : "hidden"}
           className="flex flex-col items-center"
+          style={{ willChange: "transform, opacity" }}
         >
           {eyebrow && (
             <motion.span
               custom={0}
               variants={textVariants}
-              className="inline-block text-warm-gold font-bold uppercase tracking-[0.3em] text-xs md:text-sm mb-6 px-4 py-2 rounded-full border border-warm-gold/30 bg-warm-gold/10 backdrop-blur-sm"
+              className="inline-block text-warm-gold font-bold uppercase tracking-[0.3em] text-[10px] md:text-sm mb-6 px-4 py-2 rounded-full border border-warm-gold/20 bg-warm-gold/5 backdrop-blur-md"
             >
               {t(eyebrow)}
             </motion.span>
@@ -148,7 +167,7 @@ export default function HeroSection({
           <motion.h1
             custom={eyebrow ? 1 : 0}
             variants={textVariants}
-            className="font-heading text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-[1.05] max-w-5xl mx-auto tracking-tight"
+            className="font-heading text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-[1.1] max-w-5xl mx-auto tracking-tight drop-shadow-2xl"
           >
             {t(headline)}
           </motion.h1>
@@ -157,7 +176,7 @@ export default function HeroSection({
             <motion.p
               custom={eyebrow ? 2 : 1}
               variants={textVariants}
-              className="text-lg md:text-xl font-body font-light mb-10 max-w-2xl mx-auto text-white/80 leading-relaxed"
+              className="text-base md:text-xl font-body font-light mb-10 max-w-2xl mx-auto text-white/70 leading-relaxed"
             >
               {t(subheadline)}
             </motion.p>
@@ -172,13 +191,13 @@ export default function HeroSection({
               <a
                 href={cta.href}
                 className={cn(
-                  "px-8 py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all duration-300 group",
+                  "px-8 py-4 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest transition-all duration-500 overflow-hidden relative group",
                   cta.variant === "primary"
-                    ? "bg-warm-gold text-white hover:bg-warm-gold-dark shadow-xl shadow-warm-gold/20 hover:shadow-warm-gold/40 hover:scale-105"
-                    : "bg-white/10 backdrop-blur-md text-white border border-white/30 hover:bg-white/20 hover:scale-105"
+                    ? "bg-warm-gold text-white shadow-xl shadow-warm-gold/10 hover:shadow-warm-gold/30 hover:scale-105"
+                    : "bg-white/5 backdrop-blur-md text-white border border-white/20 hover:bg-white/10 hover:scale-105"
                 )}
               >
-                {t(cta.label)}
+                <span className="relative z-10">{t(cta.label)}</span>
               </a>
             </motion.div>
           )}
@@ -190,21 +209,19 @@ export default function HeroSection({
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={isLoaded ? { opacity: 1 } : {}}
         transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
       >
-        <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-medium">Scroll</span>
+        <span className="text-white/20 text-[9px] uppercase tracking-[0.4em] font-medium">Scroll</span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-          className="text-white/40"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          className="text-white/20"
         >
-          <ChevronDown size={24} />
+          <ChevronDown size={20} />
         </motion.div>
       </motion.div>
     </section>
   );
 }
-
-

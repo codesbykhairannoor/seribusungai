@@ -51,30 +51,32 @@ export default function NavigationBar() {
           : "bg-transparent py-5"
       )}
     >
-      <nav className="container mx-auto px-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-warm-gold rounded-full flex items-center justify-center text-white font-heading text-xl font-bold group-hover:scale-110 transition-transform">
-            B
-          </div>
-          <div className="flex flex-col">
-            <span className={cn(
-              "font-heading font-bold text-xl leading-tight transition-colors",
-              isScrolled ? "text-white" : isHomePage ? "text-river-blue" : "text-white"
-            )}>
-              Banjarmasin
-            </span>
-            <span className={cn(
-              "text-[10px] uppercase tracking-[0.2em] transition-colors",
-              isScrolled ? "text-warm-gold-light" : isHomePage ? "text-river-blue/70" : "text-warm-gold/80"
-            )}>
-              Kota Seribu Sungai
-            </span>
-          </div>
-        </Link>
+      <nav className="container mx-auto px-4 flex items-center">
+        {/* Logo container */}
+        <div className="flex-1 basis-0 flex justify-start min-w-[200px]">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 bg-warm-gold rounded-full flex items-center justify-center text-white font-heading text-xl font-bold group-hover:scale-110 transition-transform">
+              B
+            </div>
+            <div className="flex flex-col">
+              <span className={cn(
+                "font-heading font-bold text-xl leading-tight transition-colors",
+                isScrolled ? "text-white" : isHomePage ? "text-river-blue" : "text-white"
+              )}>
+                Banjarmasin
+              </span>
+              <span className={cn(
+                "text-[10px] uppercase tracking-[0.2em] transition-colors",
+                isScrolled ? "text-warm-gold-light" : isHomePage ? "text-river-blue/70" : "text-warm-gold/80"
+              )}>
+                Kota Seribu Sungai
+              </span>
+            </div>
+          </Link>
+        </div>
 
-        {/* Desktop Menu */}
-        <ul className="hidden xl:flex items-center gap-8">
+        {/* Desktop Menu - Centered */}
+        <ul className="hidden xl:flex items-center gap-8 justify-center">
           {NAV_ITEMS.map((item) => (
             <li 
               key={item.label.en} 
@@ -103,7 +105,7 @@ export default function NavigationBar() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-2 overflow-hidden border border-river-blue/10"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-lg shadow-xl py-2 overflow-hidden border border-river-blue/10"
                     >
                       {item.children.map((child) => (
                         <li key={child.href}>
@@ -123,8 +125,8 @@ export default function NavigationBar() {
           ))}
         </ul>
 
-        {/* Actions (Language Toggle + Mobile Menu Trigger) */}
-        <div className="flex items-center gap-4">
+        {/* Actions container */}
+        <div className="flex-1 basis-0 flex justify-end items-center gap-4 min-w-[200px]">
           <button
             onClick={toggleLanguage}
             className={cn(

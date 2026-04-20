@@ -45,79 +45,75 @@ export default function Budaya() {
       <NavigationBar />
       <PageTransitionWrapper>
 
-        {/* ── HERO: Diagonal split — foto kiri, teks kanan ── */}
-        <section className="relative h-screen min-h-[640px] overflow-hidden flex">
-          {/* Full-bleed photo */}
-          <div className="absolute inset-0 z-0">
-            <motion.img
-              src="https://commons.wikimedia.org/wiki/Special:FilePath/Sanggar_Seni_Galuh_Banjar_1.jpg"
-              alt="Budaya Banjar"
-              className="w-full h-full object-cover"
-              style={{ scale: imgScale }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-river-blue/40 to-river-blue-900/95" />
-            <div className="absolute inset-0 bg-gradient-to-t from-river-blue-900/60 to-transparent" />
+        {/* ── HERO: Panoramic Split ── */}
+        <section className="relative h-screen min-h-[700px] flex flex-col lg:flex-row overflow-hidden bg-river-blue-900 border-b border-white/5">
+          {/* Vertical Split Sections */}
+          <div className="absolute inset-0 flex flex-col lg:flex-row z-0">
+            {[
+              { src: "https://images.unsplash.com/photo-1545620958-39e25042bc83?auto=format&fit=crop&q=80&w=1600", label: { id: "Seni & Tari", en: "Art & Dance" } },
+              { src: "https://images.unsplash.com/photo-1621360841013-c7683c659ec6?auto=format&fit=crop&q=80&w=1600", label: { id: "Tradisi & Sejarah", en: "Tradition & History" } },
+              { src: "https://images.unsplash.com/photo-1440778303588-435521a205bc?auto=format&fit=crop&q=80&w=1600", label: { id: "Kehidupan Sungai", en: "River Life" } }
+            ].map((section, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: i * 0.2 }}
+                className="relative flex-1 h-full min-h-[33vh] lg:min-h-0 overflow-hidden group border-b lg:border-b-0 lg:border-r border-white/10 last:border-0"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.8 }}
+                  className="w-full h-full relative"
+                >
+                  <img
+                    src={section.src}
+                    alt=""
+                    className="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000 brightness-[0.55] group-hover:brightness-[0.75]"
+                  />
+                </motion.div>
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-river-blue-900/95 via-river-blue-900/40 to-transparent opacity-90 group-hover:opacity-70 transition-opacity pointer-events-none" />
+                
+                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center pointer-events-none group-hover:scale-110 transition-transform duration-500 w-full px-4">
+                  <span className="text-white/50 text-[10px] font-bold uppercase tracking-[0.4em] block mb-2">{t(section.label)}</span>
+                  <div className="w-12 h-0.5 bg-warm-gold/60 mx-auto" />
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          {/* Diagonal clip overlay on right */}
-          <div
-            className="absolute right-0 top-0 h-full w-[55%] bg-river-blue-900 z-[1] hidden lg:block"
-            style={{ clipPath: "polygon(20% 0, 100% 0, 100% 100%, 0% 100%)" }}
-          >
-            <FloatingParticles count={12} colors={["rgba(245,197,24,0.55)","rgba(196,113,58,0.35)"]} className="z-0"/>
-          </div>
+          <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-b from-river-blue-900/60 via-transparent to-river-blue-900/90" />
 
-          {/* Text — right side */}
-          <div className="relative z-10 ml-auto w-full lg:w-[52%] flex flex-col justify-center px-8 md:px-14 lg:pl-20">
-            <motion.span
-              initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.6, delay:0.2 }}
-              className="text-warm-gold font-bold uppercase tracking-[0.3em] text-xs mb-6 block"
-            >
-              {t({ id: "Warisan Budaya", en: "Cultural Heritage" })}
-            </motion.span>
-
-            <motion.h1
-              initial={{ opacity:0, y:30 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.8, delay:0.4 }}
-              className="font-heading font-black text-white text-4xl md:text-6xl lg:text-7xl leading-[1.0] mb-6"
-            >
-              {t({ id: "Jiwa &", en: "Soul &" })}<br/>
-              <span className="text-warm-gold">{t({ id: "Tradisi", en: "Tradition" })}</span><br/>
-              {t({ id: "Banjar", en: "of Banjar" })}
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.7, delay:0.65 }}
-              className="text-white/55 font-body text-base leading-relaxed max-w-sm mb-10"
-            >
-              {t({ id: "Menyelami kekayaan seni, filosofi, dan warisan leluhur yang menjalin harmoni kehidupan.", en: "Diving into the wealth of art, philosophy, and ancestral heritage that weaves the harmony of life." })}
-            </motion.p>
-
-            {/* Color swatches — motif preview */}
+          {/* Centered Overlay Text */}
+          <div className="relative z-20 w-full flex flex-col items-center justify-center pointer-events-none select-none px-6 pt-44">
             <motion.div
-              initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.9 }}
-              className="flex gap-2"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="text-center"
             >
-              {["#F5C518","#C4713A","#1B3A5C","#10B981","#8B5CF6","#F97316"].map((c,i) => (
-                <motion.div key={i} whileHover={{ scale:1.3, y:-4 }} transition={{ duration:0.2 }}
-                  className="w-6 h-6 rounded-full shadow-lg cursor-default"
-                  style={{ background: c }}
-                />
-              ))}
-              <span className="text-white/30 text-xs self-center ml-2">Motif Sasirangan</span>
+              <span className="inline-block text-warm-gold font-body font-bold uppercase tracking-[0.5em] text-[10px] md:text-xs mb-8 py-2 px-6 rounded-full border border-warm-gold/20 bg-warm-gold/5 backdrop-blur-md">
+                {t({ id: "Warisan Budaya Nusantara", en: "Indonesian Cultural Heritage" })}
+              </span>
+              
+              <h1 className="font-heading font-black text-white text-5xl md:text-7xl lg:text-8xl leading-none drop-shadow-2xl">
+                {t({ id: "Jiwa &", en: "Soul &" })} <br />
+                <span className="text-warm-gold">{t({ id: "Tradisi", en: "Tradition" })}</span>
+              </h1>
+              
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "200px" }}
+                transition={{ duration: 1, delay: 1.2 }}
+                className="h-1 bg-gradient-to-r from-transparent via-warm-gold to-transparent mx-auto mt-12"
+              />
             </motion.div>
           </div>
-
-          {/* Scroll indicator */}
-          <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:2 }}
-            className="absolute bottom-8 left-8 z-20 flex items-center gap-3">
-            <motion.div animate={{ y:[0,6,0] }} transition={{ repeat:Infinity, duration:1.8 }}
-              className="w-px h-10 bg-warm-gold/40"/>
-            <span className="text-white/30 text-[9px] uppercase tracking-[0.4em]">Scroll</span>
-          </motion.div>
         </section>
 
         {/* ── SASIRANGAN ── */}
-        <section className="py-20 md:py-28 bg-white overflow-hidden">
+        <section className="py-20 md:py-28 bg-white overflow-hidden border-b border-river-blue/5">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
               <FadeInView direction="right" className="lg:col-span-5">
@@ -128,17 +124,17 @@ export default function Budaya() {
               </FadeInView>
               <div className="lg:col-span-7">
                 <FadeInView direction="left" className="relative mb-4">
-                  <div className="relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl">
-                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Peserta_Karnaval_FBPT_2018_001.JPG" alt="Sasirangan" className="w-full h-full object-cover"/>
+                  <div className="relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] duration-700">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Peserta_Karnaval_FBPT_2018_017.JPG" alt="Sasirangan" className="w-full h-full object-cover"/>
                     <div className="absolute inset-0 bg-gradient-to-t from-river-blue/40 to-transparent"/>
                   </div>
                 </FadeInView>
                 <StaggerContainer className="grid grid-cols-3 gap-3" staggerDelay={0.07}>
                   {motifs.map((motif, i) => (
                     <StaggerItem key={i}>
-                      <div className={`${motif.color} rounded-2xl p-4 text-center hover:scale-105 transition-transform cursor-default`}>
-                        <div className="font-bold text-sm mb-1">{motif.name}</div>
-                        <div className="text-xs opacity-70">{t(motif.desc)}</div>
+                      <div className={`${motif.color} rounded-2xl p-4 text-center hover:scale-105 transition-transform cursor-default shadow-sm hover:shadow-md`}>
+                        <div className="font-bold text-xs md:text-sm mb-1">{motif.name}</div>
+                        <div className="text-[10px] opacity-70 uppercase tracking-widest">{t(motif.desc)}</div>
                       </div>
                     </StaggerItem>
                   ))}
@@ -156,11 +152,13 @@ export default function Budaya() {
                 <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-5 block">{t({ id: "Seni & Pertunjukan", en: "Arts & Performances" })}</span>
                 <h2 className="text-4xl font-heading font-bold text-river-blue mb-8 leading-tight">{t({ id: "Ekspresi Jiwa Banjar", en: "Expression of the Banjar Soul" })}</h2>
                 <div className="relative h-80">
-                  <div className="absolute top-0 left-0 w-3/4 aspect-video rounded-2xl overflow-hidden shadow-xl">
-                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tari_Japin_Sigam_1.jpg" alt="" className="w-full h-full object-cover"/>
+                  <div className="absolute top-0 left-0 w-3/4 aspect-video rounded-2xl overflow-hidden shadow-xl group">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tari_Japin_Sigam_1.jpg" alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"/>
                   </div>
-                  <div className="absolute bottom-0 right-0 w-2/3 aspect-video rounded-2xl overflow-hidden shadow-xl border-4 border-white">
-                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sanggar_Seni_Galuh_Banjar_2.jpg" alt="" className="w-full h-full object-cover"/>
+                  <div className="absolute bottom-0 right-0 w-2/3 aspect-video rounded-2xl overflow-hidden shadow-xl border-4 border-white group">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sanggar_Seni_Galuh_Banjar_2.jpg" alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"/>
                   </div>
                 </div>
               </FadeInView>
@@ -175,16 +173,16 @@ export default function Budaya() {
         <section className="relative overflow-hidden">
           <div className="relative h-[60vh] md:h-[70vh]">
             <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rumah_Adat_Bubungan_Tinggi_Banjarmasin.jpg" alt="Rumah Bubungan Tinggi" className="w-full h-full object-cover"/>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white"/>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-clean-white"/>
             <div className="absolute inset-0 bg-gradient-to-r from-river-blue/30 to-transparent"/>
-            <div className="absolute top-8 left-8 md:top-16 md:left-16">
+            <div className="absolute top-8 left-8 md:top-16 lg:left-24">
               <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Arsitektur", en: "Architecture" })}</span>
               <h2 className="text-white font-heading font-bold text-3xl md:text-5xl max-w-lg leading-tight drop-shadow-lg">{t({ id: "Rumah Banjar Bubungan Tinggi", en: "Bubungan Tinggi Banjar House" })}</h2>
             </div>
           </div>
           <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 -mt-24 pb-20">
             <FadeInView>
-              <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-8 border border-river-blue/5">
                 <div className="md:col-span-2">
                   <p className="text-lg text-river-blue/65 font-body leading-relaxed mb-8">{t({ id: "Arsitektur tradisional Banjar dicirikan oleh struktur panggung yang adaptif terhadap lingkungan rawa dan sungai. Rumah Bubungan Tinggi merupakan kasta tertinggi yang dahulu hanya didiami oleh kaum bangsawan.", en: "Traditional Banjar architecture is characterized by stilted structures adaptive to swamp and river environments. The Bubungan Tinggi house is the highest caste, formerly only occupied by royalty." })}</p>
                 </div>
