@@ -19,13 +19,15 @@
   --color-clean-white: #F8F5F0;
 
   /* ── Typography Scale (Blueprint) ── */
+  --font-body:          var(--font-jakarta), ui-sans-serif, system-ui;
+  --font-heading:       var(--font-jakarta), ui-sans-serif, system-ui;
   --font-size-hero:     clamp(3.5rem, 10vw, 8rem);
   --font-size-section:  clamp(2.5rem, 8vw, 4.5rem);
   --font-size-sub:      clamp(1.125rem, 2vw, 1.25rem);
 
   /* ── Letter Spacing (Blueprint) ── */
-  --letter-spacing-monumental: -0.04em;
-  --letter-spacing-sharp:      -0.02em;
+  --tracking-monumental: -0.04em;
+  --tracking-sharp:      -0.02em;
 
   /* ── Line Height (Blueprint) ── */
   --leading-monumental: 1.05;
@@ -43,11 +45,6 @@
 }
 
 @layer utilities {
-  .tracking-monumental { letter-spacing: var(--letter-spacing-monumental); }
-  .leading-monumental { line-height: var(--leading-monumental); }
-  .shadow-premium-soft { box-shadow: var(--shadow-premium-soft); }
-  .shadow-premium-deep { box-shadow: var(--shadow-premium-deep); }
-  .shadow-premium-glow { box-shadow: var(--shadow-premium-glow); }
   .bg-pattern-grid {
     background-image: radial-gradient(var(--color-river-blue-100) 0.5px, transparent 0.5px);
     background-size: 30px 30px;

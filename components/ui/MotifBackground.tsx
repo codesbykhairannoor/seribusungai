@@ -17,14 +17,44 @@ export default function MotifBackground({
   return (
     <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
       {variant === "sasirangan" && (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(var(--color-warm-gold) 1px, transparent 1px)`,
-            backgroundSize: "32px 32px",
-            opacity: opacity,
-          }}
-        />
+        <svg
+          className="absolute inset-0 w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
+          opacity={opacity}
+        >
+          <defs>
+            <pattern 
+              id="sasirangan-pattern" 
+              x="0" 
+              y="0" 
+              width="120" 
+              height="120" 
+              patternUnits="userSpaceOnUse"
+            >
+              {/* Kambang Raja Motif - Simplified Geometric Vector */}
+              <g transform="translate(60, 60) scale(0.8)">
+                <path 
+                   d="M0 -30 L10 -10 L30 0 L10 10 L0 30 L-10 10 L-30 0 L-10 -10 Z" 
+                   fill="var(--color-warm-gold)" 
+                   fillOpacity="0.8"
+                />
+                <circle cx="0" cy="0" r="4" fill="var(--color-warm-gold)" />
+                {/* Accent dots */}
+                <circle cx="0" cy="-45" r="2" fill="var(--color-warm-gold)" opacity="0.4" />
+                <circle cx="0" cy="45" r="2" fill="var(--color-warm-gold)" opacity="0.4" />
+                <circle cx="-45" cy="0" r="2" fill="var(--color-warm-gold)" opacity="0.4" />
+                <circle cx="45" cy="0" r="2" fill="var(--color-warm-gold)" opacity="0.4" />
+              </g>
+              
+              {/* Secondary Motif (Iris Pudak stylized) */}
+              <g transform="translate(0, 0) scale(0.4)" opacity="0.3">
+                 <rect x="0" y="0" width="10" height="40" fill="var(--color-warm-gold)" transform="rotate(45)" />
+                 <rect x="0" y="0" width="10" height="40" fill="var(--color-river-blue)" transform="rotate(-45)" />
+              </g>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#sasirangan-pattern)" />
+        </svg>
       )}
 
       {variant === "digital-grid" && (

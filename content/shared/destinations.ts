@@ -7,7 +7,7 @@ export const destinations: DestinationSummary[] = [
     tagline: { id: "Denyut Nadi Sungai Martapura", en: "The Heartbeat of Martapura River" },
     category: "budaya",
     heroImage: {
-      src: "https://commons.wikimedia.org/wiki/Special:FilePath/Pasar_terapung_Banjarmasin.jpg",
+      src: "/images/budaya/Pasar_terapung_Banjarmasin_7.jpg",
       alt: { id: "Pasar terapung Lok Baintan", en: "Lok Baintan floating market" },
       width: 1200,
       height: 800,
@@ -25,7 +25,7 @@ export const destinations: DestinationSummary[] = [
     tagline: { id: "Ikon Modern Kota Sungai", en: "Modern Icon of the River City" },
     category: "alam",
     heroImage: {
-      src: "https://commons.wikimedia.org/wiki/Special:FilePath/Menara_Pandang_Banjarmasin_001.jpg",
+      src: "/images/budaya/Menara_Pandang_Banjarmasin_001.jpg",
       alt: { id: "Menara Pandang Siring", en: "Siring Observation Tower" },
       width: 1200,
       height: 800,
@@ -43,7 +43,7 @@ export const destinations: DestinationSummary[] = [
     tagline: { id: "Warna-warni Budaya Banjar", en: "Colors of Banjar Culture" },
     category: "budaya",
     heroImage: {
-      src: "https://commons.wikimedia.org/wiki/Special:FilePath/Peserta_Karnaval_FBPT_2018_001.JPG",
+      src: "/images/budaya/Kain_Sasirangan_di_Kampung_Sasirangan_Banjarmasin.jpg",
       alt: { id: "Kain Sasirangan khas Banjar", en: "Banjar Sasirangan cloth" },
       width: 1200,
       height: 800,
@@ -56,12 +56,30 @@ export const destinations: DestinationSummary[] = [
     ticketPrice: { id: "Gratis", en: "Free" },
   },
   {
+    slug: "museum-wasaka",
+    name: { id: "Museum Wasaka", en: "Wasaka Museum" },
+    tagline: { id: "Waja Sampai Kaputing", en: "Steel to the End" },
+    category: "sejarah",
+    heroImage: {
+      src: "/images/sejarah/1920px-Museum_Lambung_Mangkurat.png", // Temporarily using Lambung Mangkurat as placeholder
+      alt: { id: "Museum Wasaka Banjarmasin", en: "Wasaka Museum Banjarmasin" },
+      width: 1200,
+      height: 800,
+    },
+    shortDescription: {
+      id: "Rumah tradisonal Banjar yang dialihfungsikan menjadi museum perjuangan rakyat Kalimantan Selatan melawan penjajahan.",
+      en: "A traditional Banjar house repurposed into a museum documenting the South Kalimantan people's struggle against colonialism.",
+    },
+    operatingHours: { id: "09:00 – 15:00 WITA", en: "9:00 AM – 3:00 PM" },
+    ticketPrice: { id: "Gratis", en: "Free" },
+  },
+  {
     slug: "masjid-sultan-suriansyah",
     name: { id: "Masjid Sultan Suriansyah", en: "Sultan Suriansyah Mosque" },
     tagline: { id: "Situs Sejarah Tertua", en: "The Oldest Historical Site" },
     category: "religi",
     heroImage: {
-      src: "https://commons.wikimedia.org/wiki/Special:FilePath/Masjid_Jami_Banjarmasin.jpg",
+      src: "/images/wisata/Interior_masjid_Sultan_Suriansyah_(1).jpg",
       alt: { id: "Masjid Sultan Suriansyah", en: "Sultan Suriansyah Mosque" },
       width: 1200,
       height: 800,
@@ -79,7 +97,7 @@ export const destinations: DestinationSummary[] = [
     tagline: { id: "Kemegahan Spiritual Kota", en: "Spiritual Grandeur of the City" },
     category: "religi",
     heroImage: {
-      src: "https://commons.wikimedia.org/wiki/Special:FilePath/Masjid_Raya_Sabilal_Muhtadin_3.jpg",
+      src: "/images/wisata/Masjid_Raya_Sabilal_Muhtadin_3.jpg",
       alt: { id: "Masjid Raya Sabilal Muhtadin", en: "Sabilal Muhtadin Grand Mosque" },
       width: 1200,
       height: 800,

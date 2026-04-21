@@ -1,254 +1,458 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import NavigationBar from "@/components/layout/NavigationBar";
 import Footer from "@/components/layout/Footer";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
-import DestinationCard from "@/components/ui/DestinationCard";
+import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInView from "@/components/animations/FadeInView";
-import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { destinations } from "@/content/shared/destinations";
+import { blogPosts } from "@/content/blog/posts";
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from "framer-motion";
-import { Users, Droplets, Map as MapIcon, Calendar, ArrowRight, ArrowUpRight } from "lucide-react";
+import { 
+  ArrowRight, 
+  ArrowUpRight, 
+  Droplets, 
+  Map as MapIcon, 
+  Calendar, 
+  Users, 
+  MoveRight,
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+  Compass
+} from "lucide-react";
 import WaterRippleHero from "@/components/ui/WaterRippleHero";
 import FloatingParticles from "@/components/ui/FloatingParticles";
 
+// ── HERO COMPONENTS ──
+
+const CinematicHero = ({ data, t }: { data: any, t: any }) => (
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0, scale: 1.05 }}
+    transition={{ duration: 1.2 }}
+    className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
+  >
+    <div className="absolute inset-0 z-0">
+      <Image src={data.image} alt="" fill priority className="object-cover brightness-[0.35] contrast-[1.1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-river-blue/60 via-transparent to-river-blue/80" />
+    </div>
+    
+    <div className="relative z-10 max-w-5xl">
+      <motion.span 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="text-warm-gold font-bold uppercase tracking-[0.6em] text-[10px] mb-8 block px-6 py-2 border border-warm-gold/20 rounded-full backdrop-blur-sm mx-auto w-fit"
+      >
+        {data.subtitle}
+      </motion.span>
+      <motion.h1 
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="font-heading font-black text-white leading-[1.1] tracking-tight mb-12 text-5xl md:text-8xl lg:text-[7rem]"
+      >
+        {t(data.title)}
+      </motion.h1>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
+        <Link href="/wisata" className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-warm-gold hover:text-river-blue hover:border-warm-gold transition-all group mx-auto">
+          <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+        </Link>
+      </motion.div>
+    </div>
+  </motion.div>
+);
+
+const MosaicHero = ({ data, t }: { data: any, t: any }) => {
+  const images = [
+    "/images/budaya/Pasar_terapung_Banjarmasin_7.jpg",
+    "/images/sejarah/PERANG_BANJAR_1857-1859.jpg",
+    "/images/wisata/Jembatan_Sei_Alalak,_Banjarmasin.jpg",
+    "/images/budaya/Menara_Pandang_Banjarmasin_001.jpg",
+    "/images/wisata/Menara_Pandang_Siring_Martapura.jpg",
+    "/images/budaya/Tradisi_Banjarmasin.jpg"
+  ];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, filter: "blur(10px)" }}
+      transition={{ duration: 1.2 }}
+      className="absolute inset-0 flex items-center bg-river-blue px-10 py-32"
+    >
+      <div className="grid grid-cols-12 grid-rows-6 w-full h-full gap-4 relative">
+        {/* The Grid Mosaic Background */}
+        <div className="absolute inset-0 grid grid-cols-12 grid-rows-6 gap-4 opacity-40">
+           <div className="col-span-4 row-span-4 relative rounded-3xl overflow-hidden"><Image src={images[0]} alt="" fill className="object-cover" /></div>
+           <div className="col-span-3 row-span-2 relative rounded-3xl overflow-hidden"><Image src={images[1]} alt="" fill className="object-cover" /></div>
+           <div className="col-span-5 row-span-3 relative rounded-3xl overflow-hidden"><Image src={images[2]} alt="" fill className="object-cover" /></div>
+           <div className="col-span-3 row-span-4 relative rounded-3xl overflow-hidden"><Image src={images[3]} alt="" fill className="object-cover" /></div>
+           <div className="col-span-2 row-span-3 relative rounded-3xl overflow-hidden"><Image src={images[4]} alt="" fill className="object-cover" /></div>
+           <div className="col-span-3 row-span-2 relative rounded-3xl overflow-hidden"><Image src={images[5]} alt="" fill className="object-cover" /></div>
+        </div>
+
+        {/* Text Overlay */}
+        <div className="col-span-12 md:col-span-6 row-span-6 flex flex-col justify-center relative z-10 pl-10">
+           <motion.div 
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+           >
+              <span className="text-warm-gold font-bold uppercase tracking-[0.5em] text-[10px] mb-6 block">{data.subtitle}</span>
+              <h1 className="font-heading font-black text-white leading-[1] tracking-tight mb-8 text-6xl md:text-8xl">
+                 {t(data.title)}
+              </h1>
+              <p className="text-white/40 max-w-md text-sm leading-relaxed mb-10 font-medium whitespace-pre-line">
+                 Archive Chapters: Heritage, Culture, and the Living River.
+              </p>
+              <Link href="/wisata" className="inline-flex items-center gap-4 text-warm-gold font-black uppercase text-[10px] tracking-widest group border-b border-warm-gold/20 pb-2 hover:border-warm-gold transition-all">
+                 Browse The Mosaic <MoveRight className="group-hover:translate-x-2 transition-transform" />
+              </Link>
+           </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const SplitHero = ({ data, t }: { data: any, t: any }) => (
+  <motion.div 
+    initial={{ x: "100%" }}
+    animate={{ x: 0 }}
+    exit={{ x: "-100%" }}
+    transition={{ type: "spring", stiffness: 50, damping: 20 }}
+    className="absolute inset-0 flex bg-white"
+  >
+    {/* Left Side: Content */}
+    <div className="w-full lg:w-1/2 h-full flex flex-col justify-center p-12 lg:p-32 bg-river-blue text-white">
+       <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+       >
+          <Compass className="text-warm-gold mb-10" size={48} />
+          <span className="text-warm-gold font-bold uppercase tracking-[0.6em] text-[10px] mb-6 block">{data.subtitle}</span>
+          <h1 className="font-heading font-black leading-[1.1] tracking-tight mb-12 text-5xl md:text-7xl">
+             {t(data.title)}
+          </h1>
+          <div className="grid grid-cols-2 gap-10 border-l border-white/10 pl-10">
+             <div>
+                <div className="text-3xl font-bold text-warm-gold mb-1">102+</div>
+                <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Active Rivers</div>
+             </div>
+             <div>
+                <div className="text-3xl font-bold text-warm-gold mb-1">500</div>
+                <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Years Archive</div>
+             </div>
+          </div>
+          <Link href="/wisata" className="mt-20 inline-block px-12 py-5 bg-warm-gold text-river-blue rounded-full font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all">
+             Portal Borneo
+          </Link>
+       </motion.div>
+    </div>
+
+    {/* Right Side: High-res Portrait */}
+    <div className="hidden lg:block lg:w-1/2 h-full relative">
+       <Image src={data.image} alt="" fill className="object-cover" />
+       <div className="absolute inset-0 bg-gradient-to-r from-river-blue to-transparent" />
+       <div className="absolute inset-0 bg-river-blue/20" />
+    </div>
+  </motion.div>
+);
+
+
+const MagneticPillar = ({ pillar, i }: { pillar: any; i: number }) => {
+  const { t } = useLanguage();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const mouseX = useSpring(0, { stiffness: 100, damping: 20 });
+  const mouseY = useSpring(0, { stiffness: 100, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    mouseX.set((e.clientX - centerX) / 25);
+    mouseY.set((e.clientY - centerY) / 25);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  return (
+    <Link 
+      href={pillar.href}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative flex-1 group min-h-[500px] lg:min-h-0 overflow-hidden border-r border-white/5 last:border-0"
+    >
+      <motion.div 
+        className="absolute inset-0 z-0 h-[120%] w-[120%] left-[-10%] top-[-10%]"
+        style={{ x: mouseX, y: mouseY }}
+      >
+        <Image
+          src={pillar.image}
+          alt={t(pillar.title)}
+          fill
+          className="object-cover opacity-30 grayscale group-hover:grayscale-0 group-hover:opacity-60 transition-all duration-1000"
+        />
+      </motion.div>
+      <div className="absolute inset-0 bg-gradient-to-t from-river-blue via-river-blue/40 to-transparent z-10" />
+      
+      <div className="relative z-20 h-full flex flex-col justify-end p-12 lg:p-20">
+        <span className="text-warm-gold font-black uppercase tracking-[0.4em] text-[10px] mb-6 block transform group-hover:-translate-y-2 transition-transform duration-500">
+          Chapter 0{i + 1}
+        </span>
+        <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-6 group-hover:text-warm-gold transition-colors duration-500">
+          {t(pillar.title)}
+        </h3>
+        <p className="text-white/40 font-medium max-w-xs group-hover:text-white/80 transition-colors duration-500 leading-relaxed text-sm">
+          {t(pillar.desc)}
+        </p>
+        
+        <div className="mt-12 overflow-hidden h-4">
+          <div className="flex items-center gap-3 text-white font-black text-[9px] uppercase tracking-[0.3em] translate-y-full group-hover:translate-y-0 transition-transform duration-700">
+            Explore The Archive <ArrowRight size={14} className="text-warm-gold" />
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+// ── MAIN PAGE COMPONENT ──
+
 export default function Home() {
   const { t } = useLanguage();
-  const { scrollY } = useScroll();
-  const [isHeroLoaded, setIsHeroLoaded] = useState(false);
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  // Parallax effects
-  const imageY = useTransform(scrollY, [0, 600], [0, 100]);
-  const textY = useTransform(scrollY, [0, 600], [0, 40]);
-
-  const words = ["Jelajahi", "Rasakan", "Temukan"];
-  const [wordIdx, setWordIdx] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const slides = [
+    {
+      title: { id: "Banjarmasin: Kota Seribu Sungai", en: "Banjarmasin: City of a Thousand Rivers" },
+      subtitle: "The Soul of Martapura",
+      image: "/images/budaya/Menara_Pandang_Banjarmasin_001.jpg",
+      type: "cinematic"
+    },
+    {
+      title: { id: "Harmoni Budaya Banjar", en: "Culture Harmony" },
+      subtitle: "Living Heritage",
+      image: "/images/budaya/Pasar_terapung_Banjarmasin_7.jpg",
+      type: "mosaic"
+    },
+    {
+      title: { id: "Gerbang Digital Kalimantan", en: "Borneo Digital Gateway" },
+      subtitle: "Looking Ahead",
+      image: "/images/wisata/Jembatan_Sei_Alalak,_Banjarmasin.jpg",
+      type: "split"
+    }
+  ];
 
   useEffect(() => {
-    if (!isHeroLoaded) {
-      // Fallback: Force reveal after 1.5s if image onLoad fails
-      const timeout = setTimeout(() => setIsHeroLoaded(true), 1500);
-      return () => clearTimeout(timeout);
-    }
-    const id = setInterval(() => setWordIdx((i) => (i + 1) % words.length), 3000);
-    return () => clearInterval(id);
-  }, [isHeroLoaded]);
+    const timer = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % slides.length);
+    }, 10000); // 10 seconds per structural shift
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   const stats = [
     { label: { id: "Luas Wilayah", en: "Total Area" }, value: "98.46", suffix: "km²", icon: MapIcon },
     { label: { id: "Jumlah Sungai", en: "Rivers" }, value: "102", suffix: "+", icon: Droplets },
     { label: { id: "Populasi", en: "Population" }, value: "700k", suffix: "+", icon: Users },
-    { label: { id: "Tahun Berdiri", en: "Founded" }, value: "1526", suffix: "", icon: Calendar },
+    { label: { id: "Sejarah", en: "History" }, value: "500", suffix: "yr+", icon: Calendar },
   ];
+
+  const horizontalX = useTransform(scrollYProgress, [0.4, 0.75], ["0%", "-75%"]);
+
   return (
-    <main className="min-h-screen flex flex-col">
+    <main ref={containerRef} className="min-h-screen flex flex-col bg-white overflow-x-hidden">
       <NavigationBar />
       <PageTransitionWrapper>
-        {/* ── RESTORED HERO: Pesona Banjarmasin (Unified with Profil Logic) ── */}
-        <section className="relative w-full h-screen min-h-[640px] overflow-hidden flex items-center justify-center bg-[#050a14]">
-          <motion.div
-            style={{ y: imageY }}
-            className="absolute inset-0 z-0 scale-105"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHeroLoaded ? 1 : 0 }}
-            transition={{ duration: 1.5 }}
-          >
-            <Image
-              src="https://commons.wikimedia.org/w/thumb.php?f=Menara_Pandang_Banjarmasin_001.jpg&w=1600"
-              alt="Menara Pandang Siring Banjarmasin"
-              fill
-              priority
-              unoptimized={true}
-              className="w-full h-full object-cover grayscale-[0.1] contrast-[1.1] brightness-[0.6]"
-              onLoad={() => setIsHeroLoaded(true)}
-            />
-          </motion.div>
-
-          {/* Unified Gradient Overlay (Lighter than before to prevent total blackness) */}
-          <div 
-            className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_20%,rgba(5,10,20,0.75)_100%)] transition-opacity duration-1000" 
-            style={{ opacity: isHeroLoaded ? 1 : 0 }}
-          />
-
-          {isHeroLoaded && (
-            <>
-              <WaterRippleHero />
-              <FloatingParticles
-                count={15}
-                colors={["rgba(245,197,24,0.4)", "rgba(255,255,255,0.2)"]}
-                className="z-[3]"
-              />
-            </>
-          )}
-
-          <AnimatePresence>
-            {isHeroLoaded && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{ y: textY }}
-                className="absolute inset-0 z-[4] flex flex-col items-center justify-center pointer-events-none select-none px-4"
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="flex items-center gap-3 mb-8"
-                >
-                  <div className="h-px w-8 md:w-12 bg-warm-gold/40" />
-                  <span className="text-warm-gold font-body font-bold uppercase tracking-[0.5em] text-[10px] md:text-xs">
-                    {t({ id: "Kota Seribu Sungai", en: "City of a Thousand Rivers" })}
-                  </span>
-                  <div className="h-px w-8 md:w-12 bg-warm-gold/40" />
-                </motion.div>
-
-                <div className="text-center mb-6">
-                  <div className="overflow-hidden h-[1.1em] mb-2 text-center">
-                    <motion.div
-                      key={wordIdx}
-                      initial={{ y: "100%" }}
-                      animate={{ y: "0%" }}
-                      exit={{ y: "-100%" }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <span
-                        className="font-heading font-[900] text-warm-gold block shadow-premium-glow tracking-tighter"
-                        style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)", lineHeight: 1 }}
-                      >
-                        {words[wordIdx]}
-                      </span>
-                    </motion.div>
-                  </div>
-                  <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.5 }}
-                    className="font-heading font-[900] text-white leading-none tracking-tighter"
-                    style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)" }}
-                  >
-                    {t({ id: "Pesona Banjarmasin", en: "Banjarmasin" })}
-                  </motion.h1>
-                </div>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.7 }}
-                  transition={{ duration: 1, delay: 1 }}
-                  className="text-white font-body text-sm md:text-base text-center max-w-xl leading-relaxed mb-12 px-6"
-                >
-                  {t({
-                    id: "Rasakan harmoni kehidupan di atas air dan kekayaan budaya Banjar yang tak lekang oleh waktu.",
-                    en: "Experience the harmony of life on the water and the timeless richness of Banjar culture.",
-                  })}
-                </motion.p>
-
-                <div className="flex flex-wrap justify-center items-center gap-6 pointer-events-auto">
-                  <Link
-                    href="#tentang"
-                    className="px-10 py-4 bg-warm-gold hover:bg-warm-gold-dark text-white font-bold text-xs uppercase tracking-widest rounded-full transition-all hover:scale-105 shadow-2xl shadow-warm-gold/20"
-                  >
-                    {t({ id: "Mulai Perjalanan", en: "Begin Journey" })}
-                  </Link>
-                  <Link
-                    href="/wisata"
-                    className="px-10 py-4 bg-white/5 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-widest rounded-full transition-all border border-white/20 hover:scale-105 backdrop-blur-md"
-                  >
-                    {t({ id: "Destinasi", en: "Destinations" })}
-                  </Link>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </section>        {/* ── BENTO GRID: ABOUT + STATS (Blueprint Section) ── */}
-        <section id="tentang" className="relative py-40 overflow-hidden bg-slate-50">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-warm-gold/5 rounded-full blur-[100px] -z-10" />
+        
+        {/* ── DYNAMIC MULTI-LAYOUT HERO ── */}
+        <section className="relative w-full h-screen overflow-hidden bg-river-blue">
           
-          <div className="max-w-7xl mx-auto px-6 relative z-10">
-            <FadeInView className="mb-20">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white rounded-lg border border-slate-200 text-warm-gold font-black text-[9px] tracking-widest uppercase mb-6">
-                 {t({ id: "Warisan Budaya", en: "Cultural Heritage" })}
-              </div>
-              <h2 className="text-4xl md:text-6xl font-[900] text-river-blue mb-8 max-w-3xl">
-                {t({ id: "Di Mana Sungai Adalah Nafas Kehidupan.", en: "Where the River is the Breath of Life." })}
-              </h2>
-            </FadeInView>
- 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              <div className="lg:col-span-7">
-                <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-premium-deep group">
-                  <Image
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pasar_Terapung_Muara_Kuin.jpg/1200px-Pasar_Terapung_Muara_Kuin.jpg"
-                    alt="Banjarmasin river life"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
+          <div className="relative w-full h-full overflow-hidden z-10">
+            <AnimatePresence mode="wait">
+               {activeSlide === 0 && <CinematicHero key="cinematic" data={slides[0]} t={t} />}
+               {activeSlide === 1 && <MosaicHero key="mosaic" data={slides[1]} t={t} />}
+               {activeSlide === 2 && <SplitHero key="split" data={slides[2]} t={t} />}
+            </AnimatePresence>
+
+            {/* Navigation Dots (Global Overlay) */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[100] flex gap-4 bg-river-blue/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
+               {slides.map((_, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => setActiveSlide(i)}
+                    className={`w-3 h-3 rounded-full transition-all ${i === activeSlide ? "bg-warm-gold w-8" : "bg-white/40"}`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-river-blue/60 to-transparent" />
-                </div>
-              </div>
-              
-              <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-                {stats.map((stat, i) => (
-                  <FadeInView key={i} delay={i * 0.1}>
-                    <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-premium-soft transition-all group">
-                      <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-river-blue group-hover:bg-warm-gold group-hover:text-white transition-all mb-6">
-                        <stat.icon size={22} />
-                      </div>
-                      <div className="text-3xl font-[900] text-river-blue tracking-monumental mb-2">
-                        {stat.value}<span className="text-sm opacity-40 ml-1">{stat.suffix}</span>
-                      </div>
-                      <div className="text-[10px] uppercase font-black text-slate-400 tracking-widest">
-                        {t(stat.label)}
-                      </div>
-                    </div>
-                  </FadeInView>
-                ))}
-              </div>
+               ))}
             </div>
+            
+            <WaterRippleHero />
           </div>
         </section>
-           {/* ── FEATURED DESTINATIONS: Premium Cards ── */}
-        <section className="relative py-40 overflow-hidden bg-white">
-          <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-river-blue/5 rounded-full blur-[120px] -z-10" />
-          
-          <div className="max-w-7xl mx-auto px-6">
-            <FadeInView className="mb-20">
-              <h2 className="text-4xl md:text-6xl font-[900] text-river-blue tracking-monumental leading-monumental mb-6">
-                {t({ id: "Temukan Tempat Favorit Anda.", en: "Find Your Favorite Spot." })}
-              </h2>
-              <p className="text-lg text-slate-400 font-medium max-w-xl">
-                 {t({ id: "Koleksi destinasi pilihan yang merangkum keajaiban arsitektur dan alam Banjarmasin.", en: "A curated collection of destinations showcasing the architectural and natural wonders of Banjarmasin." })}
-              </p>
-            </FadeInView>
- 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {destinations.slice(0, 6).map((dest, i) => (
-                <FadeInView key={dest.slug} delay={i * 0.1}>
-                  <div className="group relative bg-slate-50 rounded-[2.5rem] overflow-hidden border border-slate-100 p-4 hover:bg-white hover:shadow-premium-deep transition-all duration-500">
-                    <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden mb-8">
-                       <Image
-                         src={dest.heroImage.src}
-                         alt={t(dest.name)}
-                         fill
-                         className="object-cover group-hover:scale-105 transition-transform duration-1000"
-                       />
-                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <div className="px-4 pb-4">
-                       <h3 className="text-2xl font-black text-river-blue mb-2 tracking-tight">{t(dest.name)}</h3>
-                       <div className="text-[10px] font-black uppercase tracking-widest text-warm-gold mb-4">{dest.category}</div>
-                       <Link href={`/wisata/${dest.slug}`} className="inline-flex items-center gap-2 text-xs font-black text-river-blue group-hover:text-warm-gold transition-colors">
-                          EXPLORE <ArrowUpRight size={14} />
-                       </Link>
-                    </div>
-                  </div>
-                </FadeInView>
-              ))}
-            </div>
-          </div>
+
+        {/* ── SECTION 1: THE PULSE ── */}
+        <section className="relative py-80 overflow-hidden bg-white">
+           <FadeInView>
+              <div className="max-w-7xl mx-auto px-6 text-center">
+                 <h2 className="text-[15vw] font-black text-river-blue/[0.03] tracking-tighter leading-none select-none absolute inset-0 flex items-center justify-center pointer-events-none">
+                    PULSE
+                 </h2>
+                 <p className="relative z-10 text-3xl md:text-5xl font-bold text-river-blue tracking-tight max-w-3xl mx-auto leading-relaxed">
+                    {t({ 
+                      id: "Denyut kehidupan yang mengalir deras melintasi zaman, kini bertransformasi menjadi masa depan.", 
+                      en: "The pulse of life that flows strongly across time, now transforming into the future." 
+                    })}
+                 </p>
+                 <div className="h-0.5 w-16 bg-warm-gold/30 mx-auto mt-20" />
+              </div>
+           </FadeInView>
+        </section>
+
+        {/* ── SECTION 2: THE ARCHIVE CHAPTERS ── */}
+        <section className="relative h-screen min-h-[900px] flex flex-col lg:flex-row bg-river-blue overflow-hidden">
+           <MagneticPillar 
+             i={0}
+             pillar={{ 
+               title: { id: "Sejarah", en: "History" }, 
+               desc: { id: "Dari Kesultanan Banjar hingga era kolonial, temukan arsip masa lalu.", en: "From the Banjarmasin Sultanate to the colonial era, discover the archives." },
+               href: "/sejarah",
+               image: "/images/sejarah/PERANG_BANJAR_1857-1859.jpg"
+             }} 
+           />
+           <MagneticPillar 
+             i={1}
+             pillar={{ 
+               title: { id: "Warisan Budaya", en: "Culture" }, 
+               desc: { id: "Ritme harian di atas sungai dan kilauan warna kain Sasirangan.", en: "Daily rhythms above the river and the sparkle of Sasirangan." },
+               href: "/budaya",
+               image: "/images/budaya/Pasar_terapung_Banjarmasin_7.jpg"
+             }} 
+           />
+           <MagneticPillar 
+             i={2}
+             pillar={{ 
+               title: { id: "Destinasi Wisata", en: "Tourism" }, 
+               desc: { id: "Permata tersembunyi di setiap kanal dan jembatan yang menghubungkan mimpi.", en: "Hidden gems in every canal and bridge that connect dreams." },
+               href: "/wisata",
+               image: "/images/wisata/Jembatan_Sei_Alalak,_Banjarmasin.jpg"
+             }} 
+           />
+        </section>
+
+        {/* ── SECTION 3: THE JOURNAL ── */}
+        <section className="relative h-[300vh] bg-slate-50">
+           <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+              <div className="max-w-7xl mx-auto px-6 w-full mb-20">
+                 <FadeInView>
+                    <span className="text-warm-gold font-bold uppercase tracking-[0.5em] text-[10px] mb-6 block">Monthly Archive</span>
+                    <h2 className="text-4xl md:text-7xl font-bold text-river-blue tracking-tight">
+                       The Rivers Journal.
+                    </h2>
+                 </FadeInView>
+              </div>
+
+              <motion.div style={{ x: horizontalX }} className="flex gap-16 px-[10vw]">
+                 {blogPosts.map((post, i) => (
+                    <Link 
+                      key={i} 
+                      href={`/blog/${post.slug}`}
+                      className="w-[85vw] md:w-[42vw] shrink-0 group"
+                    >
+                       <div className="relative aspect-[16/9] rounded-[2.5rem] overflow-hidden mb-10 shadow-premium-soft border border-slate-100">
+                          <Image src={post.image} alt="" fill className="object-cover group-hover:scale-105 transition-transform duration-[2000ms]" />
+                          <div className="absolute inset-0 bg-river-blue/10 group-hover:bg-transparent transition-colors duration-700" />
+                          <div className="absolute bottom-8 right-8">
+                             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-river-blue shadow-lg group-hover:bg-warm-gold transition-colors">
+                                <ArrowUpRight size={20} />
+                             </div>
+                          </div>
+                       </div>
+                       <div className="px-2">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-warm-gold mb-3 block">{t(post.category)}</span>
+                          <h3 className="text-2xl md:text-3xl font-bold text-river-blue mb-4 leading-tight group-hover:text-warm-gold transition-colors">{t(post.title)}</h3>
+                          <p className="text-river-blue/40 font-medium text-sm line-clamp-2 leading-relaxed">{t(post.excerpt)}</p>
+                       </div>
+                    </Link>
+                 ))}
+                 
+                 <div className="w-[30vw] shrink-0 flex items-center justify-center">
+                    <Link href="/blog" className="flex flex-col items-center gap-8 group">
+                       <div className="w-40 h-40 rounded-full border border-river-blue/5 flex items-center justify-center group-hover:bg-river-blue transition-all">
+                          <MoveRight size={48} className="text-river-blue/20 group-hover:text-white transition-colors" />
+                       </div>
+                       <span className="font-bold text-[10px] uppercase tracking-[0.4em] text-river-blue/30">View More Stories</span>
+                    </Link>
+                 </div>
+              </motion.div>
+           </div>
+        </section>
+
+        {/* ── SECTION 4: ATLAS ── */}
+        <SectionWrapper className="py-60 bg-white border-t border-slate-50">
+           <div className="max-w-7xl mx-auto px-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
+                 <div>
+                    <FadeInView>
+                       <span className="text-warm-gold font-bold uppercase tracking-[0.6em] text-[10px] mb-8 block">Quantified City</span>
+                       <h2 className="text-5xl md:text-[6rem] font-bold text-river-blue tracking-tight leading-[0.9] mb-12">
+                          Statistical <br />Atlas.
+                       </h2>
+                    </FadeInView>
+                 </div>
+                 <div className="grid grid-cols-2 gap-4">
+                    {stats.map((stat, i) => (
+                      <FadeInView key={i} delay={i * 0.1}>
+                         <div className="aspect-square bg-slate-50/50 border border-slate-100 rounded-[2.5rem] p-12 flex flex-col justify-between group hover:bg-river-blue transition-all duration-700">
+                            <stat.icon size={28} className="text-river-blue group-hover:text-warm-gold transition-colors" />
+                            <div>
+                               <div className="text-4xl md:text-5xl font-bold text-river-blue group-hover:text-white transition-colors tracking-tight mb-2">
+                                  {stat.value}
+                               </div>
+                               <div className="text-[10px] font-bold uppercase tracking-widest text-river-blue/30 group-hover:text-warm-gold transition-colors">
+                                  {t(stat.label)}
+                               </div>
+                            </div>
+                         </div>
+                      </FadeInView>
+                    ))}
+                 </div>
+              </div>
+           </div>
+        </SectionWrapper>
+
+        {/* ── FINAL CTA ── */}
+        <section className="py-60 bg-river-blue text-white relative overflow-hidden">
+           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,197,24,0.1),transparent_70%)]" />
+           <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+              <FadeInView>
+                 <Sparkles className="mx-auto text-warm-gold mb-16" size={56} />
+                 <h2 className="text-5xl md:text-8xl font-bold tracking-tight leading-[0.9] mb-16">
+                    Start Your <br /><span className="text-warm-gold">Legacy</span> Today.
+                 </h2>
+                 <div className="flex flex-wrap justify-center gap-8">
+                    <Link href="/wisata" className="px-16 py-8 bg-warm-gold text-river-blue rounded-full font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-premium-glow">
+                       Explore The Archive
+                    </Link>
+                 </div>
+              </FadeInView>
+           </div>
         </section>
 
       </PageTransitionWrapper>

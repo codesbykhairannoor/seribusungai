@@ -51,19 +51,22 @@ const BanjarmasinMap = dynamic(() => import("@/components/ui/BanjarmasinMap"), {
 
 const PANELS = [
   {
-    src: "https://commons.wikimedia.org/w/thumb.php?f=Jukung_Pasar_Terapung.jpg&w=1200",
+    src: "/images/profilkota/Jukung_Pasar_Terapung.jpg",
     label: { id: "Pasar Terapung", en: "Floating Market" },
     anim: { x: -60 },
+    priority: true,
   },
   {
-    src: "https://commons.wikimedia.org/w/thumb.php?f=Menara_Pandang_Banjarmasin.JPG&w=1200",
+    src: "/images/profilkota/Menara_Pandang_Banjarmasin.JPG",
     label: { id: "Menara Pandang", en: "Menara Pandang" },
     anim: { y: -40 },
+    priority: true,
   },
   {
-    src: "https://commons.wikimedia.org/w/thumb.php?f=Sunrise_on_the_Martapura_river.jpg&w=1200",
+    src: "/images/profilkota/Sunrise_on_the_Martapura_river.jpg",
     label: { id: "Sungai Martapura", en: "Martapura River" },
     anim: { x: 60 },
+    priority: true,
   },
 ];
 
@@ -146,8 +149,8 @@ export default function ProfilKota() {
                     src={p.src}
                     alt={t(p.label)}
                     fill
-                    priority
-                    unoptimized={true}
+                    priority={p.priority}
+                    sizes="(max-width: 768px) 33vw, 25vw"
                     className="object-cover grayscale-[0.2] contrast-[1.1] brightness-[0.55]"
                     onLoad={handleImageLoad}
                   />

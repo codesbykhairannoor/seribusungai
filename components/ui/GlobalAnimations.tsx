@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import LoadingScreen from "./LoadingScreen";
 import CustomCursor from "./CustomCursor";
-import BoatScrollIndicator from "./BoatScrollIndicator";
+import TopBoatProgress from "./TopBoatProgress";
 
 export default function GlobalAnimations() {
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,7 @@ export default function GlobalAnimations() {
     <>
       {loading && <LoadingScreen onComplete={handleLoadingComplete} />}
       <CustomCursor />
-      <BoatScrollIndicator />
+      <TopBoatProgress />
     </>
   );
 }

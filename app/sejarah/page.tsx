@@ -6,247 +6,276 @@ import NavigationBar from "@/components/layout/NavigationBar";
 import Footer from "@/components/layout/Footer";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
 import SectionWrapper from "@/components/ui/SectionWrapper";
-import Timeline from "@/components/ui/Timeline";
 import FadeInView from "@/components/animations/FadeInView";
-import { HistoryBento, BentoCard } from "@/components/ui/HistoryBento";
-import { BeforeAfterSlider } from "@/components/ui/BeforeAfterSlider";
-import { RiverWaves, TopoLines, EditorialNoise } from "@/components/ui/SectionBackgrounds";
+import DomeGallery from "@/components/ui/DomeGallery";
+import VintageSeparator from "@/components/ui/VintageSeparator";
+import HistoryTimelineItem from "@/components/ui/HistoryTimelineItem";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Landmark, 
-  Map, 
-  Shield, 
-  Users, 
-  Anchor, 
-  ScrollText, 
-  ArrowRight,
-  Compass,
-  History
-} from "lucide-react";
-
-const HISTORY_IMAGES = [
-  "https://commons.wikimedia.org/w/thumb.php?f=Masjid_Jami_Banjarmasin.jpg&w=1200",
-  "https://commons.wikimedia.org/w/thumb.php?f=Sungai_Martapura_di_Pagi_Hari_(1).jpg&w=1200",
-  "https://commons.wikimedia.org/w/thumb.php?f=Pasar_terapung_Banjarmasin.jpg&w=1200",
-  "https://commons.wikimedia.org/w/thumb.php?f=Rumah_Adat_Bubungan_Tinggi_Banjarmasin.jpg&w=1200",
-];
+import { motion } from "framer-motion";
+import { Clock, History, ArrowRight } from "lucide-react";
 
 export default function Sejarah() {
   const { t } = useLanguage();
-  const [isHeroLoaded, setIsHeroLoaded] = useState(false);
-  const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  // ── Client-side Mounting ──
   useEffect(() => {
     setMounted(true);
-    
-    const timer = setInterval(() => {
-      setCurrentImgIndex((prev) => (prev + 1) % HISTORY_IMAGES.length);
-    }, 6000);
-    
-    return () => clearInterval(timer);
   }, []);
 
-  const timelineEvents = [
-    { 
-      year: "1526", 
-      title: { id: "Kelahiran Kesultanan Banjar", en: "Birth of the Banjar Sultanate" }, 
-      description: { id: "Momentum besar saat Pengeran Samudera memeluk Islam dan mendirikan peradaban baru di muara sungai.", en: "The pivotal moment when Prince Samudera embraced Islam and founded a new civilization at the river delta." },
-      imageSrc: "https://commons.wikimedia.org/w/thumb.php?f=Masjid_Jami_Banjarmasin.jpg&w=800",
-      icon: Landmark
+  const years = [
+    {
+      year: "1526",
+      title: { id: "Kelahiran Kesultanan Banjar", en: "Birth of the Banjar Sultanate" },
+      desc: { 
+        id: "24 September 1526, Pangeran Samudera memeluk Islam dan bergelar Sultan Suriansyah, menandai lahirnya peradaban baru di muara sungai.", 
+        en: "September 24, 1526, Prince Samudera embraced Islam as Sultan Suriansyah, establishing a new civilization at the river estuary." 
+      },
+      image: "/images/sejarah/Sultanate_of_Banjar_under_Sulayman,_1810s.png"
     },
-    { 
-      year: "1859", 
-      title: { id: "Perang Banjar", en: "The Banjar War" }, 
-      description: { id: "Perlawanan heroik rakyat Banjar melawan monopoli Belanda yang dipimpin oleh Pangeran Antasari.", en: "The heroic resistance of the Banjar people against Dutch monopoly, led by Prince Antasari." },
-      imageSrc: "https://commons.wikimedia.org/w/thumb.php?f=Sungai_Martapura.jpg&w=800",
-      icon: Shield
+    {
+      year: "1859",
+      title: { id: "Era Perlawanan: Perang Banjar", en: "Era of Resistance: The Banjar War" },
+      desc: { 
+        id: "Dibawah seruan 'Haram Manyarah', Pangeran Antasari memimpin rakyat melawan kolonialisme untuk kedaulatan tanah Banjar.", 
+        en: "Under the cry of 'Haram Manyarah', Prince Antasari led the people against colonialism for the sovereignty of Banjar land." 
+      },
+      image: "/images/sejarah/PERANG_BANJAR_1857-1859.jpg"
     },
-    { 
-      year: "1945", 
-      title: { id: "Fajar Kemerdekaan", en: "Dawn of Independence" }, 
-      description: { id: "Banjarmasin bertransformasi menjadi pusat administratif penting bagi kedaulatan Republik Indonesia.", en: "Banjarmasin transformed into a vital administrative center for the sovereignty of the Republic of Indonesia." },
-      imageSrc: "https://commons.wikimedia.org/w/thumb.php?f=Pasar_terapung_Banjarmasin.jpg&w=800",
-      icon: Users
+    {
+      year: "1905",
+      title: { id: "Pusat Perdagangan Hindia Belanda", en: "Dutch East Indies Trade Hub" },
+      desc: { 
+        id: "Banjarmasin berkembang menjadi pelabuhan lada dan karet strategis di pertemuan dua sungai besar Kalimantan.", 
+        en: "Banjarmasin evolved into a strategic pepper and rubber port at the confluence of Kalimantan's major rivers." 
+      },
+      image: "/images/sejarah/Emmahaven_-_Page_73_-_Boekoe_Peringatan_dari_Staatsspoor-en_Tramwegen_di_Hindia-Belanda_1875-1925.jpg"
     },
-    { 
-      year: "2024", 
-      title: { id: "Metropolis Digital", en: "Digital Metropolis" }, 
-      description: { id: "Menjadi hub ekonomi dan teknologi di Kalimantan dengan tetap menjaga warisan Seribu Sungai.", en: "Becoming an economic and technology hub in Kalimantan while preserving the 'Thousand Rivers' heritage." },
-      imageSrc: "https://commons.wikimedia.org/w/thumb.php?f=Menara_Pandang_Banjarmasin.JPG&w=800",
-      icon: Compass
+    {
+      year: "1945",
+      title: { id: "Republik & Masa Depan", en: "The Republic & The Future" },
+      desc: { 
+        id: "Sejarah baru terukir saat Banjarmasin bergabung dalam kedaulatan Republik Indonesia, bertransformasi menjadi metropolis digital.", 
+        en: "A new history was written as Banjarmasin joined the Indonesian Republic, eventually transforming into a digital metropolis." 
+      },
+      image: "/images/sejarah/1920px-Museum_Lambung_Mangkurat.png"
     }
   ];
 
+  if (!mounted) return null;
+
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#fdfcf9] selection:bg-warm-gold/20 selection:text-river-blue">
       <NavigationBar />
+      
       <PageTransitionWrapper>
-        {/* ── PREMIUM HERO: THE MONUMENT ── */}
-        <header className="relative pt-32 pb-40 lg:pt-48 lg:pb-56 overflow-hidden bg-white">
-          {/* 1. Ambient Glows */}
-          <div className="absolute top-0 right-1/4 w-[700px] h-full bg-warm-gold/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+        {/* ── VINTAGE HERO: DOME GALLERY ── */}
+        <header className="relative w-full h-[100vh] bg-[#06283d] overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <DomeGallery
+              images={[
+                "/images/sejarah/Sultanate_of_Banjar_under_Sulayman,_1810s.png",
+                "/images/sejarah/PERANG_BANJAR_1857-1859.jpg",
+                "/images/sejarah/Emmahaven_-_Page_73_-_Boekoe_Peringatan_dari_Staatsspoor-en_Tramwegen_di_Hindia-Belanda_1875-1925.jpg",
+                "/images/sejarah/1920px-Museum_Lambung_Mangkurat.png",
+                "/images/sejarah/Pangeran_Antasari_Museum_Lambung_Mangkurat.jpg",
+                "/images/sejarah/Sultanate_of_Banjar_under_Sulayman,_1810s.png"
+              ]}
+              fit={0.45}
+              minRadius={900}
+              maxVerticalRotationDeg={0}
+              segments={30}
+              dragDampening={2.5}
+              grayscale={true}
+              overlayBlurColor="#06283d"
+            />
+          </div>
           
-          {/* 2. Visual Textures */}
-          <div className="absolute inset-0 bg-pattern-grid opacity-[0.03] -z-10" />
+          {/* Radial Scrim to Focus on Text */}
+          <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(6,40,61,0.5)_0%,rgba(6,40,61,0.8)_50%,rgba(6,40,61,0.95)_100%)]" />
 
-          {/* 3. Floating Objects */}
-          <div className="absolute top-48 left-[10%] w-16 h-16 bg-white/60 backdrop-blur-xl rounded-2xl shadow-premium-soft flex items-center justify-center text-2xl animate-float hidden xl:flex border border-white/80 z-20">
-            📜
-          </div>
-          <div className="absolute bottom-48 right-[12%] w-14 h-14 bg-white/40 backdrop-blur-md rounded-xl shadow-premium-soft flex items-center justify-center text-xl animate-bounce-slow hidden xl:flex border border-white/40 z-20">
-            ⏳
-          </div>
-
-          <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          {/* Hero Overlay Text */}
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none pt-24">
             <FadeInView>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 font-bold text-[10px] tracking-[0.2em] uppercase shadow-sm mb-12">
-                <span className="flex h-1.5 w-1.5 rounded-full bg-warm-gold"></span>
-                {t({ id: "JEJAK PERADABAN", en: "CIVILIZATION TRACES" })}
-              </div>
+               <div className="flex flex-col items-center text-center px-6">
+                  <div className="inline-flex items-center gap-3 px-6 py-2 border border-white/20 bg-white/5 backdrop-blur-md shadow-2xl rounded-full mb-12">
+                     <div className="w-2 h-2 rounded-full bg-warm-gold animate-pulse" />
+                     <span className="font-serif italic text-xs tracking-widest text-white/90 uppercase">
+                       Est. 1526 — {t({ id: "Arsip Warisan", en: "Heritage Archive" })}
+                     </span>
+                  </div>
+                  
+                  <h1 className="font-heading font-black text-5xl md:text-8xl text-white leading-[0.85] mb-10 tracking-tight text-center">
+                    {t({ id: "Menyapa", en: "Greeting" })} <br />
+                    <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-warm-gold via-white to-warm-gold bg-[length:200%_auto] animate-gradient-flow">
+                       {t({ id: "Masa Lalu.", en: "The Past." })}
+                    </span>
+                  </h1>
 
-              <h1 className="text-5xl md:text-8xl font-[900] tracking-monumental leading-monumental text-river-blue mb-10 max-w-5xl mx-auto">
-                {t({ id: "Menembus Lorong", en: "Journey Through" })} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-river-blue via-warm-gold to-river-blue bg-[length:200%_auto] animate-gradient-flow text-glow">
-                  Waktu.
-                </span>
-              </h1>
+                  <p className="max-w-xl mx-auto text-lg md:text-2xl text-white/60 leading-relaxed font-serif italic text-center drop-shadow-sm">
+                    {t({ 
+                      id: "Susuri jejak peradaban sungai yang telah mengalir selama berabad-abad, dari kerajaan legendaris hingga metropolis modern.", 
+                      en: "Trace the footsteps of a river civilization that has flowed for centuries, from legendary kingdoms to modern metropolises." 
+                    })}
+                  </p>
 
-              <p className="text-lg md:text-xl text-slate-500 font-medium leading-relaxed opacity-80 max-w-2xl mx-auto mb-16">
-                {t({
-                  id: "Arsip sejarah Banjarmasin dari era Kesultanan hingga masa kini, dikurasi dengan standar digital preservasi internasional.",
-                  en: "Banjarmasin historical archives from the Sultanate era to the present day, curated with international digital preservation standards.",
-                })}
-              </p>
+                  <div className="mt-16 flex flex-col items-center gap-4">
+                     <div className="w-px h-20 bg-gradient-to-b from-warm-gold to-transparent" />
+                     <div className="text-[10px] text-warm-gold/60 uppercase tracking-[0.4em] font-bold animate-pulse">
+                       {t({ id: "GESER UNTUK MENELUSURI", en: "DRAG TO EXPLORE" })}
+                     </div>
+                  </div>
+               </div>
             </FadeInView>
           </div>
+
+          {/* Global vignette */}
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_200px_rgba(0,0,0,0.8)] z-30" />
         </header>
 
-        {/* ── BENTO HUB ── */}
-        <section id="hub" className="py-40 bg-slate-50 relative overflow-hidden">
-          <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-warm-gold/5 rounded-full blur-[100px] -z-10" />
-          <div className="max-w-7xl mx-auto px-6 relative z-10">
-            <FadeInView className="mb-20">
-              <h2 className="text-4xl md:text-6xl font-[900] text-river-blue tracking-monumental leading-monumental mb-8">
-                Pusat Kendali Sejarah.
-              </h2>
-            </FadeInView>
-            <HistoryBento />
-          </div>
-        </section>
+        {/* ── THE FOUNDING STORY ── */}
+        <SectionWrapper className="bg-white border-y border-slate-100 py-32">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid lg:grid-cols-2 gap-20 items-center">
+              <FadeInView direction="right">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-warm-gold/5 -rotate-2 rounded-[3rem] -z-10" />
+                  <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-2xl">
+                     <Image 
+                       src="/images/sejarah/Sultanate_of_Banjar_under_Sulayman,_1810s.png" 
+                       alt="Kesultanan Banjar" 
+                       fill 
+                       className="object-cover"
+                     />
+                  </div>
+                  <div className="absolute bottom-10 -right-10 bg-white p-8 rounded-[2rem] shadow-premium-deep max-w-xs border border-slate-100">
+                     <Clock className="text-river-blue mb-4" size={32} />
+                     <p className="font-heading font-black text-river-blue text-lg leading-relaxed">
+                       "{t({ id: "Banjarmasin didirikan pada momen konvergensi spiritual dan perdagangan.", en: "Banjarmasin was founded at a moment of spiritual and trade convergence." })}"
+                     </p>
+                  </div>
+                </div>
+              </FadeInView>
 
-        {/* ── SECTION: FOUNDATION BENTO ── */}
-        <section className="py-20 md:py-32 bg-white relative overflow-hidden">
-          <RiverWaves />
-          <div className="max-w-6xl mx-auto px-6 relative z-10">
-            <div className="text-center mb-20">
-              <FadeInView>
-                <span className="text-river-blue/40 font-black uppercase tracking-[0.3em] text-[8px] mb-3 block">The Beginning</span>
-                <h2 className="text-3xl md:text-4xl font-heading font-black text-river-blue mb-4 tracking-tighter">Puncak Kejayaan <span className="text-warm-gold">1526</span></h2>
+              <FadeInView direction="left">
+                 <h2 className="font-heading font-black text-4xl md:text-5xl text-river-blue mb-8 leading-tight">
+                    {t({ id: "Sultan Suriansyah & Fajar Kuin", en: "Sultan Suriansyah & Dawn of Kuin" })}
+                 </h2>
+                 <div className="space-y-6 text-slate-600 text-lg leading-relaxed font-body">
+                    <p>
+                      {t({
+                        id: "Semua bermula di Kuin, muara sungai Martapura. Pangeran Samudera, yang kemudian bergelar Sultan Suriansyah, meletakkan fondasi Banjarmasin sebagai pusat kekuatan baru di selatan Kalimantan.",
+                        en: "It all began in Kuin, the mouth of the Martapura river. Prince Samudera, later known as Sultan Suriansyah, laid the foundation of Banjarmasin as a new power hub in southern Kalimantan."
+                      })}
+                    </p>
+                    <p>
+                      {t({
+                        id: "Pelabuhan Kuin segera tumbuh menjadi magnet bagi pedagang lada dari seluruh dunia, menciptakan percampuran budaya unik antara Melayu, Banjar, dan bangsa-bangsa samudra.",
+                        en: "The port of Kuin quickly became a magnet for pepper traders from around the world, creating a unique cultural blend between Malay, Banjar, and oceanic nations."
+                      })}
+                    </p>
+                    <motion.button 
+                      whileHover={{ x: 10 }}
+                      className="inline-flex items-center gap-3 text-river-blue font-heading font-black italic text-xl border-b-2 border-river-blue/20 pb-1 mt-8"
+                    >
+                      {t({ id: "Baca Arsip Kolonial", en: "Read Colonial Archives" })}
+                      <ArrowRight size={20} />
+                    </motion.button>
+                 </div>
               </FadeInView>
             </div>
-
-            <HistoryBento>
-               <BentoCard 
-                  className="md:col-span-2 h-[450px]"
-                  badge={{ id: "Era Kesultanan", en: "Sultanate Era" }}
-                  title={{ id: "Lahirnya Peradaban Maritim", en: "Rise of Maritime Civilization" }}
-                  description={{ id: "Banjarmasin didirikan di atas delta sungai yang strategis, menghubungkan perdagangan rempah nusantara dengan dunia luar.", en: "Banjarmasin was founded on a strategic river delta, connecting the archipelago's spice trade with the outside world." }}
-                  image="https://commons.wikimedia.org/w/thumb.php?f=Sungai_Martapura_di_Pagi_Hari_(1).jpg&w=1200"
-                  icon={<Anchor size={32} />}
-               />
-               <BentoCard 
-                  className="md:col-span-2 h-[450px]"
-                  badge={{ id: "Tokoh Utama", en: "Key Figure" }}
-                  title={{ id: "Sultan Suriansyah: Sang Pelopor", en: "Sultan Suriansyah: The Pioneer" }}
-                  description={{ id: "Raja pertama yang memeluk Islam, mengubah jalan sejarah Banjar menjadi pusat penyebaran nilai-nilai religi di Kalimantan.", en: "The first king to embrace Islam, changing the course of Banjar history into a center for religious values in Kalimantan." }}
-                  image="https://commons.wikimedia.org/w/thumb.php?f=Masjid_Jami_Banjarmasin.jpg&w=1200"
-                  icon={<Users size={32} />}
-               />
-            </HistoryBento>
           </div>
+        </SectionWrapper>
+
+        <VintageSeparator />
+
+        {/* ── CHRONOLOGICAL TIMELINE ── */}
+        <section className="py-24 relative">
+            <div className="max-w-6xl mx-auto px-6">
+              <div className="text-center mb-32">
+                 <h2 className="font-heading font-black text-4xl md:text-5xl text-river-blue mb-6">
+                    {t({ id: "Garis Waktu Peradaban", en: "Timeline of Civilization" })}
+                 </h2>
+                 <p className="text-slate-500 font-heading font-black italic">{t({ id: "Dari Kesultanan hingga Masa Depan", en: "From Sultanate to the Future" })}</p>
+              </div>
+
+              <div className="relative">
+                 {/* Center Line for desktop */}
+                 <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 hidden md:block" />
+                 
+                 {years.map((y, i) => (
+                   <HistoryTimelineItem 
+                    key={y.year}
+                    {...y}
+                    index={i}
+                   />
+                 ))}
+              </div>
+            </div>
         </section>
 
-        {/* ── SECTION: HISTORY HUB (TIMELINE) ── */}
-        <section className="py-24 md:py-48 bg-gray-50 relative overflow-hidden">
-          <div className="max-w-6xl mx-auto px-6">
-            <Timeline events={timelineEvents} />
-          </div>
-        </section>
-
-        {/* ── SECTION: THE TRANSFORMATION (BEFORE/AFTER) ── */}
-        <section className="py-24 md:py-48 bg-white relative overflow-hidden">
-          <TopoLines />
-          <div className="max-w-6xl mx-auto px-6 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center mb-24">
-               <div className="lg:col-span-5">
-                  <FadeInView direction="right">
-                    <span className="text-warm-gold font-black uppercase tracking-[0.4em] text-[9px] mb-5 block">Evolution</span>
-                    <h2 className="text-4xl md:text-5xl font-heading font-black text-river-blue mb-6 leading-tight">Gema <span className="text-warm-gold italic">Metamorfosa.</span></h2>
-                    <p className="text-river-blue/50 text-sm leading-relaxed mb-10">
-                       {t({ id: "Saksikanlah bagaimana wajah kota ini berubah dari pelabuhan lada kuno menjadi pusat Smart City yang tetap menjaga harmoni sungainya.", en: "Witness how the face of this city changed from an ancient pepper port to a Smart City hub that maintains its river harmony." })}
+        {/* ── HERITAGE FOCUS: PANGERAN ANTASARI ── */}
+        <section className="bg-river-blue py-32 text-white overflow-hidden relative">
+           <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/black-paper.png')] -z-0" />
+           
+           <div className="max-w-7xl mx-auto px-6 relative z-10">
+              <div className="grid lg:grid-cols-2 gap-20 items-center">
+                 <FadeInView direction="right">
+                    <span className="text-warm-gold font-heading font-black italic text-xl mb-6 block">{t({ id: "Haram Manyarah, Waja Sampai Kaputing", en: "Defeat is Forbidden, Spirit remains until the end" })}</span>
+                    <h2 className="font-heading font-black text-4xl md:text-6xl mb-8 leading-tight">
+                       Pangeran Antasari <br />
+                       & <span className="italic opacity-70">{t({ id: "Jiwa Banjar.", en: "Banjar Soul." })}</span>
+                    </h2>
+                    <p className="text-white/70 text-lg leading-relaxed mb-10 font-body lg:pr-20">
+                       {t({
+                         id: "Perang Banjar (1859) bukan sekadar perang wilayah, melainkan perlawanan martabat. Semangat Pangeran Antasari mengukuhkan identitas rakyat Banjar yang tak kenal menyerah menghadapi ketidakadilan kolonial.",
+                         en: "The Banjar War (1859) was not just a war over territory, but a defense of dignity. Prince Antasari's spirit cemented the identity of the Banjar people, never surrendering to colonial injustice."
+                       })}
                     </p>
-                  </FadeInView>
-               </div>
-               <div className="lg:col-span-7">
-                  <BeforeAfterSlider 
-                    beforeImg="https://commons.wikimedia.org/w/thumb.php?f=Masjid_Jami_Banjarmasin.jpg&w=1200"
-                    afterImg="https://commons.wikimedia.org/w/thumb.php?f=Menara_Pandang_Banjarmasin.JPG&w=1200"
-                    beforeLabel="Historical Era"
-                    afterLabel="Modern Metropolis"
-                  />
-               </div>
-            </div>
-          </div>
+                    <div className="grid grid-cols-2 gap-10">
+                       <div>
+                          <div className="text-3xl font-heading font-black text-warm-gold mb-2">1862</div>
+                          <div className="text-xs uppercase tracking-widest opacity-60">Wafat sebagai Pahlawan</div>
+                       </div>
+                       <div>
+                          <div className="text-3xl font-heading font-black text-warm-gold mb-2">12+</div>
+                          <div className="text-xs uppercase tracking-widest opacity-60">Wilayah Perlawanan</div>
+                       </div>
+                    </div>
+                 </FadeInView>
+
+                 <FadeInView direction="left">
+                    <div className="relative group">
+                       <div className="absolute -inset-4 border border-white/20 rounded-[3rem] -z-10 group-hover:scale-105 transition-transform" />
+                       <div className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] overflow-hidden border-4 border-white/20 shadow-2xl">
+                          <Image 
+                            src="/images/sejarah/Pangeran_Antasari_Museum_Lambung_Mangkurat.jpg" 
+                            alt="Pangeran Antasari" 
+                            fill 
+                            className="object-cover"
+                          />
+                       </div>
+                    </div>
+                 </FadeInView>
+              </div>
+           </div>
         </section>
 
-        {/* ── SECTION: ARTIFACT BENTO ── */}
-        <section className="py-24 md:py-48 bg-river-blue text-white relative overflow-hidden">
-          <div className="max-w-6xl mx-auto px-6 relative z-10">
-            <div className="text-center mb-24">
-               <FadeInView>
-                  <span className="text-warm-gold font-black uppercase tracking-[0.4em] text-[9px] mb-4 block">The Archives</span>
-                  <h2 className="text-3xl md:text-5xl font-heading font-black text-white tracking-tighter">Galeri <span className="text-warm-gold">Benda Pusaka</span></h2>
-               </FadeInView>
-            </div>
-
-            <HistoryBento>
-               <BentoCard 
-                  className="bg-white/5 border-white/10 !p-10"
-                  badge={{ id: "Senjata", en: "Weaponry" }}
-                  title={{ id: "Keris Banjar", en: "Banjar Keris" }}
-                  description={{ id: "Simbol kedaulatan dan keberanian prajurit Kesultanan Banjar dalam menjaga kehormatan tanah air.", en: "A symbol of sovereignty and the bravery of Banjar Sultanate warriors in guarding their homeland's honor." }}
-                  image="https://commons.wikimedia.org/w/thumb.php?f=Keris_Banjar.JPG&w=800"
-                  icon={<Shield size={24} />}
-               />
-               <BentoCard 
-                  className="bg-white/5 border-white/10 !p-10 md:mt-12"
-                  badge={{ id: "Arsitektur", en: "Architecture" }}
-                  title={{ id: "Rumah Bubungan Tinggi", en: "Bubungan Tinggi House" }}
-                  description={{ id: "Puncak estetika arsitektur panggung yang didesain adaptif terhadap pasang surut sungai.", en: "The pinnacle of stilted architectural aesthetics, designed to adapt to river tides." }}
-                  image="https://commons.wikimedia.org/w/thumb.php?f=Rumah_Adat_Bubungan_Tinggi_Banjarmasin.jpg&w=800"
-                  icon={<Landmark size={24} />}
-               />
-               <BentoCard 
-                  className="bg-white/5 border-white/10 !p-10"
-                  badge={{ id: "Navigasi", en: "Navigation" }}
-                  title={{ id: "Jukung Berenteng", en: "Jukung Berenteng" }}
-                  description={{ id: "Armada perdagangan tradisional yang menjadi urat nadi ekonomi pasar terapung.", en: "The traditional trading fleet that became the economic vein of the floating market." }}
-                  image="https://commons.wikimedia.org/w/thumb.php?f=Jukung_Berenteng.jpg&w=800"
-                  icon={<History size={24} />}
-               />
-               <BentoCard 
-                  className="bg-white/5 border-white/10 !p-10 md:mt-12"
-                  badge={{ id: "Seni Lukis", en: "Art" }}
-                  title={{ id: "Motif Sasirangan", en: "Sasirangan Motifs" }}
-                  description={{ id: "Tekstil tradisional yang setiap goresannya menyimpan doa dan identitas filosofis kearifan lokal.", en: "Traditional textiles where every stroke holds prayers and the philosophical identity of local wisdom." }}
-                  image="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Sasirangan_Banjarmasin.JPG/800px-Sasirangan_Banjarmasin.JPG"
-                  icon={<Map size={24} />}
-               />
-            </HistoryBento>
-          </div>
+        {/* ── CALL TO ACTION ── */}
+        <section className="py-32 bg-white text-center">
+           <FadeInView>
+              <History size={64} className="mx-auto text-river-blue/20 mb-8" />
+              <h2 className="font-heading font-black text-4xl text-river-blue mb-8">
+                 {t({ id: "Lihat Masa Depan Digital Kami", en: "See Our Digital Future" })}
+              </h2>
+              <div className="flex flex-wrap justify-center gap-6">
+                 <a href="/visi-digital" className="px-10 py-4 bg-river-blue text-white rounded-full font-heading font-black italic text-lg shadow-premium-glow hover:scale-105 transition-transform">
+                    {t({ id: "Visi Digital 2026", en: "Digital Vision 2026" })}
+                 </a>
+                 <button className="px-10 py-4 border border-river-blue text-river-blue rounded-full font-heading font-black italic text-lg hover:bg-slate-50 transition-colors">
+                    {t({ id: "Arsip Lengkap", en: "Full Archives" })}
+                 </button>
+              </div>
+           </FadeInView>
         </section>
 
       </PageTransitionWrapper>

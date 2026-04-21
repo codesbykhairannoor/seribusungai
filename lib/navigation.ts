@@ -81,5 +81,5 @@ export const NAV_ITEMS: NavItem[] = [
     ],
   },
   { label: { id: "Panduan", en: "Travel Guide" }, href: "/panduan" },
-  { label: { id: "Kontak", en: "Contact" }, href: "/kontak" },
+  { label: { id: "Blog", en: "Blog" }, href: "/blog" },
 ];

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BilingualText } from "@/content/types";
 
@@ -13,6 +13,7 @@ export interface CulinaryItem {
   imageSrc: string;
   location?: BilingualText;
   tag?: BilingualText;
+  mapLink?: string;
 }
 
 interface CulinaryCardProps {
@@ -59,9 +60,21 @@ export default function CulinaryCard({ item }: CulinaryCardProps) {
         </p>
 
         {item.location && (
-          <div className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-warm-gold border-t border-river-blue/5 pt-4 mt-4">
-            <MapPin size={11} />
-            <span>{t(item.location)}</span>
+          <div className="flex items-center justify-between border-t border-river-blue/5 pt-4 mt-4">
+            <div className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-warm-gold">
+              <MapPin size={11} />
+              <span>{t(item.location)}</span>
+            </div>
+            {item.mapLink && (
+              <a 
+                href={item.mapLink} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[10px] font-bold text-river-blue/40 hover:text-river-blue transition-colors flex items-center gap-1"
+              >
+                MAPS <ArrowUpRight size={10} />
+              </a>
+            )}
           </div>
         )}
       </div>

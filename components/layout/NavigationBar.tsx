@@ -24,14 +24,15 @@ export default function NavigationBar() {
 
   const isScrolled = scrollY > 80;
 
-  // Homepage uses ImageHero (light bg) — all other pages have dark hero
-  const isHomePage = pathname === "/";
-  // When not scrolled: homepage = dark text, other pages = white text (dark hero)
+  // Pages that use light backgrounds for their heroes (white/cream)
+  const hasLightHero = pathname === "/budaya" || pathname === "/berita" || pathname === "/blog";
+  
+  // When not scrolled: light hero pages = dark text, dark hero pages = white text
   const navTextColor = isScrolled
     ? "text-river-blue"
-    : isHomePage
-    ? "text-white"
-    : "text-river-blue";
+    : hasLightHero
+    ? "text-river-blue"
+    : "text-white";
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -61,13 +62,13 @@ export default function NavigationBar() {
             <div className="flex flex-col">
               <span className={cn(
                 "font-[900] text-lg leading-none tracking-tight transition-colors",
-                isScrolled ? "text-river-blue" : isHomePage ? "text-white" : "text-river-blue"
+                isScrolled ? "text-river-blue" : hasLightHero ? "text-river-blue" : "text-white"
               )}>
                 Banjarmasin
               </span>
               <span className={cn(
                 "text-[8px] font-black uppercase tracking-[0.3em] transition-colors mt-1 opacity-60",
-                isScrolled ? "text-river-blue" : isHomePage ? "text-white" : "text-river-blue"
+                isScrolled ? "text-river-blue" : hasLightHero ? "text-river-blue" : "text-white"
               )}>
                 Archive
               </span>
@@ -90,7 +91,7 @@ export default function NavigationBar() {
                   "text-[13px] font-bold tracking-tight transition-all hover:text-warm-gold flex items-center gap-1",
                   pathname === item.href
                     ? "text-warm-gold"
-                    : isScrolled ? "text-river-blue" : isHomePage ? "text-white" : "text-river-blue"
+                    : isScrolled ? "text-river-blue" : hasLightHero ? "text-river-blue" : "text-white"
                 )}
               >
                 {t(item.label)}
@@ -145,7 +146,7 @@ export default function NavigationBar() {
               "flex items-center gap-2 px-4 py-2 rounded-xl border text-[11px] font-bold tracking-tight transition-all",
               isScrolled
                 ? "border-river-blue/10 text-river-blue hover:bg-river-blue/5"
-                : isHomePage
+                : hasLightHero
                 ? "border-river-blue/10 text-river-blue hover:bg-river-blue/5"
                 : "border-white/20 text-white hover:bg-white/10"
             )}
@@ -160,9 +161,9 @@ export default function NavigationBar() {
               "xl:hidden p-2 rounded-md transition-colors",
               isScrolled
                 ? "text-river-blue hover:bg-river-blue/5"
-                : isHomePage
-                ? "text-white hover:bg-white/10"
-                : "text-river-blue hover:bg-river-blue/5"
+                : hasLightHero
+                ? "text-river-blue hover:bg-river-blue/5"
+                : "text-white hover:bg-white/10"
             )}
             onClick={() => setIsMobileMenuOpen(true)}
           >

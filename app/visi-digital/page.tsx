@@ -1,262 +1,308 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import NavigationBar from "@/components/layout/NavigationBar";
 import Footer from "@/components/layout/Footer";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInView from "@/components/animations/FadeInView";
-import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion } from "framer-motion";
-import { Cpu, Globe, TrendingUp, Zap, Shield, Rocket, Wifi, Database } from "lucide-react";
-import DigitalKlotok from "@/components/ui/DigitalKlotok";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Cpu, 
+  Globe, 
+  TrendingUp, 
+  Zap, 
+  Shield, 
+  Rocket, 
+  Wifi, 
+  Database,
+  Smartphone,
+  CheckCircle2,
+  Lock,
+  ArrowRight,
+  Layers,
+  Network
+} from "lucide-react";
 
 export default function VisiDigital() {
   const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState(0);
 
-  const initiatives = [
-    { title: { id: "Smart Governance", en: "Smart Governance" }, desc: { id: "Pelayanan publik berbasis digital yang transparan dan efisien.", en: "Transparent and efficient digital-based public services." }, icon: Shield, gradient: "from-blue-500 to-river-blue", span: "col-span-2 md:col-span-1" },
-    { title: { id: "Smart Environment", en: "Smart Environment" }, desc: { id: "Sistem monitoring sungai dan mitigasi banjir cerdas.", en: "Intelligent river monitoring and flood mitigation systems." }, icon: Zap, gradient: "from-emerald-500 to-teal-600", span: "col-span-2 md:col-span-1" },
-    { title: { id: "Smart Economy", en: "Smart Economy" }, desc: { id: "Pendampingan digitalisasi UMKM dan ekosistem startup.", en: "Digitalization support for MSMEs and startup ecosystem." }, icon: TrendingUp, gradient: "from-warm-gold to-amber-600", span: "col-span-2 md:col-span-2" },
-    { title: { id: "Smart Mobility", en: "Smart Mobility" }, desc: { id: "Sistem transportasi terintegrasi berbasis data real-time.", en: "Integrated transportation system based on real-time data." }, icon: Wifi, gradient: "from-purple-500 to-violet-600", span: "col-span-2 md:col-span-1" },
-    { title: { id: "Smart People", en: "Smart People" }, desc: { id: "Peningkatan literasi digital dan SDM berkualitas.", en: "Improving digital literacy and quality human resources." }, icon: Database, gradient: "from-rose-500 to-pink-600", span: "col-span-2 md:col-span-1" },
-    { title: { id: "Smart Living", en: "Smart Living" }, desc: { id: "Kualitas hidup warga yang meningkat melalui teknologi.", en: "Improved quality of life for citizens through technology." }, icon: Cpu, gradient: "from-orange-500 to-red-500", span: "col-span-2 md:col-span-2" },
+  const pillars = [
+    { 
+      id: "gov",
+      title: { id: "Smart Governance", en: "Smart Governance" }, 
+      desc: { id: "Pemerintahan yang transparan dan efisien melalui sistem Single Sign-On (SSO) di aplikasi Banjarmasin Pintar.", en: "Transparent and efficient government through the Single Sign-On (SSO) system in the Banjarmasin Pintar app." },
+      icon: Shield,
+      color: "bg-blue-600"
+    },
+    { 
+      id: "brand",
+      title: { id: "Smart Branding", en: "Smart Branding" }, 
+      desc: { id: "Meningkatkan daya saing daerah dengan mempromosikan wisata sungai dan kearifan lokal secara digital.", en: "Increasing regional competitiveness by digitally promoting river tourism and local wisdom." },
+      icon: Globe,
+      color: "bg-teal-600"
+    },
+    { 
+      id: "econ",
+      title: { id: "Smart Economy", en: "Smart Economy" }, 
+      desc: { id: "Dukungan penuh bagi 5.000+ UMKM untuk go-digital dan akses ke literasi keuangan non-tunai.", en: "Full support for 5.000+ MSMEs to go-digital and access to cashless financial literacy." },
+      icon: TrendingUp,
+      color: "bg-amber-600"
+    },
+    { 
+      id: "env",
+      title: { id: "Smart Environment", en: "Smart Environment" }, 
+      desc: { id: "Sistem cerdas pemantauan sungai dan pengelolaan sampah yang terintegrasi dengan sensor IoT.", en: "Smart river monitoring and waste management systems integrated with IoT sensors." },
+      icon: Zap,
+      color: "bg-emerald-600"
+    },
+    { 
+      id: "live",
+      title: { id: "Smart Living", en: "Smart Living" }, 
+      desc: { id: "Meningkatkan kualitas hidup warga lewat kemudahan akses layanan kesehatan dan transportasi cerdas.", en: "Improving citizen quality of life through easy access to health services and smart transportation." },
+      icon: Smartphone,
+      color: "bg-rose-600"
+    },
+    { 
+      id: "soc",
+      title: { id: "Smart Society", en: "Smart Society" }, 
+      desc: { id: "Mewujudkan masyarakat yang komunikatif dan produktif dengan literasi digital yang tinggi.", en: "Creating a communicative and productive society with high digital literacy." },
+      icon: Network,
+      color: "bg-indigo-600"
+    }
   ];
 
-  const digitalStats = [
-    { value: 5000, suffix: "+", label: { id: "UMKM Digital", en: "Digital MSMEs" } },
-    { value: 85, suffix: "%", label: { id: "Konektivitas", en: "Connectivity" } },
-    { value: 47, suffix: "+", label: { id: "Layanan Online", en: "Online Services" } },
-    { value: 2030, suffix: "", label: { id: "Target Smart City", en: "Smart City Target" } },
+  const appFeatures = [
+    { title: "One-Stop Service", desc: { id: "Akses semua layanan pemerintah dalam satu aplikasi.", en: "Access all government services in one single application." } },
+    { title: "SSO Security", desc: { id: "Keamanan Single Sign-On untuk data warga yang terlindungi.", en: "Single Sign-On security for protected citizen data." } },
+    { title: "Report & Track", desc: { id: "Laporkan masalah kota dan pantau progres perbaikannya.", en: "Report city issues and track its repair progress." } },
+    { title: "Daily Assistance", desc: { id: "Info cuaca, transportasi, dan berita kota secara real-time.", en: "Real-time weather, transport, and city news information." } }
   ];
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col bg-slate-50">
       <NavigationBar />
+      
       <PageTransitionWrapper>
+        {/* ── DRIVER SMART CITY HERO ── */}
+        <header className="relative pt-32 pb-40 lg:pt-48 lg:pb-60 overflow-hidden bg-river-blue text-white">
+           <div className="absolute inset-0 bg-pattern-grid opacity-5 -z-10" />
+           <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-400/5 blur-[150px] -z-20" />
 
-        {/* ── HERO: Futuristic — teks kiri, stats kanan, grid background ── */}
-        <section className="relative h-screen min-h-[700px] flex overflow-hidden bg-river-blue-900 border-b border-white/5">
-          {/* Animated grid background */}
-          <div className="absolute inset-0 z-0 opacity-10"
-            style={{
-              backgroundImage: "linear-gradient(rgba(245,197,24,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(245,197,24,0.3) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-              animation: "gridPulse 4s ease-in-out infinite",
-            }}
-          />
-          
-          {/* Glow orbs */}
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-warm-gold/5 rounded-full blur-3xl pointer-events-none"/>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"/>
+           <div className="max-w-7xl mx-auto px-6 relative z-10">
+              <div className="grid lg:grid-cols-12 gap-16 items-center">
+                 <div className="lg:col-span-7">
+                    <FadeInView direction="right">
+                       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-warm-gold font-bold text-[10px] tracking-widest uppercase mb-8">
+                          <Rocket size={14} className="animate-bounce" />
+                          (D)River Smart City 2026
+                       </div>
+                       <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-black leading-[0.9] mb-8">
+                          {t({ id: "Transformasi Digital", en: "Digital Transformation" })} <br />
+                          <span className="text-cyan-400 italic">{t({ id: "di Tepian Sungai.", en: "at the River's Edge." })}</span>
+                       </h1>
+                       <p className="text-lg text-white/70 max-w-xl leading-relaxed mb-10">
+                          {t({ 
+                            id: "Menjadikan Banjarmasin sebagai pusat inovasi yang mengintegrasikan teknologi modern dengan kearifan lokal sungai yang abadi.", 
+                            en: "Turning Banjarmasin into an innovation hub that integrates modern technology with the eternal local river wisdom." 
+                          })}
+                       </p>
+                       <div className="flex flex-wrap gap-4">
+                          <button className="px-8 py-4 bg-warm-gold text-white rounded-full font-bold shadow-xl hover:scale-105 transition-transform">
+                             {t({ id: "Lihat Roadmap", en: "View Roadmap" })}
+                          </button>
+                          <button className="px-8 py-4 border border-white/20 rounded-full font-bold hover:bg-white/10 transition-colors">
+                             {t({ id: "Download Aplikasi", en: "Download App" })}
+                          </button>
+                       </div>
+                    </FadeInView>
+                 </div>
 
-          {/* LEFT CONTENT AREA: 45% Width */}
-          <div className="relative z-20 w-full lg:w-[45%] flex flex-col justify-center px-8 md:px-16 lg:px-24 bg-gradient-to-r from-river-blue-900 via-river-blue-900 to-transparent">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <motion.span
-                initial={{ opacity:0, scale: 0.9 }} animate={{ opacity:1, scale:1 }}
-                className="inline-flex items-center gap-2 text-warm-gold font-bold uppercase tracking-[0.3em] text-xs mb-8 px-4 py-2 rounded-full border border-warm-gold/30 bg-warm-gold/10"
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-warm-gold animate-pulse"/>
-                Smart City 2030
-              </motion.span>
-
-              <motion.h1
-                initial={{ opacity:0, y:30 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.8, delay:0.3 }}
-                className="font-heading font-black text-white text-4xl md:text-6xl lg:text-7xl leading-[1.1] mb-6"
-              >
-                {t({ id: "Masa Depan", en: "Future" })}<br/>
-                <span className="text-warm-gold">{t({ id: "di Tepian", en: "on the" })}</span><br/>
-                {t({ id: "Sungai", en: "Riverbanks" })}
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.7, delay:0.5 }}
-                className="text-white/40 font-body text-base md:text-lg leading-relaxed max-w-md mb-10"
-              >
-                {t({ id: "Mentransformasi Banjarmasin menjadi Smart City yang berkelanjutan, inklusif, dan berdaya saing global.", en: "Transforming Banjarmasin into a sustainable, inclusive, and globally competitive Smart City." })}
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.7 }}
-                className="flex items-center gap-12"
-              >
-                <div className="text-left">
-                  <div className="text-white font-heading font-bold text-3xl mb-1"><AnimatedCounter value={85} suffix="%"/></div>
-                  <div className="text-warm-gold/40 text-[10px] font-bold uppercase tracking-widest">{t({ id: "Konektivitas", en: "Connectivity" })}</div>
-                </div>
-                <div className="w-px h-10 bg-white/10" />
-                <div className="text-left">
-                  <div className="text-white font-heading font-bold text-3xl mb-1"><AnimatedCounter value={5000} suffix="+"/></div>
-                  <div className="text-warm-gold/40 text-[10px] font-bold uppercase tracking-widest">{t({ id: "UMKM Digital", en: "Digital MSMEs" })}</div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          {/* RIGHT VISUAL AREA: 55% Width */}
-          <div className="hidden lg:flex relative w-[55%] h-full items-center justify-center overflow-hidden">
-             {/* Photo background subtle overlay */}
-            <div className="absolute inset-0 z-0 opacity-10">
-              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gedung_Bank_Indonesia_di_Banjarmasin.jpg" alt="" className="w-full h-full object-cover"/>
-            </div>
-            
-            <div className="relative z-10 w-full max-w-xl scale-110">
-              <DigitalKlotok />
-            </div>
-
-            <div className="absolute inset-0 z-10 pointer-events-none shadow-[inset_100px_0_100px_-50px_#0a0f1a]" />
-          </div>
-
-          {/* Scroll indicator */}
-          <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:2 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-            <motion.div animate={{ y:[0,6,0] }} transition={{ repeat:Infinity, duration:1.8 }}
-              className="w-px h-10 bg-warm-gold/30"/>
-            <span className="text-white/20 text-[9px] uppercase tracking-[0.4em]">Scroll</span>
-          </motion.div>
-        </section>
-
-        {/* ── SMART CITY BENTO ── */}
-        <section className="py-20 md:py-28 bg-white overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <FadeInView className="mb-14">
-              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Pilar Smart City", en: "Smart City Pillars" })}</span>
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue">{t({ id: "Menuju Banjarmasin 2030", en: "Towards Banjarmasin 2030" })}</h2>
-            </FadeInView>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {initiatives.map((item, i) => (
-                <FadeInView key={i} delay={i*0.07} className={item.span}>
-                  <div className="group relative bg-river-blue-50 rounded-3xl p-7 h-full min-h-[160px] flex flex-col justify-between overflow-hidden hover:shadow-xl transition-all duration-400 border border-transparent hover:border-warm-gold/20">
-                    <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-xl`}/>
-                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform shadow-lg`}><item.icon size={22}/></div>
-                    <div>
-                      <h4 className="font-heading font-bold text-river-blue text-lg mb-2">{t(item.title)}</h4>
-                      <p className="text-xs text-river-blue/55 leading-relaxed">{t(item.desc)}</p>
-                    </div>
-                  </div>
-                </FadeInView>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── INFRASTRUKTUR DIGITAL ── */}
-        <section className="py-20 md:py-28 bg-white overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <FadeInView className="mb-14">
-              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Fondasi Kota Cerdas", en: "Smart City Foundation" })}</span>
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue">{t({ id: "Infrastruktur Digital", en: "Digital Infrastructure" })}</h2>
-            </FadeInView>
-            <div className="relative">
-              <div className="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-river-blue-50 z-0"/>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
-                {[
-                  { year:"2020", icon:"🚌", title:{ id:"Trans Banjarmasin BRT", en:"Trans Banjarmasin BRT" }, desc:{ id:"Bus Rapid Transit pertama di Kalimantan Selatan, diluncurkan 2020.", en:"South Kalimantan's first Bus Rapid Transit, launched in 2020." }, progress:85, color:"bg-emerald-500", dotColor:"bg-emerald-500" },
-                  { year:"2021", icon:"🏛️", title:{ id:"OSC One Stop Center", en:"OSC One Stop Center" }, desc:{ id:"Pusat layanan publik terpadu berbasis digital.", en:"Integrated digital-based public service center." }, progress:90, color:"bg-river-blue", dotColor:"bg-river-blue" },
-                  { year:"2022", icon:"🌊", title:{ id:"River IoT Monitoring", en:"River IoT Monitoring" }, desc:{ id:"Jaringan sensor IoT di sepanjang sungai untuk pemantauan real-time.", en:"IoT sensor network along rivers for real-time monitoring." }, progress:70, color:"bg-warm-gold", dotColor:"bg-warm-gold" },
-                  { year:"2023", icon:"📡", title:{ id:"47 Media Terdaftar", en:"47 Registered Media" }, desc:{ id:"Ekosistem media lokal yang kuat mendukung keterbukaan informasi.", en:"A strong local media ecosystem supporting public information transparency." }, progress:95, color:"bg-purple-500", dotColor:"bg-purple-500" },
-                ].map((item, i) => (
-                  <motion.div key={i} initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay: i*0.12, duration:0.6 }} className="group">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className={`w-5 h-5 rounded-full ${item.dotColor} ring-4 ring-white shadow-lg shrink-0`}/>
-                      <span className="text-xs font-bold text-river-blue/40 uppercase tracking-widest">{item.year}</span>
-                    </div>
-                    <div className="bg-river-blue-50 rounded-3xl p-6 h-full group-hover:shadow-xl transition-all duration-400 border border-transparent group-hover:border-warm-gold/20">
-                      <div className="text-3xl mb-4">{item.icon}</div>
-                      <h4 className="font-heading font-bold text-river-blue text-lg mb-3 leading-tight">{t(item.title)}</h4>
-                      <p className="text-xs text-river-blue/55 font-body leading-relaxed mb-5">{t(item.desc)}</p>
-                      <div>
-                        <div className="flex justify-between items-center mb-1.5">
-                          <span className="text-[10px] uppercase tracking-widest text-river-blue/40 font-bold">{t({ id:"Implementasi", en:"Implementation" })}</span>
-                          <span className="text-xs font-bold text-warm-gold">{item.progress}%</span>
-                        </div>
-                        <div className="h-1.5 bg-river-blue/10 rounded-full overflow-hidden">
-                          <motion.div initial={{ width:0 }} whileInView={{ width:`${item.progress}%` }} viewport={{ once:true }} transition={{ delay: i*0.12+0.3, duration:0.8 }}
-                            className={`h-full rounded-full ${item.color}`}/>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── DIGITAL ECONOMY ── */}
-        <section className="py-20 md:py-28 bg-river-blue-50 overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              <FadeInView direction="right" className="lg:col-span-6 relative">
-                <div className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl">
-                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gedung_Bank_Indonesia_di_Banjarmasin.jpg" alt="Digital economy" className="w-full h-full object-cover"/>
-                  <div className="absolute inset-0 bg-gradient-to-t from-river-blue/60 to-transparent"/>
-                </div>
-                <motion.div initial={{ opacity:0, x:-20, y:20 }} whileInView={{ opacity:1, x:0, y:0 }} viewport={{ once:true }} transition={{ delay:0.3 }}
-                  className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-5 shadow-2xl">
-                  <div className="text-3xl font-heading font-bold text-river-blue"><AnimatedCounter value={5000} suffix="+"/></div>
-                  <div className="text-[10px] uppercase tracking-widest text-warm-gold font-bold mt-1">UMKM Digital</div>
-                </motion.div>
-                <motion.div initial={{ opacity:0, x:20, y:-20 }} whileInView={{ opacity:1, x:0, y:0 }} viewport={{ once:true }} transition={{ delay:0.45 }}
-                  className="absolute -top-6 -right-6 bg-warm-gold text-white rounded-2xl p-5 shadow-2xl">
-                  <div className="text-3xl font-heading font-bold"><AnimatedCounter value={85} suffix="%"/></div>
-                  <div className="text-[10px] uppercase tracking-widest opacity-80 font-bold mt-1">Konektivitas</div>
-                </motion.div>
-              </FadeInView>
-              <FadeInView direction="left" className="lg:col-span-6">
-                <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-5 block">{t({ id:"Ekonomi Digital", en:"Digital Economy" })}</span>
-                <h2 className="text-4xl font-heading font-bold text-river-blue mb-8 leading-tight">{t({ id:"Memajukan UMKM Lewat Teknologi", en:"Advancing MSMEs through Technology" })}</h2>
-                <p className="text-lg text-river-blue/65 mb-10 font-body leading-relaxed">{t({ id:"Dengan lebih dari 5.000 UMKM yang telah go-digital, Banjarmasin kini menjadi hub ekonomi kreatif digital di Kalimantan Selatan.", en:"With over 5,000 MSMEs now go-digital, Banjarmasin is becoming the digital creative economy hub in South Kalimantan." })}</p>
-                <div className="grid grid-cols-2 gap-4">
-                  {digitalStats.slice(2).map((stat, i) => (
-                    <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-river-blue/5">
-                      <div className="text-4xl font-heading font-bold text-river-blue mb-1"><AnimatedCounter value={stat.value} suffix={stat.suffix}/></div>
-                      <div className="text-[10px] uppercase tracking-widest text-warm-gold font-bold">{t(stat.label)}</div>
-                    </div>
-                  ))}
-                </div>
-              </FadeInView>
-            </div>
-          </div>
-        </section>
-
-        {/* ── INVESTMENT CTA ── */}
-        <section className="py-20 md:py-28 bg-white overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <FadeInView>
-              <div className="relative bg-river-blue rounded-[50px] overflow-hidden">
-                <div className="absolute inset-0 opacity-10"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gedung_Bank_Indonesia_di_Banjarmasin.jpg" alt="" className="w-full h-full object-cover"/></div>
-                <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none"><Globe size={350}/></div>
-                <div className="relative z-10 p-12 md:p-20">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                      <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-5 block">{t({ id:"Investasi", en:"Investment" })}</span>
-                      <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-8 leading-tight">{t({ id:"Pusat Investasi Berkelanjutan", en:"Hub for Sustainable Investment" })}</h2>
-                      <p className="text-xl text-white/60 mb-10 font-body leading-relaxed">{t({ id:"Kami mengundang para investor untuk berkolaborasi dalam membangun infrastruktur cerdas, pariwisata berkelanjutan, dan ekonomi digital masa depan di Banjarmasin.", en:"We invite investors to collaborate in building smart infrastructure, sustainable tourism, and the future digital economy in Banjarmasin." })}</p>
-                      <a href="/kontak" className="inline-block px-8 py-4 bg-warm-gold hover:bg-warm-gold-dark text-white font-bold rounded-full transition-all hover:scale-105 shadow-xl shadow-warm-gold/20">{t({ id:"Hubungi Kami", en:"Contact Us" })}</a>
-                    </div>
-                    <StaggerContainer className="grid grid-cols-2 gap-4" staggerDelay={0.1}>
-                      {[{ icon:Rocket, label:{ id:"Kemudahan Perizinan", en:"Easy Licensing" }, bg:"bg-white/10" }, { icon:Cpu, label:{ id:"Infrastruktur Tech", en:"Tech Infrastructure" }, bg:"bg-warm-gold/20" }, { icon:TrendingUp, label:{ id:"Pertumbuhan Ekonomi", en:"Economic Growth" }, bg:"bg-white/10" }, { icon:Globe, label:{ id:"Koneksi Global", en:"Global Connection" }, bg:"bg-white/5" }].map((item, i) => (
-                        <StaggerItem key={i}>
-                          <div className={`${item.bg} rounded-2xl p-6 border border-white/10 hover:bg-white/15 transition-colors flex flex-col gap-3`}>
-                            <item.icon className="text-warm-gold" size={24}/>
-                            <span className="font-bold text-white text-sm">{t(item.label)}</span>
+                 <div className="lg:col-span-5 relative">
+                    <FadeInView direction="left" delay={0.4}>
+                       <div className="relative">
+                          <div className="absolute -inset-10 bg-cyan-400/10 blur-[60px] rounded-full" />
+                          <div className="relative aspect-square md:aspect-[4/5] bg-white/5 rounded-[3rem] border border-white/10 flex items-center justify-center backdrop-blur-3xl p-1">
+                             <div className="w-full h-full rounded-[2.8rem] bg-gradient-to-br from-slate-900 to-river-blue overflow-hidden relative shadow-2xl">
+                                {/* Mockup content */}
+                                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-32 h-6 bg-black/40 rounded-full" />
+                                <div className="pt-24 px-8">
+                                   <div className="text-warm-gold text-xs font-bold mb-2">Banjarmasin Pintar</div>
+                                   <div className="h-2 w-20 bg-white/20 rounded-full mb-8" />
+                                   <div className="grid grid-cols-2 gap-4">
+                                      <div className="h-24 rounded-2xl bg-white/5 border border-white/10" />
+                                      <div className="h-24 rounded-2xl bg-white/5 border border-white/10" />
+                                      <div className="h-24 rounded-2xl bg-white/5 border border-white/10" />
+                                      <div className="h-24 rounded-2xl bg-white/5 border border-white/10" />
+                                   </div>
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-river-blue to-transparent pointer-events-none" />
+                             </div>
                           </div>
-                        </StaggerItem>
-                      ))}
-                    </StaggerContainer>
-                  </div>
-                </div>
+                       </div>
+                    </FadeInView>
+                 </div>
               </div>
-            </FadeInView>
-          </div>
+           </div>
+        </header>
+
+        {/* ── 6 DIMENSIONS SECTION ── */}
+        <section className="py-24 bg-white">
+           <div className="max-w-7xl mx-auto px-6">
+              <div className="text-center mb-20">
+                 <FadeInView>
+                    <span className="text-river-blue font-bold tracking-widest text-xs uppercase mb-4 block">Our Digital Pillars</span>
+                    <h2 className="text-3xl md:text-5xl font-bold text-river-blue">{t({ id: "6 Dimensi Smart City", en: "6 Dimensions of Smart City" })}</h2>
+                 </FadeInView>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                 {pillars.map((p, i) => (
+                    <FadeInView key={p.id} delay={i * 0.1}>
+                       <div className="p-10 rounded-[2.5rem] bg-slate-50 hover:bg-white hover:shadow-premium-soft border border-transparent hover:border-slate-100 transition-all duration-500 h-full group">
+                          <div className={`w-14 h-14 rounded-2xl ${p.color} text-white flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform`}>
+                             <p.icon size={28} />
+                          </div>
+                          <h3 className="text-2xl font-bold text-river-blue mb-4">{t(p.title)}</h3>
+                          <p className="text-slate-500 leading-relaxed">
+                             {t(p.desc)}
+                          </p>
+                       </div>
+                    </FadeInView>
+                 ))}
+              </div>
+           </div>
+        </section>
+
+        {/* ── DETAIL APLIKASI: BANJARMASIN PINTAR ── */}
+        <SectionWrapper className="bg-river-blue py-32 text-white overflow-hidden">
+           <div className="max-w-7xl mx-auto px-6 relative">
+              <div className="grid lg:grid-cols-2 gap-20 items-center">
+                 <FadeInView direction="right">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-8">
+                       Satu Aplikasi <br />
+                       <span className="text-warm-gold">Untuk Kota Sejuta Harapan.</span>
+                    </h2>
+                    <p className="text-lg text-white/70 leading-relaxed mb-12">
+                       {t({
+                         id: "Aplikasi 'Banjarmasin Pintar' adalah pintu digital bagi setiap warga. Nikmati kemudahan layanan publik dalam genggaman handphone Anda, kapan saja dan di mana saja.",
+                         en: "'Banjarmasin Pintar' is the digital gateway for every citizen. Enjoy the convenience of public services in your pocket, anytime and anywhere."
+                       })}
+                    </p>
+                    <div className="space-y-6">
+                       {appFeatures.map((f, i) => (
+                          <div key={i} className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                             <CheckCircle2 className="text-cyan-400 shrink-0" />
+                             <div>
+                                <h4 className="font-bold text-white mb-1">{f.title}</h4>
+                                <p className="text-sm text-white/50">{t(f.desc)}</p>
+                             </div>
+                          </div>
+                       ))}
+                    </div>
+                 </FadeInView>
+
+                 <FadeInView direction="left" className="relative">
+                    <div className="relative aspect-square max-w-md mx-auto">
+                       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-river-blue rounded-[3rem] border border-white/10 flex items-center justify-center p-12 overflow-hidden group">
+                          <motion.div 
+                            initial={{ rotate: 0 }}
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-10 border-2 border-dashed border-cyan-400/30 rounded-full"
+                          />
+                          <Smartphone size={160} className="text-white drop-shadow-2xl relative z-10 group-hover:scale-110 transition-transform duration-500" />
+                          
+                          <div className="absolute bottom-8 left-0 right-0 text-center">
+                             <div className="text-xs font-bold tracking-widest text-cyan-400 uppercase">Single Sign-On Security</div>
+                          </div>
+                       </div>
+                       
+                       <div className="absolute -top-6 -right-6 p-6 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl animate-pulse">
+                          <Shield size={32} className="text-warm-gold" />
+                       </div>
+                    </div>
+                 </FadeInView>
+              </div>
+           </div>
+        </SectionWrapper>
+
+        {/* ── ROADMAP 2024-2026 ── */}
+        <section className="py-24 bg-white relative overflow-hidden">
+           <div className="max-w-5xl mx-auto px-6">
+              <div className="text-center mb-20">
+                 <FadeInView>
+                    <h2 className="text-3xl md:text-5xl font-bold text-river-blue mb-4">{t({ id: "Roadmap Digital", en: "Digital Roadmap" })}</h2>
+                    <p className="text-slate-500">{t({ id: "Langkah pasti menuju ekosistem digital yang matang.", en: "Definite steps toward a mature digital ecosystem." })}</p>
+                 </FadeInView>
+              </div>
+
+              <div className="relative space-y-12">
+                 <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-slate-100 -z-10" />
+                 
+                 {[
+                   { year: "2024", task: { id: "Digital Literacy Surge", en: "Digital Literacy Surge" }, detail: { id: "Peningkatan 200% literasi digital untuk UMKM dan masyarakat luas.", en: "200% surge in digital literacy for MSMEs and the general public." } },
+                   { year: "2025", task: { id: "AI Powered Services", en: "AI Powered Services" }, detail: { id: "Implementasi chatbot AI dan analisis data untuk layanan darurat.", en: "Implementation of AI chatbots and data analysis for emergency services." } },
+                   { year: "2026", task: { id: "Total (D)River Smart City", en: "Total (D)River Smart City" }, detail: { id: "Integrasi penuh IoT pada sensor kualitas air dan navigasi sungai.", en: "Full IoT integration on water quality sensors and river navigation." } }
+                 ].map((item, i) => (
+                    <FadeInView key={item.year} delay={i * 0.1}>
+                       <div className={`flex flex-col md:flex-row items-start md:items-center gap-8 ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}>
+                          <div className="md:flex-1 w-full text-left md:text-right px-6">
+                             <div className={`md:inline-block hidden ${i % 2 !== 0 ? "text-left" : "text-right"}`}>
+                                <h3 className="text-3xl font-bold text-river-blue mb-2">{item.year}</h3>
+                                <p className="text-slate-500">{t(item.task)}</p>
+                             </div>
+                          </div>
+                          <div className="relative z-10 w-12 h-12 rounded-full bg-white border-2 border-river-blue flex items-center justify-center shrink-0 shadow-lg">
+                             <div className="w-4 h-4 rounded-full bg-river-blue animate-ping" />
+                          </div>
+                          <div className="flex-1 px-8 md:px-0">
+                             <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-river-blue/20 transition-all group">
+                                <div className="text-xl font-bold text-river-blue mb-2 md:hidden">{item.year}</div>
+                                <h4 className="text-river-blue font-bold text-lg mb-2 group-hover:text-cyan-600 transition-colors">{t(item.task)}</h4>
+                                <p className="text-sm text-slate-500 leading-relaxed">{t(item.detail)}</p>
+                             </div>
+                          </div>
+                       </div>
+                    </FadeInView>
+                 ))}
+              </div>
+           </div>
+        </section>
+
+        {/* ── SECURITY & TRUST ── */}
+        <section className="py-20 bg-slate-50 border-t border-slate-100">
+           <div className="max-w-7xl mx-auto px-6">
+              <FadeInView className="flex flex-col md:flex-row items-center gap-12 justify-center">
+                 <div className="flex items-center gap-4 text-river-blue/40">
+                    <Shield size={40} />
+                    <div>
+                       <div className="font-bold uppercase tracking-widest text-[10px]">Data Protection</div>
+                       <div className="text-xs">AES-256 Encryption</div>
+                    </div>
+                 </div>
+                 <div className="h-px w-20 bg-slate-200 hidden md:block" />
+                 <div className="flex items-center gap-4 text-river-blue/40">
+                    <Lock size={40} />
+                    <div>
+                       <div className="font-bold uppercase tracking-widest text-[10px]">Security</div>
+                       <div className="text-xs">2FA Authenticated</div>
+                    </div>
+                 </div>
+                 <div className="h-px w-20 bg-slate-200 hidden md:block" />
+                 <div className="flex items-center gap-4 text-river-blue/40">
+                    <Database size={40} />
+                    <div>
+                       <div className="font-bold uppercase tracking-widest text-[10px]">Reliability</div>
+                       <div className="text-xs">99.9% Cloud Uptime</div>
+                    </div>
+                 </div>
+              </FadeInView>
+           </div>
         </section>
 
       </PageTransitionWrapper>

@@ -6,30 +6,75 @@ import Footer from "@/components/layout/Footer";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInView from "@/components/animations/FadeInView";
-import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
 import CulinaryCard, { CulinaryItem } from "@/components/ui/CulinaryCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { Flame, Star, Leaf, ArrowUpRight } from "lucide-react";
+import Plasma from "@/components/ui/Plasma";
 
 export default function Kuliner() {
   const { t } = useLanguage();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const iconicDishes: CulinaryItem[] = [
-    { id: "soto-banjar", name: { id: "Soto Banjar", en: "Soto Banjar" }, description: { id: "Ikon kuliner nomor satu. Soto ayam berkuah bening harum rempah — kayu manis, cengkeh, lawang — disajikan dengan ketupat dan perkedel.", en: "The number one culinary icon. Chicken soup with clear broth fragrant with spices — cinnamon, cloves, star anise — served with ketupat and potato cakes." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Nasi_Kuning_Banjar_001.jpg", location: { id: "Hampir di Seluruh Kota", en: "Almost Everywhere In City" }, tag: { id: "Wajib Coba", en: "Must Try" } },
-    { id: "ketupat-kandangan", name: { id: "Ketupat Kandangan", en: "Ketupat Kandangan" }, description: { id: "Ketupat dengan kuah santan kental gurih, disajikan dengan ikan Haruan yang dipanggang sebelum dimasak.", en: "Ketupat with savory thick coconut milk broth, served with Haruan fish grilled before cooking." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Buras_Banjar_1.jpg", location: { id: "Warung Khas Banjar", en: "Typical Banjar Eateries" } },
-    { id: "gangan-asam-banjar", name: { id: "Gangan Asam Banjar", en: "Gangan Asam Banjar" }, description: { id: "Sayur asam khas Banjar dengan ikan haruan atau patin, timun, dan kacang panjang yang menyegarkan.", en: "Banjar style sour vegetable soup with haruan or patin fish, cucumber, and long beans." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Iwak_Karing_Kalakai_Masak_Kuning_Sambal_Ramania.jpg" },
-    { id: "nasi-kuning-banjar", name: { id: "Nasi Kuning Banjar", en: "Banjar Yellow Rice" }, description: { id: "Nasi kuning wangi disajikan dengan bumbu masak habang (merah) ikan haruan, ayam, atau telur.", en: "Fragrant yellow rice served with masak habang red sauce haruan fish, chicken, or eggs." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Mi_Habang.jpg" },
-    { id: "patin-baubar", name: { id: "Patin Baubar", en: "Grilled Patin Fish" }, description: { id: "Ikan Patin segar yang dibakar dengan bumbu rempah khas, menghasilkan rasa manis gurih yang meresap.", en: "Fresh Patin fish grilled with special spices, producing a deep savory-sweet flavor." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Pedagang_Makanan_di_Sungai_Martapura.jpg" },
-    { id: "bingka-banjar", name: { id: "Bingka Banjar", en: "Bingka Banjar" }, description: { id: "Kue basah yang sangat lembut, manis, dan gurih dengan aroma kentang dan santan yang kuat. Ikon takjil saat Ramadan.", en: "A very soft, sweet, and savory traditional cake with strong potato and coconut milk aroma. A Ramadan icon." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Bola_Bola_Kentang_Ikan_Asin.jpg", tag: { id: "Kue Tradisional", en: "Traditional Cake" } },
-    { id: "manday", name: { id: "Manday", en: "Manday" }, description: { id: "Kuliner unik dari kulit buah cempedak yang diawetkan dengan garam, kemudian digoreng atau ditumis.", en: "A unique culinary item made from Cempedak fruit skin preserved with salt, then fried or sauteed." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Buah_khas_Kalimantan_Selatan.jpg" },
-    { id: "apam-barabai", name: { id: "Apam Barabai", en: "Apam Barabai" }, description: { id: "Kue tradisional berbahan tepung beras dan tape singkong, bertekstur empuk dengan rasa manis gula merah.", en: "Traditional cake made from rice flour and fermented cassava, with a soft texture and brown sugar sweetness." }, imageSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Buras_Banjar_2.jpg" },
+    { 
+      id: "soto-banjar", 
+      name: { id: "Soto Banjar Bang Amat", en: "Soto Banjar Bang Amat" }, 
+      description: { id: "Soto ayam ikonik Banjarmasin dengan kuah rempah harum, disajikan di tepian sungai dengan suasana yang asri.", en: "Iconic Banjarmasin chicken soup with fragrant spice broth, served by the river with a refreshing atmosphere." }, 
+      imageSrc: "/images/kuliner/Soto_banjar,_Pak_Ahmat,_Martapura,_South_Kalimantan,_2018-07-28_02.jpg", 
+      location: { id: "Banua Anyar, Banjarmasin", en: "Banua Anyar, Banjarmasin" }, 
+      tag: { id: "Legendaris", en: "Legendary" },
+      mapLink: "https://www.google.com/maps/search/?api=1&query=Soto+Bang+Amat+Banjarmasin"
+    },
+    { 
+      id: "ketupat-kandangan", 
+      name: { id: "Ketupat Kandangan H. Irshadi", en: "Ketupat Kandangan H. Irshadi" }, 
+      description: { id: "Ketupat dengan kuah santan kental gurih dan ikan Haruan asap yang otentik khas Hulu Sungai.", en: "Ketupat with savory thick coconut milk broth and authentic smoked Haruan fish from Hulu Sungai." }, 
+      imageSrc: "/images/kuliner/1920px-Katupat_Kandangan_in_Kandangan.jpg", 
+      location: { id: "Jl. A. Yani, Banjarmasin", en: "A. Yani St, Banjarmasin" },
+      mapLink: "https://www.google.com/maps/search/?api=1&query=Ketupat+Kandangan+H.+Irshadi+Banjarmasin"
+    },
+    { 
+      id: "nasi-kuning-cempaka", 
+      name: { id: "Nasi Kuning Cempaka", en: "Cempaka Yellow Rice" }, 
+      description: { id: "Nasi kuning legendaris dengan bumbu masak habang yang meresap sempurna pada ikan haruan dan telur.", en: "Legendary yellow rice with red chili sauce (masak habang) perfectly infused into haruan fish and eggs." }, 
+      imageSrc: "/images/kuliner/Nasi_Kuning_Banjar_001.jpg", 
+      location: { id: "Jl. Niaga Timur, Banjarmasin", en: "Niaga Timur St, Banjarmasin" },
+      mapLink: "https://www.google.com/maps/search/?api=1&query=Nasi+Kuning+Cempaka+Banjarmasin"
+    },
+    { 
+      id: "bingka-bunda", 
+      name: { id: "Bingka Bunda", en: "Bingka Bunda" }, 
+      description: { id: "Kue tradisional Bingka dengan tekstur lembut dan rasa manis gurih yang telah menjadi standar oleh-oleh kota.", en: "Traditional Bingka cake with soft texture and savory-sweet flavor that has become the city's souvenir standard." }, 
+      imageSrc: "/images/kuliner/Bingka.jpg", 
+      tag: { id: "Oleh-oleh", en: "Souvenir" },
+      location: { id: "Kawasan A. Yani, Banjarmasin", en: "A. Yani Area, Banjarmasin" },
+      mapLink: "https://www.google.com/maps/search/?api=1&query=Bingka+Bunda+Banjarmasin"
+    },
+    { 
+      id: "nasi-itik-tenda-biru", 
+      name: { id: "Nasi Itik Tenda Biru", en: "Tenda Biru Duck Rice" }, 
+      description: { id: "Daging itik empuk dengan bumbu habang (merah) khas Gambut yang manis dan gurih.", en: "Tender duck meat with Gambut's signature sweet and savory red chili sauce (habang)." }, 
+      imageSrc: "/images/kuliner/Nasi_Itik_Gambut_Tenda_Biru.JPG", 
+      location: { id: "Gambut, Kab. Banjar", en: "Gambut, Banjar Reg." },
+      mapLink: "https://www.google.com/maps/search/?api=1&query=Nasi+Itik+Tenda+Biru+Gambut"
+    },
+    { 
+        id: "gangan-asam", 
+        name: { id: "Gangan Asam Kepala Patin", en: "Sour Patin Head Soup" }, 
+        description: { id: "Kesegaran kuah kuning asam dengan kepala ikan patin yang lembut dan kaya akan bumbu dapur.", en: "Refreshing sour yellow broth with soft patin fish head rich in local spices." }, 
+        imageSrc: "/images/kuliner/Gangan_asam_kepala_ikan_di_Cempaka,_Banjarbaru.jpg"
+    }
   ];
 
   const snacks = [
     { id: "es-kelapa", name: { id: "Es Kelapa Muda", en: "Young Coconut Ice" }, desc: { id: "Kesegaran kelapa muda pesisir sungai.", en: "Refreshing young coconut from the riverbank." }, icon: Leaf, color: "bg-emerald-50 text-emerald-600" },
-    { id: "wadai-banjar", name: { id: "Wadai Banjar", en: "Banjar Cakes" }, desc: { id: "41 macam wadai (kue) tradisional khas Banjar.", en: "41 types of traditional Banjar cakes." }, icon: Star, color: "bg-warm-gold/10 text-warm-gold" },
-    { id: "teh-banjar", name: { id: "Teh Banjar", en: "Banjar Tea" }, desc: { id: "Teh wangi dengan sentuhan rempah lokal.", en: "Fragrant tea with a touch of local spices." }, icon: Flame, color: "bg-earth-terracotta/10 text-earth-terracotta" },
+    { id: "wadai-banjar", name: { id: "41 Macam Wadai", en: "41 Types of Cakes" }, desc: { id: "Ragam kue tradisional warisan budaya Banjar.", en: "Variety of traditional Banjar heritage cakes." }, icon: Star, color: "bg-warm-gold/10 text-warm-gold" },
+    { id: "teh-banjar", name: { id: "Teh Rempah", en: "Spiced Tea" }, desc: { id: "Seduhan teh dengan aroma kayu manis lokal.", en: "Tea brew with local cinnamon aroma." }, icon: Flame, color: "bg-earth-terracotta/10 text-earth-terracotta" },
   ];
 
   return (
@@ -37,213 +82,181 @@ export default function Kuliner() {
       <NavigationBar />
       <PageTransitionWrapper>
 
-        {/* ── HERO: Centered Text + Horizontal Looping Marquee ── */}
-        <section className="relative h-screen min-h-[700px] overflow-hidden bg-river-blue-900 flex flex-col items-center pt-44 pb-12">
-          {/* Background Gradient Fade */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-river-blue-900/50 via-river-blue-900/90 to-river-blue-900 z-10" />
-            <motion.img
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Pedagang_Makanan_di_Sungai_Martapura.jpg/1200px-Pedagang_Makanan_di_Sungai_Martapura.jpg" 
-              alt="" 
-              className="w-full h-full object-cover opacity-20"
-            />
-          </div>
-
-          <div className="relative z-20 text-center px-6 mb-auto flex flex-col items-center justify-center flex-1 max-w-4xl">
-            <motion.span
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-warm-gold font-bold uppercase tracking-[0.4em] text-[10px] md:text-xs mb-8 block"
-            >
-              {t({ id: "Kuliner Khas Banjar", en: "Authentic Banjar Cuisine" })}
-            </motion.span>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="font-heading font-black text-white leading-[1.05] mb-8"
-              style={{ fontSize: "clamp(2.5rem, 8vw, 6.5rem)" }}
-            >
-              <span className="block mb-2">{t({ id: "Cita Rasa", en: "A Taste of" })}</span>
-              <span className="text-warm-gold">{t({ id: "Seribu Sungai", en: "Thousand Rivers" })}</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="text-white font-body text-sm md:text-lg max-w-2xl mx-auto leading-relaxed"
-            >
-              {t({ id: "Menjelajahi keaslian bumbu dan tradisi kuliner yang melegenda di mulut.", en: "Exploring the authenticity of spices and culinary traditions that are legendary on the palate." })}
-            </motion.p>
-          </div>
-
-          {/* Horizontal Infinite Marquee - Slightly more compact */}
-          <div className="relative z-10 w-full overflow-hidden py-6 select-none mt-auto">
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-river-blue-900 to-transparent z-20" />
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-river-blue-900 to-transparent z-20" />
+        {/* ── HERO: Plasma Background ── */}
+        <section className="relative h-screen min-h-[700px] overflow-hidden bg-river-blue flex flex-col items-center justify-center">
+            <div className="absolute inset-0 z-0">
+                <Plasma 
+                    color="#F5C518"
+                    speed={0.6}
+                    direction="forward"
+                    scale={1.1}
+                    opacity={0.8}
+                    mouseInteractive={true}
+                />
+            </div>
             
-            <motion.div
-              className="flex gap-5 w-fit"
-              animate={{ x: [0, -2000] }}
-              transition={{
-                duration: 50,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{ willChange: "transform", translateZ: 0 }}
-            >
-              {[...iconicDishes, ...iconicDishes, ...iconicDishes].map((item, i) => (
-                <div
-                  key={i}
-                  className="relative w-64 md:w-72 aspect-[4/3] rounded-2xl overflow-hidden group border border-white/5 bg-gray-900 shrink-0 shadow-2xl"
-                >
-                  <img
-                    src={item.imageSrc}
-                    alt={t(item.name)}
-                    className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-70 group-hover:opacity-95 transition-opacity" />
-                  <div className="absolute bottom-5 left-5">
-                    <span className="text-white font-heading font-bold text-sm tracking-tight">{t(item.name)}</span>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+            <div className="absolute inset-0 bg-gradient-to-b from-river-blue/40 via-river-blue/60 to-river-blue z-10" />
 
-        {/* ── EDITORIAL FEATURED + OFFSET GRID ── */}
-        <section className="py-20 md:py-28 bg-white overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <FadeInView className="mb-14">
-              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Kuliner Ikonik", en: "Iconic Culinary" })}</span>
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue">{t({ id: "8 Rasa yang Wajib Dicoba", en: "8 Tastes You Must Try" })}</h2>
-            </FadeInView>
-            <FadeInView className="mb-8">
-              <div className="relative rounded-3xl overflow-hidden h-72 md:h-96 group shadow-2xl">
-                <img src={iconicDishes[0].imageSrc} alt={t(iconicDishes[0].name)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"/>
-                <div className="absolute inset-0 flex items-center">
-                  <div className="p-8 md:p-14 max-w-xl">
-                    <span className="text-warm-gold text-xs font-bold uppercase tracking-widest mb-3 block">{t({ id: "Hidangan Utama", en: "Main Dish" })} #01</span>
-                    <h3 className="text-white font-heading font-bold text-3xl md:text-5xl mb-4 leading-tight">{t(iconicDishes[0].name)}</h3>
-                    <p className="text-white/70 font-body text-sm md:text-base leading-relaxed mb-6 line-clamp-2">{t(iconicDishes[0].description)}</p>
-                    {iconicDishes[0].location && (
-                      <div className="inline-flex items-center gap-2 text-warm-gold font-bold text-xs uppercase tracking-widest">
-                        <ArrowUpRight size={14}/>{t(iconicDishes[0].location)}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </FadeInView>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 items-start">
-              {iconicDishes.slice(1).map((item, i) => (
-                <motion.div key={item.id} initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay: i*0.07, duration:0.5 }}
-                  className={i%3===1?"mt-8":i%3===2?"mt-4":"mt-0"}>
-                  <CulinaryCard item={item}/>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+            <div className="relative z-20 text-center px-6 max-w-7xl pt-32 pb-44">
+                <FadeInView>
+                    <motion.span className="text-warm-gold font-bold uppercase tracking-[0.4em] text-[10px] md:text-xs mb-8 block">
+                        {t({ id: "Perjalanan Rasa", en: "A Culinary Journey" })}
+                    </motion.span>
 
-        {/* ── FLOATING MARKET ── */}
-        <section className="py-20 md:py-28 bg-river-blue-50 overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <FadeInView direction="right" className="lg:col-span-6 relative">
-                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pasar_terapung_Banjarmasin.jpg" alt="Floating market" className="w-full h-full object-cover"/>
-                  <div className="absolute inset-0 bg-gradient-to-t from-river-blue/50 to-transparent"/>
-                  <div className="absolute bottom-6 left-6"><span className="text-white font-heading font-bold text-lg">Pasar Terapung Lok Baintan</span></div>
-                </div>
-                <motion.div initial={{ opacity:0, scale:0.8 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true }} transition={{ delay:0.4 }}
-                  className="absolute -top-5 -right-5 bg-warm-gold text-white rounded-2xl p-5 shadow-2xl hidden md:block">
-                  <div className="text-3xl font-heading font-bold">05:30</div>
-                  <div className="text-xs font-bold uppercase tracking-widest opacity-80">{t({ id: "Buka Subuh", en: "Opens at Dawn" })}</div>
-                </motion.div>
-              </FadeInView>
-              <FadeInView direction="left" className="lg:col-span-6">
-                <div className="bg-white p-10 md:p-12 rounded-[40px] shadow-xl border border-river-blue/5">
-                  <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-5 block">{t({ id: "Pengalaman Unik", en: "Unique Experience" })}</span>
-                  <h2 className="text-3xl md:text-4xl font-heading font-bold text-river-blue mb-6 leading-tight">{t({ id: "Sarapan di Atas Klotok", en: "Breakfast on a Klotok" })}</h2>
-                  <p className="text-river-blue/65 font-body leading-relaxed mb-8">{t({ id: "Nikmati sensasi makan soto banjar atau ketupat kandangan langsung di atas klotok sambil terombang-ambing pelan di tengah pasar terapung Lok Baintan.", en: "Enjoy the sensation of eating soto banjar or ketupat kandangan directly on a klotok boat while gently tossing in the middle of Lok Baintan floating market." })}</p>
-                  <a href="/wisata/pasar-terapung-lok-baintan" className="inline-block px-8 py-4 bg-river-blue text-white font-bold rounded-full hover:bg-river-blue-900 transition-all hover:scale-105 shadow-xl">{t({ id: "Lihat Destinasi", en: "View Destination" })}</a>
-                </div>
-              </FadeInView>
-            </div>
-          </div>
-        </section>
+                    <h1 className="font-heading font-black text-white leading-none mb-8 text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl md:whitespace-nowrap overflow-visible">
+                        {t({ id: "Simfoni Rasa Seribu Sungai", en: "Symphony of a Thousand Flavors" })}
+                    </h1>
 
-        {/* ── SNACKS ── */}
-        <SectionWrapper background="white">
-          <FadeInView className="text-center mb-14">
-            <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue mb-4">{t({ id: "Minuman & Jajanan", en: "Drinks & Snacks" })}</h2>
-            <div className="h-1 w-16 bg-warm-gold mx-auto rounded-full"/>
-          </FadeInView>
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
-            {snacks.map((snack, i) => (
-              <StaggerItem key={snack.id}>
-                <div className={`group p-8 rounded-3xl border-2 border-transparent hover:border-warm-gold/20 hover:shadow-xl transition-all duration-400 text-center bg-white ${i===1?"md:mt-8":""}`}>
-                  <div className={`w-16 h-16 ${snack.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform`}><snack.icon size={28}/></div>
-                  <h4 className="text-xl font-heading font-bold text-river-blue mb-3">{t(snack.name)}</h4>
-                  <p className="text-sm text-river-blue/60 font-body leading-relaxed">{t(snack.desc)}</p>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </SectionWrapper>
-
-        {/* ── PASAR & WARUNG ── */}
-        <section className="py-20 md:py-28 bg-river-blue-50 overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
-            <FadeInView className="mb-14">
-              <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-3 block">{t({ id: "Tempat Makan", en: "Where to Eat" })}</span>
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-river-blue">{t({ id: "Pasar & Warung Ikonik", en: "Iconic Markets & Eateries" })}</h2>
-            </FadeInView>
-            <div className="space-y-5">
-              {[
-                { name: { id: "Pasar Terapung Lok Baintan", en: "Lok Baintan Floating Market" }, type: { id: "Pasar Tradisional", en: "Traditional Market" }, hours: { id: "Pukul 06.00 – 09.00 WIB", en: "6:00 AM – 9:00 AM" }, desc: { id: "Sarapan paling ikonik di Banjarmasin — makan soto banjar atau ketupat kandangan langsung di atas klotok sambil menyaksikan aktivitas pedagang perahu di Sungai Martapura.", en: "The most iconic breakfast in Banjarmasin — eat soto banjar or ketupat kandangan directly on a klotok boat while watching boat traders on the Martapura River." }, img: "https://commons.wikimedia.org/wiki/Special:FilePath/Pasar_terapung_Banjarmasin.jpg", accent: "border-warm-gold bg-warm-gold/5", accentBar: "bg-warm-gold", badge: { id: "Pengalaman Unik", en: "Unique Experience" }, badgeColor: "bg-warm-gold text-white" },
-                { name: { id: "Warung Soto H. Anang", en: "Warung Soto H. Anang" }, type: { id: "Warung Legendaris", en: "Legendary Eatery" }, hours: { id: "Pukul 07.00 – 14.00 WIB", en: "7:00 AM – 2:00 PM" }, desc: { id: "Salah satu warung soto banjar paling terkenal di kota, telah berdiri selama puluhan tahun. Kuah bening harum rempah dengan ayam kampung pilihan.", en: "One of the most famous soto banjar eateries in the city, operating for decades. Clear broth fragrant with spices, choice free-range chicken." }, img: "https://commons.wikimedia.org/wiki/Special:FilePath/Nasi_Kuning_Banjar_001.jpg", accent: "border-river-blue bg-river-blue/5", accentBar: "bg-river-blue", badge: { id: "Legendaris", en: "Legendary" }, badgeColor: "bg-river-blue text-white" },
-                { name: { id: "Kawasan Kuliner Siring", en: "Siring Culinary District" }, type: { id: "Street Food", en: "Street Food" }, hours: { id: "Pukul 17.00 – 23.00 WIB", en: "5:00 PM – 11:00 PM" }, desc: { id: "Deretan warung dan kios makanan di sepanjang tepian Sungai Martapura yang ramai saat senja. Nikmati berbagai pilihan kuliner Banjar sambil menikmati pemandangan sungai.", en: "A row of food stalls and kiosks along the Martapura riverbank that comes alive at dusk. Enjoy a variety of Banjar culinary options while taking in the river view." }, img: "https://commons.wikimedia.org/wiki/Special:FilePath/Taman_Siring_Banjarmasin.jpg", accent: "border-earth-terracotta bg-earth-terracotta/5", accentBar: "bg-earth-terracotta", badge: { id: "Sunset Vibes", en: "Sunset Vibes" }, badgeColor: "bg-earth-terracotta text-white" },
-              ].map((place, i) => (
-                <motion.div key={i} initial={{ opacity:0, x:-30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ delay: i*0.1, duration:0.6 }}
-                  className={`group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-400 flex items-stretch border-l-4 ${place.accent}`}>
-                  <div className={`w-1.5 shrink-0 ${place.accentBar}`}/>
-                  <div className="relative w-28 md:w-44 shrink-0 overflow-hidden">
-                    <img src={place.img} alt={t(place.name)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
-                  </div>
-                  <div className="p-6 flex flex-col justify-center flex-1 gap-2">
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${place.badgeColor}`}>{t(place.badge)}</span>
-                      <span className="text-[10px] text-river-blue/40 font-bold uppercase tracking-widest">{t(place.type)}</span>
+                    <p className="text-white/80 font-body text-base md:text-xl max-w-2xl mx-auto leading-relaxed mb-12 drop-shadow-sm">
+                        {t({ 
+                            id: "Jelajahi keaslian bumbu warisan dan kehangatan kuliner sungai yang melegenda di tiap suapan.", 
+                            en: "Explore the authenticity of heritage spices and the legendary warmth of river cuisine in every bite." 
+                        })}
+                    </p>
+                    
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <div className="w-px h-16 bg-gradient-to-b from-warm-gold/60 to-transparent" />
                     </div>
-                    <h3 className="text-lg font-heading font-bold text-river-blue leading-tight">{t(place.name)}</h3>
-                    <p className="text-sm text-river-blue/60 font-body leading-relaxed line-clamp-2">{t(place.desc)}</p>
-                    <div className="flex items-center gap-1.5 text-xs text-warm-gold font-bold"><span>⏰</span><span>{t(place.hours)}</span></div>
-                  </div>
+                </FadeInView>
+            </div>
+
+            {/* Horizontal Infinite Marquee */}
+            <div className="absolute bottom-0 left-0 w-full overflow-hidden py-10 z-20 pointer-events-none select-none">
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-river-blue to-transparent z-30" />
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-river-blue to-transparent z-30" />
+                
+                <motion.div
+                    className="flex gap-6 w-fit"
+                    animate={{ x: [0, -1500] }}
+                    transition={{
+                        duration: 30,
+                        repeat: Infinity,
+                        ease: "linear",
+                    }}
+                >
+                    {[...iconicDishes, ...iconicDishes].map((item, i) => (
+                        <div
+                            key={`${item.id}-${i}`}
+                            className="relative w-72 md:w-80 aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shrink-0 shadow-2xl"
+                        >
+                            <img
+                                src={item.imageSrc}
+                                alt={t(item.name)}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                            <div className="absolute bottom-4 left-6">
+                                <span className="text-white font-heading font-black text-xs uppercase tracking-widest">{t(item.name)}</span>
+                            </div>
+                        </div>
+                    ))}
                 </motion.div>
+            </div>
+        </section>
+
+        {/* ── SIMFONI RASA SECTION ── */}
+        <section className="py-24 bg-white relative">
+            <div className="max-w-7xl mx-auto px-6">
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
+                    <FadeInView direction="right">
+                        <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-[10px] mb-4 block">Harmony of Flavors</span>
+                        <h2 className="text-4xl md:text-6xl font-heading font-black text-river-blue mb-8 leading-[0.9]">
+                            {t({ id: "Warisan Rasa di Tiap Sudut.", en: "Heritage in Every Corner." })}
+                        </h2>
+                        <p className="text-river-blue/60 text-lg leading-relaxed mb-8">
+                            {t({
+                                id: "Di Banjarmasin, kuliner bukan sekadar pengganjal lapar. Ia adalah simfoni antara kekayaan rempah Nusantara dengan kearifan sungai yang telah mengalir selama ratusan tahun.",
+                                en: "In Banjarmasin, cuisine is more than just hunger relief. It's a symphony between the rich spices of the Archipelago and the river wisdom that has flowed for hundreds of years."
+                            })}
+                        </p>
+                    </FadeInView>
+                    
+                    <FadeInView direction="left" delay={0.2}>
+                        <div className="relative aspect-[4/3] rounded-[3rem] overflow-hidden shadow-2xl">
+                            <img src="/images/kuliner/Soto_banjar,_Pak_Ahmat,_Martapura,_South_Kalimantan,_2018-07-28_02.jpg" alt="Culinary Heritage" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-river-blue/10" />
+                        </div>
+                    </FadeInView>
+                </div>
+            </div>
+        </section>
+
+        {/* ── ICONIC DISHES GRID ── */}
+        <section className="py-24 bg-slate-50 border-y border-slate-100">
+          <div className="max-w-7xl mx-auto px-6">
+            <FadeInView className="mb-20 text-center">
+              <h2 className="text-4xl md:text-5xl font-heading font-black text-river-blue mb-4">
+                {t({ id: "Menu Wajib", en: "The Must-Haves" })}
+              </h2>
+              <p className="text-slate-500 font-body">{t({ id: "Pilihan terbaik yang menentukan identitas rasa utama Banjarmasin.", en: "The best selections that define Banjarmasin's primary flavor identity." })}</p>
+            </FadeInView>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {iconicDishes.map((item, i) => (
+                <FadeInView key={item.id} delay={i * 0.1}>
+                  <CulinaryCard item={item} />
+                </FadeInView>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Photo strip */}
-        <div className="grid grid-cols-3 h-56 md:h-80">
-          {["https://commons.wikimedia.org/wiki/Special:FilePath/Buras_Banjar_1.jpg","https://commons.wikimedia.org/wiki/Special:FilePath/Iwak_Karing_Kalakai_Masak_Kuning_Sambal_Ramania.jpg","https://commons.wikimedia.org/wiki/Special:FilePath/Mi_Habang.jpg"].map((src,i) => (
-            <motion.div key={i} whileHover={{ scale:1.03 }} transition={{ duration:0.5 }} className="overflow-hidden relative">
-              <img src={src} alt="" className="w-full h-full object-cover"/>
-              <div className="absolute inset-0 bg-river-blue/20 hover:bg-transparent transition-colors duration-500"/>
-            </motion.div>
-          ))}
-        </div>
+        {/* ── FLOATING MARKET BREAKFAST ── */}
+        <section className="py-24 bg-white overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              <FadeInView direction="right" className="lg:col-span-7">
+                <div className="relative rounded-[3rem] overflow-hidden h-[500px] group shadow-2xl">
+                  <img src="/images/kuliner/buras.png" alt="Pasar Terapung" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-10 left-10 text-white">
+                    <h3 className="text-4xl font-heading font-black mb-2">Pasar Terapung Lok Baintan</h3>
+                    <p className="opacity-80 font-body">Kawasan Sungai Martapura</p>
+                  </div>
+                </div>
+              </FadeInView>
+              
+              <FadeInView direction="left" className="lg:col-span-5 bg-river-blue text-white p-12 lg:p-16 rounded-[3rem] relative">
+                  <span className="text-warm-gold font-bold uppercase tracking-[0.25em] text-xs mb-6 block">{t({ id: "Sensasi Unik", en: "Unique Sensation" })}</span>
+                  <h2 className="text-3xl md:text-4xl font-heading font-black mb-8 leading-tight">
+                    {t({ id: "Sarapan di Pelukan Arus.", en: "Breakfast in the Flow." })}
+                  </h2>
+                  <p className="text-white/60 font-body leading-relaxed mb-10 text-lg">
+                    {t({ id: "Rasakan magisnya pagi hari dengan menyantap Katupat atau Soto langsung dari perahu jukung di tengah pasar terapung yang riuh namun damai.", en: "Experience the morning magic by eating Katupat or Soto directly from a jukung boat in the middle of a bustling yet peaceful floating market." })}
+                  </p>
+                  <a 
+                    href="https://www.google.com/maps/search/?api=1&query=Pasar+Terapung+Lok+Baintan" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-warm-gold text-river-blue font-black rounded-full hover:bg-white transition-all hover:translate-x-1"
+                  >
+                    {t({ id: "Petunjuk Lokasi", en: "Get Directions" })}
+                    <ArrowUpRight size={20} />
+                  </a>
+              </FadeInView>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SNACKS SECTION ── */}
+        <SectionWrapper className="bg-slate-50 py-24">
+          <FadeInView className="text-center mb-16">
+            <h2 className="text-4xl font-heading font-black text-river-blue mb-4">{t({ id: "Manis Berkesan", en: "Memorable Sweetness" })}</h2>
+            <div className="h-1.5 w-20 bg-warm-gold mx-auto rounded-full" />
+          </FadeInView>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {snacks.map((snack) => (
+              <FadeInView key={snack.id} className="bg-white p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all group">
+                <div className={`w-16 h-16 ${snack.color} rounded-2xl flex items-center justify-center mb-8 group-hover:rotate-12 transition-transform`}>
+                  <snack.icon size={32} />
+                </div>
+                <h4 className="text-2xl font-heading font-black text-river-blue mb-4">{t(snack.name)}</h4>
+                <p className="text-river-blue/60 font-body leading-relaxed">{t(snack.desc)}</p>
+              </FadeInView>
+            ))}
+          </div>
+        </SectionWrapper>
 
       </PageTransitionWrapper>
       <Footer />

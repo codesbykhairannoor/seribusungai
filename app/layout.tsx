@@ -4,6 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AnimationProvider } from "@/contexts/AnimationContext";
 import GlobalAnimations from "@/components/ui/GlobalAnimations";
+import KalutukAI from "@/components/ui/KalutukAI";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -28,12 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${jakarta.variable}`} suppressHydrationWarning>
-      <body className="min-h-screen selection:bg-warm-gold selection:text-white font-body antialiased">
+      <body className="min-h-screen selection:bg-warm-gold selection:text-white">
         <LanguageProvider>
           <AnimationProvider>
             {/* Global: loading screen + custom cursor + boat scroll */}
             <GlobalAnimations />
             {children}
+            <KalutukAI />
           </AnimationProvider>
         </LanguageProvider>
       </body>
